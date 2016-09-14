@@ -1,0 +1,107 @@
+#!/bin/bash
+source ./scripts/checker
+
+
+#下載images
+if [ "${1}" == "pull" ]; then
+    docker pull nginx 
+    docker pull mysql:5.6.31
+    docker pull deviny/fpm:7.0.10
+    exit;
+fi
+
+#變更模式, web:80, db:127.0.0.1:3306
+if [ "${1}" == "mode1" ]; then
+    echo "docker-compose setting file changed."
+    echo "HOST DB: listen on 127.0.0.1:3306."
+    echo "HOST WEB: listen on port 80."
+    ln -sf docker-compose-mode1.yml docker-compose.yml
+    ls -l docker-compose.yml
+    exit;
+fi
+
+#隨機
+if [ "${1}" == "random" ]; then
+    echo "docker-compose setting file changed."
+    echo "HOST DB: listen on random port."
+    echo "HOST WEB: listen on random port."
+    ln -sf docker-compose-random.yml docker-compose.yml
+    ls -l docker-compose.yml
+    exit;
+fi
+
+#Custom Config
+if [ "${1}" == "custom" ]; then
+    if [ -e docker-compose-custom.yml ]; then
+        ln -sf docker-compose-custom.yml docker-compose.yml 
+        ls -l docker-compose.yml
+    else
+        cp docker-compose.yml docker-compose-custom.yml
+        ln -sf docker-compose-custom.yml docker-compose.yml 
+        echo "You can edit your own custom docker-compose-custom.yml in etc/ folder."
+        ls -l docker-compose.yml
+    fi 
+    exit;
+fi
+
+
+#停止docker-compose
+if [ "${1}" == "down" ]; then
+docker-compose down
+exit;
+fi
+
+#重啟
+if [ "${1}" == "restart" ]; then
+docker-compose down
+docker-compose up -d
+echo "DB:"
+./scripts/db-ports
+echo "Web:"
+./scripts/web-ports
+exit;
+fi
+
+if [ "${1}" == "up" ]; then
+docker-compose up -d
+echo "DB:"
+#設定DB的時區到Asia/Taipei
+#docker exec -ti ${containerName}_db_1 ln -sf /usr/share/zoneinfo/Asia/Taipei /etc/localtime
+./scripts/db-ports
+echo "Web:"
+./scripts/web-ports
+exit;
+fi
+
+#進資料庫
+if [ "${1}" == "mysql" ]; then
+docker-compose exec db mysql
+exit;
+fi
+
+#啟動時檢測網頁資訊
+if [ "${1}" == "info" ]; then
+echo "DB:"
+./scripts/db-ports
+echo "Web:"
+./scripts/web-ports
+exit;
+fi
+
+#執行ps
+if [ "${1}" == "ps" ]; then
+docker-compose ps
+fi
+
+#重新載入nginx設定
+if [ "${1}" == "reload" ]; then
+docker-compose exec web nginx -s reload
+fi
+
+#檢測是否執行
+#docker ps |grep -q ${containerName}_php_1
+docker-compose ps |grep -q 9000
+if [ $? -eq 1 ]; then
+docker-compose up -d
+fi
+docker-compose exec php bash

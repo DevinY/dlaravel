@@ -1,0 +1,21 @@
+#!/bin/bash
+projectFolder=`pwd|sed 's#/scripts##'`
+containerName=`printf '%s\n' "${projectFolder##*/}"|tr '[:upper:]' '[:lower:]'|sed 's/-//g'`
+
+#檢測是否有docker-compose連結，沒有就建一個
+if [ ! -f "docker-compose.yml" ];then
+    ln -sf docker-compose-random.yml docker-compose.yml
+    ls -l docker-compose.yml
+fi
+
+which -s docker
+if [ $? -eq 1 ]; then
+echo 'Please go to https://docs.docker.com/engine/installation/ to install docker'
+exit;
+fi
+
+which -s docker-compose
+if [ $? -eq 1 ]; then
+echo 'Please go to https://docs.docker.com/compose/install/ to install docker-compose'
+exit
+fi

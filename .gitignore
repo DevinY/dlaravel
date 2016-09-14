@@ -1,0 +1,8 @@
+etc/
+!etc/mysql
+!etc/php
+!etc/default.conf
+sites/
+data/
+docker-compose.yml
+docker-compose-custom.yml

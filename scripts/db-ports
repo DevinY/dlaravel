@@ -1,0 +1,12 @@
+#!/bin/bash
+currentPath=`pwd`
+source ${currentPath}/scripts/checker
+
+docker ps |grep -q ${containerName}_db_1
+if [ $? -eq 1 ]; then
+echo ${containerName}_db_1 is not running
+exit
+fi
+
+docker inspect --format='{{range $p, $conf := .NetworkSettings.Ports}} {{$p}} -> {{(index $conf 0).HostPort}} {{end}}' ${containerName}_db_1
+
