@@ -1,4 +1,4 @@
-etc/
+etc/*
 !etc/mysql
 !etc/php
 !etc/default.conf
