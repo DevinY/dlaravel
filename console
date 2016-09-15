@@ -22,8 +22,7 @@ if [ "${1}" == "mode1" ]; then
     echo "docker-compose setting file changed."
     echo "HOST DB: listen on 127.0.0.1:3306."
     echo "HOST WEB: listen on port 80."
-    ln -sf docker-compose-mode1.yml docker-compose.yml
-    ls -l docker-compose.yml
+    ln -vsf docker-compose-mode1.yml docker-compose.yml
     docker-compose up -d
     ./console info
     exit;
@@ -35,8 +34,7 @@ if [ "${1}" == "random" ]; then
     echo "docker-compose setting file changed."
     echo "HOST DB: listen on random port."
     echo "HOST WEB: listen on random port."
-    ln -sf docker-compose-random.yml docker-compose.yml
-    ls -l docker-compose.yml
+    ln -vsf docker-compose-random.yml docker-compose.yml
     docker-compose up -d
     ./console info
     exit;
@@ -46,14 +44,13 @@ fi
 if [ "${1}" == "custom" ]; then
     if [ -e docker-compose-custom.yml ]; then
         docker-compose down
-        ln -sf docker-compose-custom.yml docker-compose.yml 
-        ls -l docker-compose.yml
+        ln -vsf docker-compose-custom.yml docker-compose.yml 
         docker-compose up -d
     else
-        cp docker-compose.yml docker-compose-custom.yml
-        ln -sf docker-compose-custom.yml docker-compose.yml 
-        echo "You can edit your own custom docker-compose-custom.yml in etc/ folder."
-        ls -l docker-compose.yml
+        cp docker-compose-random.yml docker-compose-custom.yml
+        ln -vsf docker-compose-custom.yml docker-compose.yml 
+        echo "docker-compose-custom.yml is created."
+        docker-compose up -d
     fi 
     ./console info
     exit;
