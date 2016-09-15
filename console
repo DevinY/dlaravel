@@ -18,35 +18,44 @@ fi
 
 #變更模式, web:80, db:127.0.0.1:3306
 if [ "${1}" == "mode1" ]; then
+    docker-compose down
     echo "docker-compose setting file changed."
     echo "HOST DB: listen on 127.0.0.1:3306."
     echo "HOST WEB: listen on port 80."
     ln -sf docker-compose-mode1.yml docker-compose.yml
     ls -l docker-compose.yml
+    docker-compose up -d
+    ./console info
     exit;
 fi
 
 #隨機
 if [ "${1}" == "random" ]; then
+    docker-compose down
     echo "docker-compose setting file changed."
     echo "HOST DB: listen on random port."
     echo "HOST WEB: listen on random port."
     ln -sf docker-compose-random.yml docker-compose.yml
     ls -l docker-compose.yml
+    docker-compose up -d
+    ./console info
     exit;
 fi
 
 #Custom Config
 if [ "${1}" == "custom" ]; then
     if [ -e docker-compose-custom.yml ]; then
+        docker-compose down
         ln -sf docker-compose-custom.yml docker-compose.yml 
         ls -l docker-compose.yml
+        docker-compose up -d
     else
         cp docker-compose.yml docker-compose-custom.yml
         ln -sf docker-compose-custom.yml docker-compose.yml 
         echo "You can edit your own custom docker-compose-custom.yml in etc/ folder."
         ls -l docker-compose.yml
     fi 
+    ./console info
     exit;
 fi
 
