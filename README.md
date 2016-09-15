@@ -1,14 +1,37 @@
-#laravel
-您是否還不是很了解nginx的主機設定?  這個repo幫助您，快速進入Laravel的簡易開發環境。
-
-用docker-compose在MacOS下建立PHP-FPM、MySQL及nginx的簡易環境。
+#DevinYlaravel(d-laravel)
+您是否還不是很了解nginx的主機設定?  讓DevinY/laravel幫助您，快速進入Laravel的本機開發環境。
 
 類似於官網的Valet，可同時執行多個 *.dev的開發測試的網站。
 
-但是採用dockr-compose的微服務架構，
+d-laravel使用dockr-compose的微服務架構，
 
-您可以自訂docker-compose-custom.yml快速創建出自己的開發環境。
+還可自訂docker-compose-custom.yml快速創建出自己的開發環境。
 
+###為什麼用d-laravel
+話說，在自己在MacOS上編譯php及架設環境並不是一件容易的事情。
+
+而Apple對於php版本的更新也不是那麼快， 如果我想在MacOS跑不同的PHP或新版PHP似乎讓事情變的有點麻煩。
+
+Docker跟Vagrant比起來，docker的啟動速度是秒級的，比起Vagrant的VM的分鐘級的啟動速度，快很多。
+
+而Laravel官方的Valet，我的使用經驗上也是要裝一堆東西，DnsMasq及Caddy，對於我的錯亂中的Mac，只會更加錯亂@@
+
+吃了我的port 80搞半天移不太掉，最後官方的移除指令valet uninstall才搞定。
+
+總而言之，最後我覺的docker才是解決之道，不用再被環境所困。
+
+因為我是Mac的使用者，
+
+所以，就建立了./conosle及./create這兩個bash指令，
+
+來幫助我快速建立Laravel在Mac OS上的本機測試環境。
+
+建立Project使用，基本上您只要會下方四種指令就搞定啦 
+<pre>
+./create test1  (建立test1.dev)
+./console down或./console up (啟用及停用container)
+./console restart    (./console down再./console up)
+</pre>
 
 
 ####一、請先安裝docker-for-mac
@@ -39,22 +62,13 @@ cd laravel
 </code></pre>
 
 
-四、停止請在目錄下執行./console down
+####四、停止請在目錄下執行./console down
 <pre><code>
 注意事項: 這個只是拿來開發測試用的，Mysql的root是沒有密碼的。
 你可能需要修改docker-compose.yml啟動時的TZ，目前設為Asia/Taipei
 </code></pre>
 
-五、透過別名我們可以在任何地方執行console
-例如，也可以把./console alias的別名加入到~/.bash_profile中，永久生效
-<pre><code>
-顯示別名sample
-./console alias
-建立別名
-source `./console alias`
-</code></pre>
-
-六、更新
+####五、更新
 <pre><code>
 cd laravel-dev
 git pull
