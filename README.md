@@ -67,7 +67,7 @@ Docker指令及DevinY/laravel提供的./console的bash指令
 | docker-compose pull  |./console pull   |抓最新的images   |
 | docker-compose up -d  |./console up   |啟動container   |
 | docker-compose down  |./console down  |停止container   |
-| docker-compose ps   |./console ps  |查看docker-compose的process   |
+| docker-compose ps或docker ps|./console ps  |查看docker-compose的process   |
 | docker-compose exec php bash   |./console  |進入php的container   |
 | docker-compose exec db mysql   |./console mysql  |執行mysql   |
 | docker-compose exec web nginx -s reload   |./console reload  |從載nginx設定   |
