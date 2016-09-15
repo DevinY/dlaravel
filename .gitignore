@@ -1,6 +1,5 @@
 etc/*
 !etc/mysql
-!etc/php
 !etc/default.conf
 sites/
 data/
