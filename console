@@ -1,9 +1,9 @@
 #!/bin/bash
-source ./scripts/checker
+base_path=`pwd`
 
-#顯示建alais的方式
+#開發測試中Beta
 if [ "${1}" == "alias" ]; then
-calias="alias console=`pwd`/console"
+calias="alias console=${base_path}/console"
 echo ${calias}
 exit;
 fi
@@ -72,7 +72,6 @@ if [ "${1}" == "up" ]; then
 docker-compose up -d
 echo "DB:"
 #設定DB的時區到Asia/Taipei
-#docker exec -ti ${containerName}_db_1 ln -sf /usr/share/zoneinfo/Asia/Taipei /etc/localtime
 ./scripts/db-ports
 echo "Web:"
 ./scripts/web-ports
@@ -96,18 +95,20 @@ fi
 
 #執行ps
 if [ "${1}" == "ps" ]; then
-docker-compose ps
+echo ${base_path}
+docker-compose -f ${base_path}/docker-compose.yml ps
+exit
 fi
 
 #重新載入nginx設定
 if [ "${1}" == "reload" ]; then
 docker-compose exec web nginx -s reload
+exit
 fi
 
 #檢測是否執行
-#docker ps |grep -q ${containerName}_php_1
-docker-compose ps |grep -q 9000
+docker-compose -f ${base_path}/docker-compose.yml ps |grep -q 9000
 if [ $? -eq 1 ]; then
 docker-compose up -d
 fi
-docker-compose exec php bash
+docker-compose -f ${base_path}/docker-compose.yml  exec php bash

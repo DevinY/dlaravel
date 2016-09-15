@@ -15,7 +15,7 @@ services:
   hostname: web
 
  php:
-  image: deviny/fpm:7.0.10
+  image: deviny/fpm:7.0.11
 
   volumes:
    - ./sites:/var/www/html
