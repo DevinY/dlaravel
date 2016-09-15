@@ -15,8 +15,10 @@ https://docs.docker.com/docker-for-mac/
 <br/>
 </code></pre>
 
-####二、下載這個repo，並進入laravel-dev資料夾，然後執行：。
+####二、例如用git clone這個repo，並進入laravel資料夾，然後執行：./console pull。
 <pre><code>
+git clone https://github.com/DevinY/laravel.git
+cd laravel
 ./console pull
 第一次執行會花較久的時間從dockhub上，下載docker-compose所需要的images.
 <br/>
@@ -56,9 +58,9 @@ cd laravel-dev
 git pull
 </code></pre>
 
-Docker指令及Larave-dev提供的Bash
+Docker指令及DevinY/laravel提供的./console的bash指令
 
-|Docker官方指令   |簡易console bash   | 說明|
+|Docker官方指令   |./console Bash指令| 說明|
 |---|---|---|
 | docker-compose pull  |./console pull   |抓最新的images   |
 | docker-compose up -d  |./console up   |啟動container   |
