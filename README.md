@@ -8,30 +8,36 @@ d-laravel使用dockr-compose的微服務架構，
 還可自訂docker-compose-custom.yml快速創建出自己的開發環境。
 
 ###為什麼用d-laravel
-話說，在自己在MacOS上編譯php及架設環境並不是一件容易的事情。
+話說，要自己在MacOS上編譯php的laravel環境並不是一件容易的事情。
 
-而Apple對於php版本的更新也不是那麼快， 如果我想在MacOS跑不同的PHP或新版PHP似乎讓事情變的有點麻煩。
+如果我想在MacOS跑不同的PHP或新版PHP似乎讓事情變的有點麻煩。
 
-Docker跟Vagrant比起來，docker的啟動速度是秒級的，比起Vagrant的VM的分鐘級的啟動速度，快很多。
+Docker跟Vagrant比起來，docker的啟動速度是秒級的，
 
-而Laravel官方的Valet，我的使用經驗上也是要裝一堆東西，DnsMasq及Caddy，對於我的錯亂中的Mac，只會更加錯亂@@
+比起Vagrant的VM的分鐘級的啟動速度，快很多。
 
-吃了我的port 80搞半天移不太掉，最後官方的移除指令valet uninstall才搞定。
+而Laravel官方的Valet，我的使用經驗上也是要裝一堆東西，DnsMasq及Caddy，
 
-總而言之，最後我覺的docker才是解決之道，不用再被環境所困。
+對於我的錯亂中的Mac，只會更加錯亂@@，吃了我的port 80搞半天移不太掉，
 
-因為我是Mac的使用者，
+最後Laravel官方的移除指令valet uninstall才搞定。
 
-所以，就建立了./conosle及./create這兩個bash指令，
+總而言之，我覺的docker才是本機開發的解決之道，不被Mac上的設定所困
+
+並且在docker的微服務實作的架構下，可以提供較大的彈性。
+
+因為我是Mac的使用者，就建立了./conosle及./create這兩個bash指令，
 
 來幫助我快速建立Laravel在Mac OS上的本機測試環境。
 
-建立Project使用，基本上您只要會下方四種指令就搞定啦 
+建立Project使用，基本上您只要會，下方四種指令就搞定啦 
+
 <pre>
 ./create test1  (建立test1.dev)
 ./console down或./console up (啟用及停用container)
 ./console restart    (./console down再./console up)
 </pre>
+
 
 
 ####一、請先安裝docker-for-mac
