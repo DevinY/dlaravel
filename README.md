@@ -1,5 +1,5 @@
 #laravel
-還不是很了解nginx的主機設定嗎?  這個repo幫助你，快速進入Laravel的簡易開發環境。
+您是否還不是很了解nginx的主機設定?  這個repo幫助您，快速進入Laravel的簡易開發環境。
 
 用docker-compose在MacOS下建立PHP-FPM、MySQL及nginx的簡易環境。
 
@@ -8,6 +8,7 @@
 但是採用dockr-compose的微服務架構，
 
 您可以自訂docker-compose-custom.yml快速創建出自己的開發環境。
+
 
 
 ####一、請先安裝docker-for-mac
