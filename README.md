@@ -41,7 +41,16 @@ https://docs.docker.com/docker-for-mac/
 你可能需要修改docker-compose.yml啟動時的TZ，目前設為Asia/Taipei
 </code></pre>
 
-五、更新
+五、透過別名我們可以在任何地方執行console
+例如，也可以把./console alias的別名加入到~/.bash_profile中，永久生效
+<pre><code>
+顯示別名sample
+./console alias
+建立別名
+source `./console alias`
+</code></pre>
+
+六、更新
 <pre><code>
 cd laravel-dev
 git pull

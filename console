@@ -1,6 +1,12 @@
 #!/bin/bash
 source ./scripts/checker
 
+#顯示建alais的方式
+if [ "${1}" == "alias" ]; then
+calias="alias console=`pwd`/console"
+echo ${calias}
+exit;
+fi
 
 #下載images
 if [ "${1}" == "pull" ]; then
