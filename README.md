@@ -1,6 +1,6 @@
 #D-Laravel (DevinY-Laravel)
 
-您是否還不是很了解nginx的主機設定?  讓DevinY/laravel幫助您，快速進入Laravel的本機開發環境。
+您是否還不是很了解nginx的主機設定?  讓d-laravel幫助您，快速進入Laravel的本機開發環境。
 
 類似於官網的Valet，可同時執行多個 *.dev的開發測試的網站。
 
