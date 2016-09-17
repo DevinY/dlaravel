@@ -1,4 +1,4 @@
-#D-Laravel (DevinY-Laravel)
+#D-Laravel
 
 您是否還不是很了解nginx的主機設定?  讓d-laravel幫助您，快速進入Laravel的本機開發環境。
 
