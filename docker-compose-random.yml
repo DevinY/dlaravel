@@ -4,25 +4,26 @@ services:
   image: nginx
   dns: 8.8.8.8
   ports:
-      #使用port 80
-      #- "80:80"
-      #系統隨機，防址開多個時會衝突
+      # 使用隨機的port 80
       - "80"
+      # 隨機的mysql連結埠
+      - "3306"
   volumes:
   - ./sites:/var/www/html
   - ./etc:/etc/nginx/conf.d
-  hostname: web
+  hostname: d-laravel
   
  php:
   image: deviny/fpm:7.0.11
+  network_mode: "service:web"
 
   volumes:
-  - ./sites:/var/www/html
   - ./etc/php:/usr/local/etc/php
-  hostname: php
+  - ./sites:/var/www/html
 
  db:
   image: mysql:5.6.31
+  network_mode: "service:web"
 
   environment:
       MYSQL_DATABASE: homestead
@@ -34,10 +35,3 @@ services:
   volumes:
       - ./etc/mysql/my.cnf:/etc/mysql/my.cnf
       - ./data:/var/lib/mysql
-  ports:
-      #- "3306:3306"
-      #只綁定localhost
-      #- "127.0.0.1:3306:3306"
-      # 隨機的mysql連結埠
-      - "3306"
-  hostname: db
