@@ -4,8 +4,7 @@ containerName=`printf '%s\n' "${projectFolder##*/}"|tr '[:upper:]' '[:lower:]'|s
 
 #檢測是否有docker-compose連結，沒有就建一個
 if [ ! -f "docker-compose.yml" ];then
-    ln -sf docker-compose-random.yml docker-compose.yml
-    ls -l docker-compose.yml
+    ln -vsf docker-compose-random.yml docker-compose.yml
 fi
 
 which -s docker
