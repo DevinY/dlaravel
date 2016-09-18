@@ -5,4 +5,5 @@ etc/*
 etc/php/php.ini
 sites/
 data/
+docker-compose.yml
 docker-compose-custom.yml
