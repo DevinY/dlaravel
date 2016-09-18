@@ -8,6 +8,25 @@ echo ${calias}
 exit;
 fi
 
+# 停止並移除所有啟動中及停用的container
+if [ "${1}" == "clear" ]; then
+    echo "Would You like to stop / remove all Docker containers?(y/n)"
+    read  ans
+    if [ ${ans} = 'n' ]; then
+        exit
+    else 
+        #檢測是否有container啟動中
+        docker ps|grep -q Up
+        if [ $? -eq 0 ]; then
+         docker stop $(docker ps --format '{{.Names}}')
+        fi
+        if [ ! -z "$(docker ps -a -q)" ]; then
+         docker rm $(docker ps -a -q)
+        fi
+    fi
+    exit;
+fi
+
 #下載images
 if [ "${1}" == "pull" ]; then
     docker pull nginx 
