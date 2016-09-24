@@ -94,6 +94,10 @@ exit;
 fi
 
 if [ "${1}" == "up" ]; then
+    if [ ! -f "docker-compose.yml" ]; then
+        #檔案不存在，進行預設的soft link
+        ln -s docker-compose-random.yml docker-compose.yml
+    fi
 docker-compose up -d
 echo "DB:"
 #設定DB的時區到Asia/Taipei
