@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="D-Laravel : Laravel with PHP-FPM, MySQL and nginx using docker-compose">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>D-Laravel</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/DevinY/laravel">View on GitHub</a>
+
+          <h1 id="project_title">D-Laravel</h1>
+          <h2 id="project_tagline">Laravel with PHP-FPM, MySQL and nginx using docker-compose</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/DevinY/laravel/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/DevinY/laravel/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>
+<a id="d-laravel" class="anchor" href="#d-laravel" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>D-Laravel</h1>
+
+<p>您是否還不是很了解nginx的主機設定?  讓d-laravel幫助您，快速進入Laravel的本機開發環境。</p>
+
+<p>類似於官網的Valet，可同時執行多個 *.dev的開發測試的網站。</p>
+
+<p>d-laravel使用dockr-compose的微服務架構，</p>
+
+<p>主要包含，nginx(網頁服務)、php-fpm(php)及mysql(資料庫)，</p>
+
+<p>使用d-laravel，代表了，我們的Mac系統，不需要安裝mysql，nginx及php-fpm，就可以使用這些環境了。</p>
+
+<p>還可自訂docker-compose-custom.yml快速創建出自己的開發環境。</p>
+
+<h3>
+<a id="為什麼用d-laravel" class="anchor" href="#%E7%82%BA%E4%BB%80%E9%BA%BC%E7%94%A8d-laravel" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>為什麼用d-laravel</h3>
+
+<p>我稱這個repo叫d-laravel</p>
+
+<p>而repo叫laravel，是因為覺的這樣叫好下載，或進入目錄中..@@</p>
+
+<pre>git clone https://github.com/deviny/laravel</pre>
+
+<p>話說，要自己在MacOS上編譯php的laravel環境並不是一件容易的事情。</p>
+
+<p>如果我想在MacOS跑不同的PHP或新版PHP似乎讓事情變的有點麻煩。</p>
+
+<p>Docker跟Vagrant比起來，docker的啟動速度是秒級的，</p>
+
+<p>比起Vagrant的VM的分鐘級的啟動速度，快很多。</p>
+
+<p>而Laravel官方的Valet，我的使用經驗上也是要裝一堆東西，DnsMasq及Caddy，</p>
+
+<p>對於我的錯亂中的Mac，只會更加錯亂@@，Caddy吃了我的port 80不知怎麼停用，搞半天移不太掉，</p>
+
+<p>最後Laravel官方的移除指令valet uninstall才搞定。</p>
+
+<p>總而言之，我覺的docker才是本機開發的解決之道，</p>
+
+<p>並且在docker的微服務實作的架構下，可提供較大的彈性。</p>
+
+<p>因為我是Mac的使用者，所以建立了./conosle及./create這兩個bash指令，</p>
+
+<p>來幫助我快速建立Laravel在Mac OS上的本機測試環境。</p>
+
+<p>如果您對於d-laravel有興趣，歡迎下載來試試看。</p>
+
+<p>基本上您只要會，下方四種指令就搞定啦:) </p>
+
+<pre>
+./create test1  (建立test1.dev)
+./console down或./console up (啟用及停用container)
+./console restart    (./console down再./console up)
+</pre>
+
+<h4>
+<a id="主要目錄結構" class="anchor" href="#%E4%B8%BB%E8%A6%81%E7%9B%AE%E9%8C%84%E7%B5%90%E6%A7%8B" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>主要目錄結構</h4>
+
+<pre>
+etc/   (nginx、php.ini及mysql的相關設定檔)
+data/  (mysql的資料檔案，./console up 自動生成)
+sites/ (專案的資夾，./create test1時，會建立在這個此目錄下)
+create (簡化的bash，用來快速的建立laravel的專案)
+console(簡化的bash，用來快速使用各種docker-compose的命令。例如:./console mysql即可進入mysql)
+docker-compose.yml (一個softlink，連結到不同的設定檔，例如:./console custom，即何將連結連到docker-compose-custom.yml)
+</pre>
+
+<h4>
+<a id="一請先安裝docker-for-mac" class="anchor" href="#%E4%B8%80%E8%AB%8B%E5%85%88%E5%AE%89%E8%A3%9Ddocker-for-mac" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>一、請先安裝docker-for-mac</h4>
+
+<pre><code>
+https://docs.docker.com/docker-for-mac/
+<br>
+</code></pre>
+
+<h4>
+<a id="二例如用git-clone這個repo並進入laravel資料夾然後執行console-pull" class="anchor" href="#%E4%BA%8C%E4%BE%8B%E5%A6%82%E7%94%A8git-clone%E9%80%99%E5%80%8Brepo%E4%B8%A6%E9%80%B2%E5%85%A5laravel%E8%B3%87%E6%96%99%E5%A4%BE%E7%84%B6%E5%BE%8C%E5%9F%B7%E8%A1%8Cconsole-pull" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>二、例如用git clone這個repo，並進入laravel資料夾，然後執行：./console pull。</h4>
+
+<pre><code>
+git clone https://github.com/DevinY/laravel.git
+cd laravel
+./console pull
+第一次執行會花較久的時間從dockhub上，下載docker-compose所需要的images.
+<br>
+</code></pre>
+
+<h4>
+<a id="三執行create-project-name-建立開發專案" class="anchor" href="#%E4%B8%89%E5%9F%B7%E8%A1%8Ccreate-project-name-%E5%BB%BA%E7%AB%8B%E9%96%8B%E7%99%BC%E5%B0%88%E6%A1%88" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>三、執行./create ['project name'] 建立開發專案</h4>
+
+<pre><code>
+例如:
+./create test1
+那麼就會建立出 http://test1.dev 網站(本機測試用的外部無法存取)。
+可以建立多個project站台
+
+需有系統權修改/etc/hosts檔，./create的過程中會需要詢問您的系統密碼:
+目前只可在Mac OS上使用。
+<br>
+</code></pre>
+
+<h4>
+<a id="四停止請在目錄下執行console-down" class="anchor" href="#%E5%9B%9B%E5%81%9C%E6%AD%A2%E8%AB%8B%E5%9C%A8%E7%9B%AE%E9%8C%84%E4%B8%8B%E5%9F%B7%E8%A1%8Cconsole-down" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>四、停止請在目錄下執行./console down</h4>
+
+<pre><code>
+注意事項: 這個只是拿來開發測試用的，Mysql的root是沒有密碼的。
+你可能需要修改docker-compose.yml啟動時的TZ，目前設為Asia/Taipei
+</code></pre>
+
+<h4>
+<a id="五更新" class="anchor" href="#%E4%BA%94%E6%9B%B4%E6%96%B0" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>五、更新</h4>
+
+<pre><code>
+cd laravel-dev
+git pull
+</code></pre>
+
+<p>Docker指令及DevinY/laravel提供的./console的bash指令</p>
+
+<table>
+<thead>
+<tr>
+<th>Docker官方指令</th>
+<th>./console Bash指令</th>
+<th>說明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>docker-compose pull</td>
+<td>./console pull</td>
+<td>抓最新的images</td>
+</tr>
+<tr>
+<td>docker-compose up -d</td>
+<td>./console up</td>
+<td>啟動container</td>
+</tr>
+<tr>
+<td>docker-compose down</td>
+<td>./console down</td>
+<td>停止container</td>
+</tr>
+<tr>
+<td>docker-compose ps或docker ps</td>
+<td>./console ps</td>
+<td>查看docker-compose的process</td>
+</tr>
+<tr>
+<td>docker-compose exec php bash</td>
+<td>./console</td>
+<td>進入php的container</td>
+</tr>
+<tr>
+<td>docker-compose exec db mysql</td>
+<td>./console mysql</td>
+<td>執行mysql</td>
+</tr>
+<tr>
+<td>docker-compose exec web nginx -s reload</td>
+<td>./console reload</td>
+<td>從載nginx設定</td>
+</tr>
+<tr>
+<td></td>
+<td>./create [ProjectName]</td>
+<td>建立一個project，並完成所有機本的環境設定</td>
+</tr>
+<tr>
+<td></td>
+<td>例如: ./create test1</td>
+<td>例如: 這樣會建立一個<a href="http://test1.dev%E7%9A%84%E7%B6%B2%E7%AB%99">http://test1.dev的網站</a>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>./console restart</td>
+<td>重啟container</td>
+</tr>
+<tr>
+<td></td>
+<td>./console info</td>
+<td>查看目前可用的sites資料(這裡是查單的查詢sites資料夾)</td>
+</tr>
+<tr>
+<td>模式切換:</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>./console random</td>
+<td>container啟動時，使用隨機埠</td>
+</tr>
+<tr>
+<td></td>
+<td>./console mode1</td>
+<td>使用本機port 80及127.0.0.1:3306</td>
+</tr>
+<tr>
+<td></td>
+<td>./console custom</td>
+<td>使用自己的docker-compose-custom.yml</td>
+</tr>
+<tr>
+<td>下方相當於，透過./console mode1設定模式後，執行./console up:</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>docker-compose -f docker-compose-mode1.yml up -d</td>
+<td></td>
+<td>使用port 80及port 3306</td>
+</tr>
+<tr>
+<td>docker-compose -f docker-compose-random.yml up -d</td>
+<td></td>
+<td>指定隨機埠的啟動檔</td>
+</tr>
+</tbody>
+</table>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">D-Laravel maintained by <a href="https://github.com/DevinY">DevinY</a></p>
+        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
