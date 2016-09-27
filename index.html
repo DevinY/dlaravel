@@ -38,30 +38,22 @@
 
 <p>類似於官網的Valet，可同時執行多個 *.dev的開發測試的網站。</p>
 
-<p>d-laravel使用dockr-compose的微服務架構，</p>
+<p>D-Laravel使用dockr-compose的微服務架構，</p>
+
+<p>經由簡易的console及create bash，幫您快建立出系統的基本環境。</p>
 
 <p>主要包含，nginx(網頁服務)、php-fpm(php)及mysql(資料庫)，</p>
 
-<p>使用d-laravel，代表了，我們的Mac系統，不需要安裝mysql，nginx及php-fpm，就可以使用這些環境了。</p>
+<p>使用D-Laravel，代表了，我的Mac系統，不需要安裝mysql，nginx及php-fpm，就可以在Container內使用這些環境了。</p>
 
 <p>還可自訂docker-compose-custom.yml快速創建出自己的開發環境。</p>
 
 <h3>
-<a id="為什麼用d-laravel" class="anchor" href="#%E7%82%BA%E4%BB%80%E9%BA%BC%E7%94%A8d-laravel" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>為什麼用d-laravel</h3>
-
-<p>我稱這個repo叫d-laravel</p>
-
-<p>而repo叫laravel，是因為覺的這樣叫好下載，或進入目錄中..@@</p>
-
-<pre>git clone https://github.com/deviny/laravel</pre>
-
-<p>話說，要自己在MacOS上編譯php的laravel環境並不是一件容易的事情。</p>
-
-<p>如果我想在MacOS跑不同的PHP或新版PHP似乎讓事情變的有點麻煩。</p>
+<a id="為什麼用d-laravel" class="anchor" href="#%E7%82%BA%E4%BB%80%E9%BA%BC%E7%94%A8d-laravel" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>為什麼用D-Laravel</h3>
 
 <p>Docker跟Vagrant比起來，docker的啟動速度是秒級的，</p>
 
-<p>比起Vagrant的VM的分鐘級的啟動速度，快很多。</p>
+<p>比起Vagrant的VM的D-Laravel採用docker-compose，有著分鐘級的啟動速度，快很多。</p>
 
 <p>而Laravel官方的Valet，我的使用經驗上也是要裝一堆東西，DnsMasq及Caddy，</p>
 
@@ -78,6 +70,8 @@
 <p>來幫助我快速建立Laravel在Mac OS上的本機測試環境。</p>
 
 <p>如果您對於d-laravel有興趣，歡迎下載來試試看。</p>
+
+<p>只要您的Mac有安裝Docker，您就可以透過簡易的bash進行開發環境的建立</p>
 
 <p>基本上您只要會，下方四種指令就搞定啦:) </p>
 
