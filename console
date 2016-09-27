@@ -1,9 +1,10 @@
 #!/bin/bash
-base_path=`pwd`
+#取得scripts的執行路徑
+base_path="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 #開發測試中Beta
 if [ "${1}" == "alias" ]; then
-calias="alias console=${base_path}/console"
+calias="alias c=${base_path}/console"
 echo ${calias}
 exit;
 fi
@@ -37,88 +38,89 @@ fi
 
 #變更模式, web:80, db:127.0.0.1:3306
 if [ "${1}" == "mode1" ]; then
-    docker-compose down
+    docker-compose -f ${base_path}/docker-compose.yml down
     echo "docker-compose setting file changed."
     echo "HOST DB: listen on 127.0.0.1:3306."
     echo "HOST WEB: listen on port 80."
-    ln -vsf docker-compose-mode1.yml docker-compose.yml
-    docker-compose up -d
-    ./console info
+    ln -vsf ${base_path}/docker-compose-mode1.yml ${base_path}/docker-compose.yml
+    docker-compose -f ${base_path}/docker-compose.yml up -d
+    ${base_path}/console info
     exit;
 fi
 
 #隨機
 if [ "${1}" == "random" ]; then
-    docker-compose down
+    docker-compose -f ${base_path}/docker-compose.yml down
     echo "docker-compose setting file changed."
     echo "HOST DB: listen on random port."
     echo "HOST WEB: listen on random port."
-    ln -vsf docker-compose-random.yml docker-compose.yml
-    docker-compose up -d
-    ./console info
+    ln -vsf ${base_path}/docker-compose-random.yml ${base_path}/docker-compose.yml
+    docker-compose -f ${base_path}/docker-compose.yml up -d
+    ${base_path}/console info
     exit;
 fi
 
 #Custom Config
 if [ "${1}" == "custom" ]; then
-    if [ -e docker-compose-custom.yml ]; then
-        docker-compose down
-        ln -vsf docker-compose-custom.yml docker-compose.yml 
-        docker-compose up -d
+    #檢測docker-compose-custom.yml是否存在
+    if [ -e "${base_path}/docker-compose-custom.yml" ]; then
+        docker-compose -f ${base_path}/docker-compose.yml down
+        ln -vsf ${base_path}/docker-compose-custom.yml ${base_path}/docker-compose.yml 
+        docker-compose -f ${base_path}/docker-compose.yml up -d
     else
-        cp docker-compose-random.yml docker-compose-custom.yml
-        ln -vsf docker-compose-custom.yml docker-compose.yml 
+        cp ${base_path}/docker-compose-random.yml ${base_path}/docker-compose-custom.yml
+        ln -vsf ${base_path}/docker-compose-custom.yml ${base_path}/docker-compose.yml 
         echo "docker-compose-custom.yml is created."
-        docker-compose up -d
+        docker-compose -f ${base_path}/docker-compose.yml up -d
     fi 
-    ./console info
+    ${base_path}/console info
     exit;
 fi
 
 
 #停止docker-compose
 if [ "${1}" == "down" ]; then
-docker-compose down
+docker-compose -f ${base_path}/docker-compose.yml down
 exit;
 fi
 
 #重啟
 if [ "${1}" == "restart" ]; then
-docker-compose down
-docker-compose up -d
+docker-compose -f ${base_path}/docker-compose.yml down
+docker-compose -f ${base_path}/docker-compose.yml up -d
 echo "DB:"
-./scripts/db-ports
+${base_path}/scripts/db-ports
 echo "Web:"
-./scripts/web-ports
+${base_path}/scripts/web-ports
 exit;
 fi
 
 if [ "${1}" == "up" ]; then
     if [ ! -f "docker-compose.yml" ]; then
         #檔案不存在，進行預設的soft link
-        ln -s docker-compose-random.yml docker-compose.yml
+        ln -s ${base_path}/docker-compose-random.yml ${base_path}/docker-compose.yml
     fi
-docker-compose up -d
+docker-compose -f ${base_path}/docker-compose.yml up -d
 echo "DB:"
 #設定DB的時區到Asia/Taipei
-./scripts/db-ports
+${base_path}/scripts/db-ports
 echo "Web:"
-./scripts/web-ports
+${base_path}/scripts/web-ports
 exit;
 fi
 
 #進資料庫
 if [ "${1}" == "mysql" ]; then
-docker-compose exec db mysql
+docker-compose -f ${base_path}/docker-compose.yml exec db mysql
 exit;
 fi
 
 #啟動時檢測網頁資訊
 if [ "${1}" == "info" ]; then
 echo "DB:"
-./scripts/db-ports
+${base_path}/scripts/db-ports
 echo "Web:"
-./scripts/web-ports
+${base_path}/scripts/web-ports
 exit;
 fi
 
@@ -131,13 +133,13 @@ fi
 
 #重新載入nginx設定
 if [ "${1}" == "reload" ]; then
-docker-compose exec web nginx -s reload
+docker-compose -f ${base_path}/docker-compose.yml exec web nginx -s reload
 exit
 fi
 
 #檢測是否執行
 docker-compose -f ${base_path}/docker-compose.yml ps |grep -q 9000
 if [ $? -eq 1 ]; then
-docker-compose up -d
+docker-compose -f ${base_path}/docker-compose.yml up -d
 fi
 docker-compose -f ${base_path}/docker-compose.yml  exec php bash

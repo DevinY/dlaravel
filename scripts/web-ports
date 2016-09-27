@@ -1,6 +1,7 @@
 #!/bin/bash
-currentPath=`pwd`
-source ${currentPath}/scripts/checker
+base_path="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+projectFolder=`echo ${base_path}|sed 's#/scripts##'`
+source ${projectFolder}/scripts/checker
 
 docker ps |grep -q ${containerName}_web_1
 if [ $? -eq 1 ]; then
@@ -9,13 +10,14 @@ exit
 fi
 
 web_port=`docker inspect --format='{{(index (index .NetworkSettings.Ports "80/tcp") 0).HostPort}}'  ${containerName}_web_1`
-
 #查看sites內的資料夾數量
-projectNum=`ls sites/|wc -l`
+projectNum=`ls ${projectFolder}/sites/|wc -l`
 
 #印出sites資料夾目錄，轉換為Web
 if [ ${projectNum} -gt 0 ]; then
-for i in $(ls -d sites/*); do echo -n http://;echo ${i}.dev:${web_port}|cut -d/ -f 2; done
+for i in $(ls -d ${projectFolder}/sites/*|rev|cut -d/ -f1|rev); do 
+    echo -n http://;echo ${i}.dev:${web_port}|cut -d/ -f 2; 
+done
 fi
 
 if [ ${projectNum} -eq 0 ]; then
