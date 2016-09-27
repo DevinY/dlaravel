@@ -1,18 +1,17 @@
 #D-Laravel
 
-您是否還不是很了解nginx的主機設定?  讓d-laravel幫助您，快速進入Laravel的本機開發環境。
-
-類似於官網的Valet，一樣可同時執行多個 *.dev的開發測試的網站。
-
 D-Laravel採用了dockr-compose的微服務架構，
 
-經由簡易的console及create bash，幫您快建立出系統的基本環境。
+經由簡易的console及create bash，幫您快速建立出基本的Laravel開發環境。
 
 主要包含，nginx(網頁服務)、php-fpm(php)及mysql(資料庫)，
 
-使用D-Laravel，代表了，我的Mac系統，不需要安裝mysql，nginx及php-fpm，就可以在Container內使用這些環境了。
+使用D-Laravel，代表了，我們的Mac系統，不再需要安裝mysql，nginx及php-fpm，
 
-還可自訂docker-compose-custom.yml快速創建出自己的開發環境。
+我只要透過docker container來建立起獨立的容器空間即可。
+
+也可自訂docker-compose-custom.yml快速創建出自己的開發環境。
+
 
 ###為什麼用D-Laravel
 
@@ -22,23 +21,25 @@ Docker跟Vagrant比起來，docker的啟動速度是秒級的，
 
 而Laravel官方的Valet，我的使用經驗上也是要裝一堆東西，DnsMasq及Caddy，
 
-對於我的錯亂中的Mac，只會更加錯亂@@，Caddy吃了我的port 80不知怎麼停用，搞半天移不太掉，
+對於我錯亂中的Mac，只會更加錯亂@@，Caddy吃了我的port 80不知怎麼停用，搞半天移不太掉，
 
-最後Laravel官方的移除指令valet uninstall才搞定。
+最後才到Laravel官方的移除指令valet uninstall才搞定。
 
-總而言之，我覺的docker才是本機開發的解決之道，
+而在docker的微服務實作的架構下，可提供較大的彈性。
 
-並且在docker的微服務實作的架構下，可提供較大的彈性。
-
-因為我是Mac的使用者，所以建立了./conosle及./create這兩個bash指令，
+我是Mac的使用者，所以建立了./conosle及./create這兩個bash指令，
 
 來幫助我快速產生Laravel在Mac OS上的本機測試環境。
 
+這兩隻bash基本上也可以在Linux上執行，如果您使用Linux為開發的平台。
+
+當然，您的Linux必需安裝Docker及docker-compose。
+
 如果您對於d-laravel有興趣，歡迎下載來試試看。
 
-只要您的Mac有安裝Docker，您就可以透過簡易的bash進行開發環境的建立
+只要您的Mac有安裝Docker，您就可以透過簡易的bash，建立Laravel的開發環境了。
 
-基本上您只要會，下方四種指令就搞定啦:) 
+基本上您只要會，下方四種指令就搞定啦。 :) 
 
 <pre>
 ./create test1  (建立test1.dev)
