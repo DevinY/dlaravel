@@ -7,6 +7,7 @@
     <meta name="description" content="D-Laravel : Laravel with PHP-FPM, MySQL and nginx using docker-compose">
 
     <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+    <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
 
     <title>D-Laravel</title>
   </head>
@@ -96,23 +97,24 @@ docker-compose.yml (一個softlink，連結到不同的設定檔，例如:./cons
 </pre>
 
 <h4>
-<a id="一請先安裝docker-for-mac" class="anchor" href="#%E4%B8%80%E8%AB%8B%E5%85%88%E5%AE%89%E8%A3%9Ddocker-for-mac" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>一、請先安裝docker-for-mac</h4>
+<a id="一、請先安裝docker-for-mac" class="anchor" href="#%E4%B8%80%E8%AB%8B%E5%85%88%E5%AE%89%E8%A3%9Ddocker-for-mac" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>一、請先安裝docker-for-mac</h4>
 
-<pre><code>
+<div>
+<a href="https://docs.docker.com/docker-for-mac/" target="_blank">
 https://docs.docker.com/docker-for-mac/
-<br>
-</code></pre>
+</a>
+</div>
 
 <h4>
-<a id="二例如用git-clone這個repo並進入laravel資料夾然後執行console-pull" class="anchor" href="#%E4%BA%8C%E4%BE%8B%E5%A6%82%E7%94%A8git-clone%E9%80%99%E5%80%8Brepo%E4%B8%A6%E9%80%B2%E5%85%A5laravel%E8%B3%87%E6%96%99%E5%A4%BE%E7%84%B6%E5%BE%8C%E5%9F%B7%E8%A1%8Cconsole-pull" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>二、例如用git clone這個repo，並進入laravel資料夾，然後執行：./console pull。</h4>
-
-<pre><code>
+<a id="二、例如用git clone 下載D-Laravel，並進入laravel資料夾然後執行console-pull" class="anchor" href="#%E4%BA%8C%E4%BE%8B%E5%A6%82%E7%94%A8git-clone%E9%80%99%E5%80%8Brepo%E4%B8%A6%E9%80%B2%E5%85%A5laravel%E8%B3%87%E6%96%99%E5%A4%BE%E7%84%B6%E5%BE%8C%E5%9F%B7%E8%A1%8Cconsole-pull" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>二、例如用git clone這個repo，並進入laravel資料夾，然後執行：./console pull。</h4>
+<pre>
 git clone https://github.com/DevinY/laravel.git
 cd laravel
 ./console pull
+<label class="w3-red">
 第一次執行會花較久的時間從dockhub上，下載docker-compose所需要的images.
-<br>
-</code></pre>
+</label>
+</pre>
 
 <h4>
 <a id="三執行create-project-name-建立開發專案" class="anchor" href="#%E4%B8%89%E5%9F%B7%E8%A1%8Ccreate-project-name-%E5%BB%BA%E7%AB%8B%E9%96%8B%E7%99%BC%E5%B0%88%E6%A1%88" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>三、執行./create ['project name'] 建立開發專案</h4>
@@ -139,14 +141,20 @@ cd laravel
 <h4>
 <a id="五更新" class="anchor" href="#%E4%BA%94%E6%9B%B4%E6%96%B0" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>五、更新</h4>
 
+<pre>
+d-laravel的.gitignore已排除了會變動的區域了，例如: docker-compose.yml, sites
+在d-laravel的目錄錄下，您可以透過git pull更新bash。
+</pre>
+
+<p>
+
 <pre><code>
-cd laravel-dev
 git pull
 </code></pre>
 
 <p>Docker指令及DevinY/laravel提供的./console的bash指令</p>
 
-<table>
+<table class="w3-table w3-striped w3-bordered">
 <thead>
 <tr>
 <th>Docker官方指令</th>
@@ -254,7 +262,7 @@ git pull
     <!-- FOOTER  -->
     <div id="footer_wrap" class="outer">
       <footer class="inner">
-        <p class="copyright">D-Laravel maintained by <a href="https://github.com/DevinY">DevinY</a></p>
+        <p class="copyright">D-Laravel maintained by <a href="https://github.com/DevinY">Devin Yang</a></p>
         <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
       </footer>
     </div>
