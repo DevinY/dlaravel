@@ -2,30 +2,23 @@
 
 您是否還不是很了解nginx的主機設定?  讓d-laravel幫助您，快速進入Laravel的本機開發環境。
 
-類似於官網的Valet，可同時執行多個 *.dev的開發測試的網站。
+類似於官網的Valet，一樣可同時執行多個 *.dev的開發測試的網站。
 
-d-laravel使用dockr-compose的微服務架構，
+D-Laravel採用了dockr-compose的微服務架構，
+
+經由簡易的console及create bash，幫您快建立出系統的基本環境。
 
 主要包含，nginx(網頁服務)、php-fpm(php)及mysql(資料庫)，
 
-使用d-laravel，代表了，我們的Mac系統，不需要安裝mysql，nginx及php-fpm，就可以使用這些環境了。
+使用D-Laravel，代表了，我的Mac系統，不需要安裝mysql，nginx及php-fpm，就可以在Container內使用這些環境了。
 
 還可自訂docker-compose-custom.yml快速創建出自己的開發環境。
 
-###為什麼用d-laravel
-我稱這個repo叫d-laravel
-
-而repo叫laravel，是因為覺的這樣叫好下載，或進入目錄中..@@
-
-<pre>git clone https://github.com/deviny/laravel</pre>
-
-話說，要自己在MacOS上編譯php的laravel環境並不是一件容易的事情。
-
-如果我想在MacOS跑不同的PHP或新版PHP似乎讓事情變的有點麻煩。
+###為什麼用D-Laravel
 
 Docker跟Vagrant比起來，docker的啟動速度是秒級的，
 
-比起Vagrant的VM的分鐘級的啟動速度，快很多。
+比起Vagrant的VM的D-Laravel採用docker-compose，有著分鐘級的啟動速度，快很多。
 
 而Laravel官方的Valet，我的使用經驗上也是要裝一堆東西，DnsMasq及Caddy，
 
@@ -39,9 +32,11 @@ Docker跟Vagrant比起來，docker的啟動速度是秒級的，
 
 因為我是Mac的使用者，所以建立了./conosle及./create這兩個bash指令，
 
-來幫助我快速建立Laravel在Mac OS上的本機測試環境。
+來幫助我快速產生Laravel在Mac OS上的本機測試環境。
 
 如果您對於d-laravel有興趣，歡迎下載來試試看。
+
+只要您的Mac有安裝Docker，您就可以透過簡易的bash進行開發環境的建立
 
 基本上您只要會，下方四種指令就搞定啦:) 
 
@@ -95,9 +90,12 @@ cd laravel
 你可能需要修改docker-compose.yml啟動時的TZ，目前設為Asia/Taipei
 </code></pre>
 
-####五、更新
-<pre><code>
-cd laravel-dev
+####五、更新d-laravel 程式
+<pre>
+d-laravel的.gitignore已排除了會變動的區域了，例如: docker-compose.yml, sites
+在d-laravel的目錄錄下，您可以透過git pull更新bash。
+</pre>
+<pre><code> 
 git pull
 </code></pre>
 
