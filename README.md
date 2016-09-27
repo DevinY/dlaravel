@@ -6,6 +6,10 @@
 
 d-laravel使用dockr-compose的微服務架構，
 
+主要包含，nginx(網頁服務)、php-fpm(php)及mysql(資料庫)，
+
+使用d-laravel，代表了，我們的Mac系統，不需要安裝mysql，nginx及php-fpm，就可以使用這些環境了。
+
 還可自訂docker-compose-custom.yml快速創建出自己的開發環境。
 
 ###為什麼用d-laravel
@@ -47,7 +51,15 @@ Docker跟Vagrant比起來，docker的啟動速度是秒級的，
 ./console restart    (./console down再./console up)
 </pre>
 
-
+####主要目錄結構
+<pre>
+etc/   (nginx、php.ini及mysql的相關設定檔)
+data/  (mysql的資料檔案，./console up 自動生成)
+sites/ (專案的資夾，./create test1時，會建立在這個此目錄下)
+create (簡化的bash，用來快速的建立laravel的專案)
+console(簡化的bash，用來快速使用各種docker-compose的命令。例如:./console mysql即可進入mysql)
+docker-compose.yml (一個softlink，連結到不同的設定檔，例如:./console custom，即何將連結連到docker-compose-custom.yml)
+</pre>
 
 ####一、請先安裝docker-for-mac
 <pre><code>
