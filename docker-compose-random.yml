@@ -14,7 +14,7 @@ services:
   hostname: d-laravel
   
  php:
-  image: deviny/fpm:7.0.11
+  image: deviny/fpm:7.0.12
   network_mode: "service:web"
 
   volumes:
