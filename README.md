@@ -17,29 +17,12 @@ D-Laravel採用了dockr-compose的微服務架構，
 
 Docker跟Vagrant比起來，docker的啟動速度是秒級的，
 
-比起Vagrant的VM的D-Laravel採用docker-compose，有著分鐘級的啟動速度，快很多。
+可以模擬不同的資料庫環境。
 
-而Laravel官方的Valet，我的使用經驗上也是要裝一堆東西，DnsMasq及Caddy，
+可以同時開啟多個不同的測試站台，並共用port 80。
 
-對於我錯亂中的Mac，只會更加錯亂@@，Caddy吃了我的port 80不知怎麼停用，搞半天移不太掉，
+可以自行控制使用php的版本，必要時自己重編container。
 
-最後才到Laravel官方的移除指令valet uninstall才搞定。
-
-而在docker的微服務實作的架構下，可提供較大的彈性。
-
-我是Mac的使用者，所以建立了./conosle及./create這兩個bash指令，
-
-來幫助我快速產生Laravel在Mac OS上的本機測試環境。
-
-這兩隻bash基本上也可以在Linux上執行，如果您使用Linux為開發的平台。
-
-當然，您的Linux必需安裝Docker及docker-compose。
-
-如果您對於d-laravel有興趣，歡迎下載來試試看。
-
-只要您的Mac有安裝Docker，您就可以透過簡易的bash，建立Laravel的開發環境了。
-
-基本上您只要會，下方四種指令就搞定啦。 :) 
 
 <pre>
 ./create test1  (建立test1.dev)
