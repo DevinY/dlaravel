@@ -35,19 +35,18 @@
         <h1>
 <a id="d-laravel" class="anchor" href="#d-laravel" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>D-Laravel</h1>
 
-<p>您是否還不是很了解nginx的主機設定?  讓d-laravel幫助您，快速進入Laravel的本機開發環境。</p>
+<p>D-Laravel採用了dockr-compose的微服務架構，</p>
 
-<p>類似於官網的Valet，可同時執行多個 *.dev的開發測試的網站。</p>
-
-<p>D-Laravel使用dockr-compose的微服務架構，</p>
-
-<p>經由簡易的console及create bash，幫您快建立出系統的基本環境。</p>
+<p>經由簡易的console及create bash，幫您快速建立出基本的Laravel開發環境。</p>
 
 <p>主要包含，nginx(網頁服務)、php-fpm(php)及mysql(資料庫)，</p>
 
-<p>使用D-Laravel，代表了，我的Mac系統，不需要安裝mysql，nginx及php-fpm，就可以在Container內使用這些環境了。</p>
+<p>使用D-Laravel，代表了，我們的Mac系統，不再需要安裝mysql，nginx及php-fpm，</p>
 
-<p>還可自訂docker-compose-custom.yml快速創建出自己的開發環境。</p>
+<p>我只要透過docker container來建立起獨立的容器空間即可。</p>
+
+<p>可自訂docker-compose-custom.yml快速創建出自己的開發環境。</p>
+
 
 <h3>
 <a id="為什麼用d-laravel" class="anchor" href="#%E7%82%BA%E4%BB%80%E9%BA%BC%E7%94%A8d-laravel" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>為什麼用D-Laravel</h3>
@@ -58,21 +57,6 @@
 
 <img src="https://deviny.github.io/laravel/images/console-up.gif" alt="console-up快速啟動多個站台">
 
-<p>而Laravel官方的Valet，我的使用經驗上也是要裝一堆東西，DnsMasq及Caddy，</p>
-
-<p>對於我的錯亂中的Mac，只會更加錯亂@@，Caddy吃了我的port 80不知怎麼停用，搞半天移不太掉，</p>
-
-<p>最後Laravel官方的移除指令valet uninstall才搞定。</p>
-
-<p>總而言之，我覺的docker才是本機開發的解決之道，</p>
-
-<p>並且在docker的微服務實作的架構下，可提供較大的彈性。</p>
-
-<p>因為我是Mac的使用者，所以建立了./conosle及./create這兩個bash指令，</p>
-
-<p>來幫助我快速建立Laravel在Mac OS上的本機測試環境。</p>
-
-<p>如果您對於d-laravel有興趣，歡迎下載來試試看。</p>
 
 <p>只要您的Mac有安裝Docker，您就可以透過簡易的bash進行開發環境的建立</p>
 
@@ -82,6 +66,7 @@
 ./create test1  (建立test1.dev)
 ./console down或./console up (啟用及停用container)
 ./console restart    (./console down再./console up)
+./console alias    (建立d-laravel的console的別名，自行加到bash或zsh)
 </pre>
 
 <h4>
