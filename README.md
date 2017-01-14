@@ -28,7 +28,6 @@ Docker跟Vagrant比起來，docker的啟動速度是秒級的，
 ./create test1  (建立test1.dev)
 ./console down或./console up (啟用及停用container)
 ./console restart    (./console down再./console up)
-./console composer (設定官方docker版的composer, bash或zsh)
 ./console alias    (建立d-laravel的console的別名，自行加到bash或zsh)
 </pre>
 
