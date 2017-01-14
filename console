@@ -33,16 +33,17 @@ if [ "${1}" == "pull" ]; then
     docker pull nginx 
     docker pull mysql:5.6.31
     docker pull deviny/fpm:7.0.11
+    docker pull composer
     exit;
 fi
 
 #變更模式, web:80, db:127.0.0.1:3306
-if [ "${1}" == "mode1" ]; then
+if [ "${1}" == "normal" ]; then
     docker-compose -f ${base_path}/docker-compose.yml down
     echo "docker-compose setting file changed."
     echo "HOST DB: listen on 127.0.0.1:3306."
     echo "HOST WEB: listen on port 80."
-    ln -vsf ${base_path}/docker-compose-mode1.yml ${base_path}/docker-compose.yml
+    ln -vsf ${base_path}/docker-compose-normal.yml ${base_path}/docker-compose.yml
     docker-compose -f ${base_path}/docker-compose.yml up -d
     ${base_path}/console info
     exit;
@@ -142,4 +143,4 @@ docker-compose -f ${base_path}/docker-compose.yml ps |grep -q 9000
 if [ $? -eq 1 ]; then
 docker-compose -f ${base_path}/docker-compose.yml up -d
 fi
-docker-compose -f ${base_path}/docker-compose.yml  exec php bash
+docker-compose -f ${base_path}/docker-compose.yml  exec php sudo -u dlaravel bash

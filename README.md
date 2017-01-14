@@ -10,7 +10,7 @@ D-Laravel採用了dockr-compose的微服務架構，
 
 我只要透過docker container來建立起獨立的容器空間即可。
 
-也可自訂docker-compose-custom.yml快速創建出自己的開發環境。
+可自訂docker-compose-custom.yml快速創建出自己的開發環境。
 
 
 ###為什麼用D-Laravel
@@ -28,6 +28,8 @@ Docker跟Vagrant比起來，docker的啟動速度是秒級的，
 ./create test1  (建立test1.dev)
 ./console down或./console up (啟用及停用container)
 ./console restart    (./console down再./console up)
+./console composer (設定官方docker版的composer, bash或zsh)
+./console alias    (建立d-laravel的console的別名，自行加到bash或zsh)
 </pre>
 
 ####主要目錄結構
@@ -85,7 +87,7 @@ git pull
 
 Docker指令及DevinY/laravel提供的./console的bash指令
 
-|Docker官方指令   |./console Bash指令| 說明|
+|Docker官方指令   |簡易./console Bash指令| 說明|
 |---|---|---|
 | docker-compose pull  |./console pull   |抓最新的images   |
 | docker-compose up -d  |./console up   |啟動container   |
@@ -100,7 +102,7 @@ Docker指令及DevinY/laravel提供的./console的bash指令
 |   |./console info  |查看目前可用的sites資料(這裡是查單的查詢sites資料夾)   |
 |模式切換:|
 |   |./console random  |container啟動時，使用隨機埠|
-|   |./console mode1  |使用本機port 80及127.0.0.1:3306|
+|   |./console normal  |使用本機port 80及127.0.0.1:3306|
 |   |./console custom  |使用自己的docker-compose-custom.yml|
 |下方相當於，透過./console mode1設定模式後，執行./console up:|
 |docker-compose -f docker-compose-mode1.yml up -d| |使用port 80及port 3306|
