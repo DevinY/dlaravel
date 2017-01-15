@@ -17,11 +17,17 @@ D-Laravel採用了dockr-compose的微服務架構，
 
 Docker跟Vagrant比起來，docker的啟動速度是秒級的，
 
-可以模擬不同的資料庫環境。
+可模擬不同的資料庫環境。
 
-可以同時開啟多個不同的測試站台，並共用port 80。
+可同時開啟多個不同的測試站台。
 
-可以自行控制使用php的版本，必要時自己重編container。
+可以自行控制使用php的版本，必要時自己重編docker php-fpm image。
+
+使用dokcer官方的php image，建立Laravel所需的執行環境。
+
+對於不了解docker指令的使用者，提供簡易的Bash進行docker-compose指令操作。
+
+使用最新的PHP在Mac OS上執行。
 
 <pre>
 ./create test1  (建立test1.dev)
