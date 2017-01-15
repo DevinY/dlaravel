@@ -23,7 +23,6 @@ Docker跟Vagrant比起來，docker的啟動速度是秒級的，
 
 可以自行控制使用php的版本，必要時自己重編container。
 
-
 <pre>
 ./create test1  (建立test1.dev)
 ./console down或./console up (啟用及停用container)
@@ -42,22 +41,19 @@ docker-compose.yml (一個softlink，連結到不同的設定檔，例如:./cons
 </pre>
 
 ####一、請先安裝docker-for-mac
-<pre><code>
-https://docs.docker.com/docker-for-mac/
-<br/>
-</code></pre>
+<pre>
+https://docs.docker.com/docker-for-mac/</pre>
 
 ####二、例如用git clone這個repo，並進入laravel資料夾，然後執行：./console pull。
-<pre><code>
+<pre>
 git clone https://github.com/DevinY/laravel.git
 cd laravel
 ./console pull
 第一次執行會花較久的時間從dockhub上，下載docker-compose所需要的images.
-<br/>
-</code></pre>
+</pre>
 
 ####三、執行./create ['project name'] 建立開發專案
-<pre><code>
+<pre>
 例如:
 ./create test1
 那麼就會建立出 http://test1.dev 網站(本機測試用的外部無法存取)。
@@ -65,24 +61,22 @@ cd laravel
 
 需有系統權修改/etc/hosts檔，./create的過程中會需要詢問您的系統密碼:
 目前只可在Mac OS上使用。
-<br/>
-</code></pre>
+</pre>
 
 
 ####四、停止請在目錄下執行./console down
-<pre><code>
+<pre>
 注意事項: 這個只是拿來開發測試用的，Mysql的root是沒有密碼的。
 你可能需要修改docker-compose.yml啟動時的TZ，目前設為Asia/Taipei
-</code></pre>
+</pre>
 
 ####五、更新d-laravel 程式
 <pre>
 d-laravel的.gitignore已排除了會變動的區域了，例如: docker-compose.yml, sites
 在d-laravel的目錄錄下，您可以透過git pull更新bash。
-</pre>
-<pre><code> 
+
 git pull
-</code></pre>
+</pre>
 
 Docker指令及DevinY/laravel提供的./console的bash指令
 
