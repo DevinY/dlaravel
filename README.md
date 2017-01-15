@@ -42,7 +42,8 @@ docker-compose.yml (一個softlink，連結到不同的設定檔，例如:./cons
 
 ####一、請先安裝docker-for-mac
 <pre>
-https://docs.docker.com/docker-for-mac/</pre>
+https://docs.docker.com/docker-for-mac/
+</pre>
 
 ####二、例如用git clone這個repo，並進入laravel資料夾，然後執行：./console pull。
 <pre>
