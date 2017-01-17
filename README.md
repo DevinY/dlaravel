@@ -105,6 +105,6 @@ Docker指令及DevinY/laravel提供的./console的bash指令
 |   |./console random  |container啟動時，使用隨機埠|
 |   |./console normal  |使用本機port 80及127.0.0.1:3306|
 |   |./console custom  |使用自己的docker-compose-custom.yml|
-|下方相當於，透過./console mode1設定模式後，執行./console up:|
-|docker-compose -f docker-compose-mode1.yml up -d| |使用port 80及port 3306|
+|下方相當於，透過./console normal設定模式後，執行./console up:|
+|docker-compose -f docker-compose-normal.yml up -d| |使用port 80及port 3306|
 |docker-compose -f docker-compose-random.yml up -d| |指定隨機埠的啟動檔|
