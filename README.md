@@ -54,8 +54,8 @@ https://docs.docker.com/docker-for-mac/
 
 ####二、例如用git clone這個repo，並進入laravel資料夾，然後執行：./console pull。
 <pre>
-git clone https://github.com/DevinY/laravel.git
-cd laravel
+git clone https://github.com/DevinY/dlaravel.git
+cd dlaravel
 ./console pull
 第一次執行會花較久的時間從dockhub上，下載docker-compose所需要的images.
 </pre>
