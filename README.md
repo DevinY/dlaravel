@@ -12,6 +12,7 @@ D-Laravel採用了dockr-compose的微服務架構，
 
 可自訂docker-compose-custom.yml快速創建出自己的開發環境。
 
+**D-Laravel would have english documentation version soon.**
 
 ###為什麼用D-Laravel
 
