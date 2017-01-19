@@ -7,6 +7,41 @@ if [ $# -lt 1 ]; then
     exit;
 fi
 
+#只建立nginx的設定檔
+if [ "$#" -eq 2 ]; then
+    if [ "${1}" = "--conf" ]; then
+        grep -r "server_name ${2}.dev" --include="*.conf" --color ./etc
+        #如果已存在，就不進行
+        if [ $? -eq 0 ]; then
+            echo "server_name ${2}.dev exists"
+            echo "create failed!"
+            exit
+        fi
+
+        cp ./etc/default.conf ./etc/${2}.conf
+        sed -i '' "s/localhost/${2}.dev/" ./etc/${2}.conf
+        sed -i '' "s/laravel/${2}/" ./etc/${2}.conf
+            sudo cat /etc/hosts|tr -s " "|grep "127.0.0.1 ${2}.dev"
+            #找不到時，就新增至Hosts
+            if [ $? -eq 1 ]; then
+                echo "127.0.0.1 ${2}.dev" |sudo tee -a /etc/hosts
+            fi
+
+            docker ps |grep -q ${containerName}_php_1
+            if [ $? -eq 0 ]; then
+                source ./scripts/nginx-reload
+            fi
+        echo "To manually create new empty project:"
+        echo "mkdir -p sites/${2}/public;touch sites/${2}/public/index.php"
+        exit
+    fi
+
+    echo "./create --conf ['project name']"
+    exit
+fi
+
+echo $#
+exit;
 #資料夾不能有 . 
 if [[ "${1}" =~ [\.] ]]; then
     echo "Can't have dot in Project name."

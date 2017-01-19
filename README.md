@@ -86,6 +86,16 @@ d-laravel的.gitignore已排除了會變動的區域了，例如: docker-compose
 git pull
 </pre>
 
+####其他
+<pre>
+只想產生nginx的設定檔，我要自己透過composer的指令建立project.
+./create --conf [project名稱] 例如:project1
+這個指令，會在dlaravel的etc/下建立一個project1.conf的檔
+我可以用./console進入到container內.
+composer create-project --prefer-dist laravel/laravel project1
+</pre>
+
+
 Docker指令及DevinY/laravel提供的./console的bash指令
 
 |Docker官方指令   |簡易./console Bash指令| 說明|
