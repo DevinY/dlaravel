@@ -105,6 +105,7 @@ Docker指令及DevinY/laravel提供的./console的bash指令
 | docker-compose down  |./console down  |停止container   |
 | docker-compose ps或docker ps|./console ps  |查看docker-compose的process   |
 | docker-compose exec php sudo -u dlaravel bash   |./console  |進入php的container   |
+| docker-compose exec php 指令  |./console exec 指令 |執行php container 指令，例如: ./console exec php -v|
 | docker-compose exec db mysql   |./console mysql  |執行mysql   |
 | docker-compose exec web nginx -s reload   |./console reload  |從載nginx設定   |
 |   |./create [ProjectName]|建立一個project，並完成所有機本的環境設定   |

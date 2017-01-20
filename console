@@ -109,6 +109,27 @@ ${base_path}/scripts/web-ports
 exit;
 fi
 
+#執行
+if [ "${1}" == "exec" ]; then
+    number=0;
+    until [ -z "${1}" ]
+        do
+            number=$((${number} + 1));
+            if [ ${number} -eq 2 ]; then
+                #echo ${@}
+                docker-compose -f ${base_path}/docker-compose.yml exec php ${@} 
+                exit
+            fi
+        shift
+    done
+    echo "Run command of php container."
+    echo -e "./console exec [command].\n"
+    echo "for example:"
+    echo "./console exec php -v"
+    echo "./console exec composer -v"
+    exit
+fi
+
 #進資料庫
 if [ "${1}" == "mysql" ]; then
 docker-compose -f ${base_path}/docker-compose.yml exec db mysql
