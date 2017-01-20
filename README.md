@@ -91,8 +91,13 @@ git pull
 只想產生nginx的網頁伺服器設定檔。
 ./create --conf [project名稱] 例如:project1
 
-那麼就可以./console進入到container內，使用composer指令手動建Laravel Project
-composer create-project --prefer-dist laravel/laravel project1
+可用於將已存在的Laravel專案移到sites資料夾內。
+
+或是手動方式執行composer create-project (非預設的版本等)
+例如使用手動指令手動建立Project，這裡用lumen示範。
+./console exec，可用於執行php contaiener內的命令
+
+./console exec composer create-project --prefer-dist laravel/lumen project1
 </pre>
 
 
