@@ -40,8 +40,6 @@ if [ "$#" -eq 2 ]; then
     exit
 fi
 
-echo $#
-exit;
 #資料夾不能有 . 
 if [[ "${1}" =~ [\.] ]]; then
     echo "Can't have dot in Project name."
