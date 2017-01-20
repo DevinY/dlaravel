@@ -88,10 +88,10 @@ git pull
 
 ####其他
 <pre>
-只想產生nginx的設定檔，我要自己透過composer的指令建立project.
+只想產生nginx的網頁伺服器設定檔。
 ./create --conf [project名稱] 例如:project1
-這個指令，會在dlaravel的etc/下建立一個project1.conf的檔
-我可以用./console進入到container內.
+
+那麼就可以./console進入到container內，使用composer指令手動建Laravel Project
 composer create-project --prefer-dist laravel/laravel project1
 </pre>
 
