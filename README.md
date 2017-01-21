@@ -80,10 +80,10 @@ cd dlaravel
 
 ####五、更新d-laravel 程式
 <pre>
-d-laravel的.gitignore已排除了會變動的區域了，例如: docker-compose.yml, sites
-在d-laravel的目錄錄下，您可以透過git pull更新bash。
-
 git pull
+
+在d-laravel的.gitignore已排除了會變動的區域了，例如: docker-compose.yml、docker-compse-custom.yml, sites專案資料夾等。
+所以在dlaravel的目錄下，您可以透過git pull。
 </pre>
 
 ####其他
@@ -113,7 +113,7 @@ Docker指令及DevinY/laravel提供的./console的bash指令
 | docker-compose exec php 指令  |./console exec 指令 |執行php container 指令，例如: ./console exec php -v|
 | docker-compose exec db mysql   |./console mysql  |執行mysql   |
 | docker-compose exec web nginx -s reload   |./console reload  |從載nginx設定   |
-|   |./create [ProjectName]|建立一個project，並完成所有機本的環境設定   |
+|   |./create [ProjectName]|建立一個project，並完成所有基本的環境設定   |
 |   |例如: ./create test1  |例如: 這樣會建立一個http://test1.dev的網站   |
 |   |./console restart  |重啟container   |
 |   |./console info  |查看目前可用的sites資料(這裡是查單的查詢sites資料夾)   |
@@ -121,6 +121,6 @@ Docker指令及DevinY/laravel提供的./console的bash指令
 |   |./console random  |container啟動時，使用隨機埠|
 |   |./console normal  |使用本機port 80及127.0.0.1:3306|
 |   |./console custom  |使用自己的docker-compose-custom.yml|
-|下方相當於，透過./console normal設定模式後，執行./console up:|
+|-f: 指定docker-compose設定檔。 up -d:啟動在背景執行。|
 |docker-compose -f docker-compose-normal.yml up -d| |使用port 80及port 3306|
 |docker-compose -f docker-compose-random.yml up -d| |指定隨機埠的啟動檔|
