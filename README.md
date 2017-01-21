@@ -101,7 +101,7 @@ git pull
 </pre>
 
 
-Docker指令及DevinY/laravel提供的./console的bash指令
+Docker指令及DevinY/dlaravel提供的./console的bash指令
 
 |Docker官方指令   |簡易./console Bash指令| 說明|
 |---|---|---|
@@ -121,6 +121,6 @@ Docker指令及DevinY/laravel提供的./console的bash指令
 |   |./console random  |container啟動時，使用隨機埠|
 |   |./console normal  |使用本機port 80及127.0.0.1:3306|
 |   |./console custom  |使用自己的docker-compose-custom.yml|
-|-f: 指定docker-compose設定檔。 up -d:啟動在背景執行。|
+|下方: -f: 指定docker-compose設定檔。 up -d:啟動在背景執行。|
 |docker-compose -f docker-compose-normal.yml up -d| |使用port 80及port 3306|
 |docker-compose -f docker-compose-random.yml up -d| |指定隨機埠的啟動檔|
