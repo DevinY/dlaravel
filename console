@@ -96,11 +96,12 @@ exit;
 fi
 
 if [ "${1}" == "up" ]; then
-    if [ ! -f "docker-compose.yml" ]; then
+    if [ ! -f "${base_path}/docker-compose.yml" ]; then
+        echo ${base_path}
         #檔案不存在，進行預設的soft link
         ln -s ${base_path}/docker-compose-random.yml ${base_path}/docker-compose.yml
     fi
-docker-compose -f ${base_path}/docker-compose.yml up -d
+    docker-compose -f ${base_path}/docker-compose.yml up -d
 echo "DB:"
 #設定DB的時區到Asia/Taipei
 ${base_path}/scripts/db-ports
