@@ -102,6 +102,13 @@ git pull
 ./console exec composer create-project --prefer-dist laravel/lumen project1
 </pre>
 
+####進階
+Dlaravel，完全採用官方版本的image進行container的設定，使用上大家可以放心的。
+但是PHP的官方dokcer image並沒有Laravel所需的擴充套件，
+所以dlaravel的fpm由官方的php image重build出來的。
+如果您想學習或重建自己php的image版本，例如擴展php的功能，
+請參考，如何自己build phpfpm的image，就可了解dlaravel的fpm image怎麼來的。
+https://github.com/DevinY/fpm/blob/master/README.md
 
 Docker指令及DevinY/dlaravel提供的./console的bash指令
 
