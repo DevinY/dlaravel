@@ -26,10 +26,11 @@ Docker跟Vagrant比起來，docker的啟動速度是秒級的，
 
 使用dokcer官方的php image，建立Laravel所需的執行環境。
 
-對於不了解docker指令的使用者，提供簡易的Bash進行docker-compose指令操作。
+對於不了解docker指令的使用者，提供簡易的Bash進行docker-compose指令快速操作。
 
-使用最新的PHP在Mac OS上執行。
+可使用最新的PHP在Mac OS上執行。
 
+用docker聽起來，好像比較潮。:p
 <pre>
 ./create test1  (建立test1.dev)
 ./console down或./console up (啟用及停用container)
@@ -90,10 +91,13 @@ git pull
 
 ####其他
 <pre>
-只想產生nginx的網頁伺服器設定檔。
+./create [project名稱] 會建立及下載laravel，搞定一切設定，包含資料庫，
+但如果是一個已存在的Project，只需有nginx的設定，應該怎麼做呢?
+
+使用--conf產生nginx的網頁伺服器設定檔。(會建立在dlaravel/etc資料夾下)
 ./create --conf [project名稱] 例如:project1
 
-可用於將已存在的Laravel專案移到sites資料夾內。
+可以將已存在的Laravel專案移到sites資料夾內。
 
 或是手動方式執行composer create-project (非預設的版本等)
 例如使用手動指令手動建立Project，這裡用lumen示範。
