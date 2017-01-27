@@ -31,7 +31,7 @@ fi
 #下載images
 if [ "${1}" == "pull" ]; then
     docker pull nginx 
-    docker pull mysql:5.6.31
+    docker pull mysql:5.7.17
     docker pull deviny/fpm:7.1.1
     exit;
 fi

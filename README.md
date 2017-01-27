@@ -56,8 +56,10 @@ https://docs.docker.com/docker-for-mac/
 <pre>
 git clone https://github.com/DevinY/dlaravel.git
 cd dlaravel
+
+下方pull的動作是可以略過，啟動時，會依docker-compose.yml的設定自動下載所需的images。
 ./console pull
-第一次執行會花較久的時間從dockhub上，下載docker-compose所需要的images.
+當第一次執行會花較久的時間從dockhub上，下載docker-compose所需要的images.
 </pre>
 
 ####三、執行./create ['project name'] 建立開發專案
