@@ -81,12 +81,12 @@ cd dlaravel
 你可能需要修改docker-compose.yml啟動時的TZ，目前設為Asia/Taipei
 </pre>
 
-####五、更新d-laravel 程式
+####五、更新d-laravel bash程式及一些基本設定檔。
 <pre>
 git pull
 
 在d-laravel的.gitignore已排除了會變動的區域了，例如: docker-compose.yml、docker-compse-custom.yml, sites專案資料夾等。
-所以在dlaravel的目錄下，您可以透過git pull。
+所以在dlaravel的目錄下，您可以透過git pull取得最新的版本及設定。
 </pre>
 
 ####其他
