@@ -103,11 +103,12 @@ git pull
 </pre>
 
 ####進階
-Dlaravel，完全採用官方版本的image進行container的設定，使用上大家可以放心的。
-但是PHP的官方dokcer image並沒有Laravel所需的擴充套件，
-所以dlaravel的fpm由官方的php image重build出來的。
-如果您想學習或重建自己php的image版本，例如擴展php的功能，
-請參考，如何自己build phpfpm的image，就可了解dlaravel的fpm image怎麼來的。
+Dlaravel，完全採用官方版本的image進行設定，使用上大家可以放心。
+但由於PHP的官方dokcer image並沒有Laravel所需的擴充套件，
+因此dlaravel的fpm由image是由的php dokcer官方的image重build出來的。
+
+如果您想學習或重build自己php的fpm image版本，例如擴展php的功能，
+那麼可到下方連結參考，就可了解dlaravel的fpm image怎麼來的，及如何用docker重build一個自己的phpfpm image。
 https://github.com/DevinY/fpm/blob/master/README.md
 
 Docker指令及DevinY/dlaravel提供的./console的bash指令
