@@ -28,6 +28,12 @@ if [ "${1}" == "clear" ]; then
     exit;
 fi
 
+#顯示docker-compose的設定檔連結
+if [ "${1}" == "link" ]; then
+    ls -l ${base_path}/docker-compose.yml
+    exit;
+fi
+
 #下載images
 if [ "${1}" == "pull" ]; then
     docker pull nginx 

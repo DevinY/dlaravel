@@ -59,7 +59,7 @@ fi
 docker ps |grep -q ${containerName}_php_1
 if [ $? -eq 1 ]; then
     echo "${containerName}_php_1 is not running."
-    echo "Would you like to create the project and run docker-compose (y/n):"
+    echo "Would you like to create the project and run docker-compose up (y/n):"
     read  ans
     if [ ${ans} = 'n' ]; then
        exit
