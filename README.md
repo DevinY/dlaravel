@@ -26,10 +26,11 @@ Docker跟Vagrant比起來，docker的啟動速度是秒級的，
 
 使用dokcer官方的php image，建立Laravel所需的執行環境。
 
-對於不了解docker指令的使用者，提供簡易的Bash進行docker-compose指令操作。
+對於不了解docker指令的使用者，提供簡易的Bash進行docker-compose指令快速操作。
 
-使用最新的PHP在Mac OS上執行。
+可使用最新的PHP在Mac OS上執行。
 
+用docker聽起來，好像比較潮。:p
 <pre>
 ./create test1  (建立test1.dev)
 ./console down或./console up (啟用及停用container)
@@ -80,20 +81,23 @@ cd dlaravel
 你可能需要修改docker-compose.yml啟動時的TZ，目前設為Asia/Taipei
 </pre>
 
-####五、更新d-laravel 程式
+####五、更新d-laravel bash程式及一些基本設定檔。
 <pre>
 git pull
 
 在d-laravel的.gitignore已排除了會變動的區域了，例如: docker-compose.yml、docker-compse-custom.yml, sites專案資料夾等。
-所以在dlaravel的目錄下，您可以透過git pull。
+所以在dlaravel的目錄下，您可以透過git pull取得最新的版本及設定。
 </pre>
 
 ####其他
 <pre>
-只想產生nginx的網頁伺服器設定檔。
+./create [project名稱] 會建立及下載laravel，搞定一切設定，包含資料庫，
+但如果是一個已存在的Project，只需有nginx的設定，應該怎麼做呢?
+
+使用--conf產生nginx的網頁伺服器設定檔。(會建立在dlaravel/etc資料夾下)
 ./create --conf [project名稱] 例如:project1
 
-可用於將已存在的Laravel專案移到sites資料夾內。
+可以將已存在的Laravel專案移到sites資料夾內。
 
 或是手動方式執行composer create-project (非預設的版本等)
 例如使用手動指令手動建立Project，這裡用lumen示範。
@@ -103,11 +107,12 @@ git pull
 </pre>
 
 ####進階
-Dlaravel，完全採用官方版本的image進行container的設定，使用上大家可以放心的。
-但是PHP的官方dokcer image並沒有Laravel所需的擴充套件，
-所以dlaravel的fpm由官方的php image重build出來的。
-如果您想學習或重建自己php的image版本，例如擴展php的功能，
-請參考，如何自己build phpfpm的image，就可了解dlaravel的fpm image怎麼來的。
+Dlaravel，完全採用官方版本的image進行設定，使用上大家可以放心。
+但由於PHP的官方dokcer image並沒有Laravel所需的擴充套件，
+因此dlaravel的fpm由image是由的php dokcer官方的image重build出來的。
+
+如果您想學習或重build自己php的fpm image版本，例如擴展php的功能，
+那麼可到下方連結參考，就可了解dlaravel的fpm image怎麼來的，及如何用docker重build一個自己的phpfpm image。
 https://github.com/DevinY/fpm/blob/master/README.md
 
 Docker指令及DevinY/dlaravel提供的./console的bash指令
