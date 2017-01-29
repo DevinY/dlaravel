@@ -33,9 +33,9 @@ Docker跟Vagrant比起來，docker的啟動速度是秒級的，
 ./create test1  (建立test1.dev)
 ./console down或./console up (啟用及停用container)
 ./console restart    (./console down再./console up)
-./console alias    (印出console的別名範本，自行加到.bashrc或.zshrc)
 `./console alias`  
 (打./console指令太長了嗎，上方指令可暫時用c代表./console，所以執行後，輸入:c info、c up或c down..即可執行。)
+./console alias    (印出console的別名範本，自行加到.bashrc或.zshrc永久生效)
 </pre>
 
 ####主要目錄結構
