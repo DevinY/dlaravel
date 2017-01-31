@@ -28,7 +28,7 @@ Docker跟Vagrant比起來，docker的啟動速度是秒級的，
 
 可使用最新的PHP在Mac OS上執行。
 
-可以快速建立self-signed憑證。
+可以快速協助設定self-signed憑證。
 
 用docker聽起來，好像比較潮。:p
 <pre>
@@ -38,8 +38,11 @@ Docker跟Vagrant比起來，docker的啟動速度是秒級的，
 `./console alias`  
 (打./console指令太長了嗎，上方指令可暫時用c代表./console，所以執行後，輸入:c info、c up或c down..即可執行。)
 ./console alias    (印出console的別名範本，自行加到.bashrc或.zshrc永久生效)
-#產生HTTPS加密的域名設定及自我簽署的憑證
-./console secure test1 (MacOS，可透過secure加proejct name，例如:test1，自動生成self-signed certificate，存入系統鑰匙卷中)
+
+產生HTTPS加密的域名設定及自我簽署的憑證，
+為了讓Chrome正常顯示，需要把生成的域名存入系統鑰匙圈中，因此會詢問系統密碼(MacOS only)。
+./console secure test1 
+(https://test1.dev 網址)
 </pre>
 
 ####主要目錄結構
