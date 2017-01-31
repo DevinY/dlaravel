@@ -134,6 +134,7 @@ Docker指令及DevinY/dlaravel提供的./console的bash指令
 | docker-compose exec php 指令  |./console exec 指令 |執行php container 指令，例如: ./console exec php -v|
 | docker-compose exec db mysql   |./console mysql  |執行mysql   |
 | docker-compose exec web nginx -s reload   |./console reload  |從載nginx設定   |
+| docker-compose logs -f [SERVICE]   |./console logs  |看nginx的log，Ctrl+C停止 |
 |   |./create [ProjectName]|建立一個project，並完成所有基本的環境設定   |
 |   |例如: ./create test1  |例如: 這樣會建立一個http://test1.dev的網站   |
 |   |./console restart  |重啟container   |

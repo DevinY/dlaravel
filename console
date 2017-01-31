@@ -193,6 +193,11 @@ fi
 exit
 fi
 
+#顯示log
+if [ "${1}" == "logs" ]; then
+    docker-compose -f ${base_path}/docker-compose.yml logs -f web
+exit
+fi
 
 #重新載入nginx設定
 if [ "${1}" == "reload" ]; then
