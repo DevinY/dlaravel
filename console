@@ -44,7 +44,8 @@ fi
 
 #變更模式, web:80, db:127.0.0.1:3306
 if [ "${1}" == "normal" ]; then
-    docker-compose -f ${base_path}/docker-compose.yml down
+    #先嚐試停止
+    docker-compose -f ${base_path}/docker-compose.yml down > /dev/null 2>&1
     echo "docker-compose setting file changed."
     echo "HOST DB: listen on 127.0.0.1:3306."
     echo "HOST WEB: listen on port 80."
@@ -56,7 +57,8 @@ fi
 
 #隨機
 if [ "${1}" == "random" ]; then
-    docker-compose -f ${base_path}/docker-compose.yml down
+    #先嚐試停止
+    docker-compose -f ${base_path}/docker-compose.yml down > /dev/null 2>&1
     echo "docker-compose setting file changed."
     echo "HOST DB: listen on random port."
     echo "HOST WEB: listen on random port."
@@ -86,7 +88,11 @@ fi
 
 #停止docker-compose
 if [ "${1}" == "down" ]; then
-docker-compose -f ${base_path}/docker-compose.yml down
+    if [ -e ${base_path}/docker-compose.yml ]; then
+        docker-compose -f ${base_path}/docker-compose.yml down
+        else
+        docker-compose -f ${base_path}/docker-compose-random.yml down
+    fi
 exit;
 fi
 
