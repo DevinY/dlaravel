@@ -6,6 +6,8 @@ services:
   ports:
       #使用固定 port 80
       - "80:80"
+      #需透過./console secure [project name]啟用。
+      - "443:443"
       #只綁定localhost
       - "127.0.0.1:3306:3306"
   volumes:
