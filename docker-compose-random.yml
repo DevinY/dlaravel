@@ -6,6 +6,7 @@ services:
   ports:
       # 使用隨機的port 80
       - "80"
+      - "443"
       # 隨機的mysql連結埠
       - "3306"
   volumes:

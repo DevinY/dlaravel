@@ -6,6 +6,7 @@ services:
   ports:
       #使用port 80
       - "80:80"
+      - "443:443"
       - "127.0.0.1:3306:3306"
   volumes:
   - ./sites:/var/www/html
