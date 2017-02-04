@@ -16,10 +16,12 @@ projectNum=`ls ${projectFolder}/sites/|wc -l`
 #印出sites資料夾目錄，轉換為Web
 if [ ${projectNum} -gt 0 ]; then
 for i in $(ls -d ${projectFolder}/sites/*|rev|cut -d/ -f1|rev); do 
-    if [ ${web_port} == 80 ]; then
-    echo -n http://;echo ${i}.dev|cut -d/ -f 2; 
-    else
-    echo -n http://;echo ${i}.dev:${web_port}|cut -d/ -f 2; 
+    if [ -f "${projectFolder}/etc/${i}.conf" ]; then
+        if [ ${web_port} == 80 ]; then
+        echo -n http://;echo ${i}.dev|cut -d/ -f 2; 
+        else
+        echo -n http://;echo ${i}.dev:${web_port}|cut -d/ -f 2; 
+        fi
     fi
 done
 fi
