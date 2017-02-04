@@ -210,10 +210,41 @@ if [ "${1}" == "reload" ]; then
 docker-compose -f ${base_path}/docker-compose.yml exec web nginx -s reload
 exit
 fi
-
-#檢測是否執行
-docker-compose -f ${base_path}/docker-compose.yml ps |grep -q 9000
-if [ $? -eq 1 ]; then
-docker-compose -f ${base_path}/docker-compose.yml up -d
+function help {
+    echo "usage: ${0} [<option>]"
+    echo ""
+    echo "options:"
+    echo "  info : 列出web及db在host的連接埠。"
+    echo "  ps : Lists Contaienrs. (docker-compose -f ${base_path}/docker-compose.yml ps)"
+    echo "  reload : 重啟container"
+    echo "  logs : web service的log, 用Ctrl+C中斷"
+    echo "  mysql : 快速進入mysql"
+    echo "  alias : 顯示consle的別名指令"
+    echo "  clear : 移除所有docker ps -a 所有停止的Container!!"
+    echo "  link : 目前docker-compose 連結的設定檔"
+    echo "  secure: 加入https設定檔"
+    echo "  normal : 變更docker-compose連結，讓docker使用標準連結埠，80:443:3306"
+    echo "  random : 變更docker-compose連結，讓docker啟用隨機的連接埠，可用./console ps查看"
+    echo "  custom : 變更docker-compose連結，產生或使用自定的設定檔"
+    echo "  ${0} : 進入php container內"
+}
+#說明
+if [ "${1}" == "help" ]; then
+    help
+    exit;
 fi
-docker-compose -f ${base_path}/docker-compose.yml  exec php sudo -u dlaravel bash
+
+if [ "${1}" == "" ]; then
+
+        #檢測是否執行
+        docker-compose -f ${base_path}/docker-compose.yml ps |grep -q 9000
+        if [ $? -eq 1 ]; then
+        docker-compose -f ${base_path}/docker-compose.yml up -d
+        fi
+        docker-compose -f ${base_path}/docker-compose.yml  exec php sudo -u dlaravel bash
+
+    else
+    echo "${1} - Parameter not found"
+    help
+fi
+exit
