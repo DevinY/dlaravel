@@ -14,7 +14,9 @@ D-Laravel採用了dockr-compose的微服務架構，
 
 ###為什麼用D-Laravel
 
-Docker跟Vagrant比起來，docker的啟動速度是秒級的，
+Docker跟Vagrant比起來，docker的啟動速度是秒級的。
+
+可快速產生HTTPS加密的域名設定及自我簽署的憑證，並完成nginx設定(MacOS Only)。
 
 可模擬不同的資料庫環境。
 
@@ -40,7 +42,6 @@ Docker跟Vagrant比起來，docker的啟動速度是秒級的，
 (打./console指令太長了嗎，上方指令可暫時用c代表./console，所以執行後，輸入:c info、c up或c down..即可執行。)
 ./console alias    (印出console的別名範本，自行加到.bashrc或.zshrc永久生效)
 
-產生HTTPS加密的域名設定及自我簽署的憑證，
 為了讓Chrome正常顯示，需要把生成的域名存入系統鑰匙圈中，因此會詢問系統密碼(MacOS only)。
 ./console secure test1 
 (https://test1.dev 網址)
