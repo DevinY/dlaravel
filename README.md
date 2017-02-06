@@ -32,6 +32,7 @@ Docker跟Vagrant比起來，docker的啟動速度是秒級的，
 
 用docker聽起來，好像比較潮。:p
 <pre>
+./console help (幫助，console參數用法。)
 ./create test1  (建立test1.dev)
 ./console down或./console up (啟用及停用container)
 ./console restart    (./console down再./console up)
