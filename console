@@ -89,9 +89,9 @@ fi
 #停止docker-compose
 if [ "${1}" == "down" ]; then
     if [ -e ${base_path}/docker-compose.yml ]; then
-        docker-compose -f ${base_path}/docker-compose.yml down
+        docker-compose -f ${base_path}/docker-compose.yml down --remove-orphans
         else
-        docker-compose -f ${base_path}/docker-compose-random.yml down
+        docker-compose -f ${base_path}/docker-compose-random.yml down --remove-orphans
     fi
 exit;
 fi
