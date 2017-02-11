@@ -124,8 +124,10 @@ https://hub.docker.com/r/library/nginx/
 
 Mysql: (官方mysql)
 https://hub.docker.com/_/mysql/
+
 註: 原data資料夾已產生時，變更不同的mysql版本，在docker-compose.yml的設定檔內，
 你需可能需調整資料庫夾data的名稱，確保新版的mysql image能正常運作。
+例如:我將data設更為data_mysql8
 
 <pre>
 db:
