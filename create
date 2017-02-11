@@ -69,6 +69,12 @@ if [ $? -eq 1 ]; then
             #啟動失敗，停止動作
             exit;
         fi
+            #等待啟動完成
+            while [ ! $? -eq 0  ]
+            do
+            sleep 2
+            docker-compose  -f docker-compose.yml ps |grep ${containerName}_db_1|grep -q Up
+            done
     fi
 fi
 
@@ -90,7 +96,20 @@ if [ $? -eq 1 ]; then
     fi
 fi
 
+echo "CREATE FINISHED"
+
+#檢測hosts檔是否已新增 
+sudo cat /etc/hosts|tr -s " "|grep "127.0.0.1 ${1}.dev"
+#找不到時，就新增至Hosts
+if [ $? -eq 1 ]; then
+    echo "127.0.0.1 ${1}.dev" |sudo tee -a /etc/hosts
+fi
+
 #composer create-project --prefer-dist laravel/laravel ${1}
+while [ ! -f sites/${1}/.env ]
+do
+  sleep 1
+done
 
 #docker-compose exec php /root/.composer/vendor/bin/laravel new ${1}
 docker-compose exec php sed -i "s/DB_DATABASE=homestead/DB_DATABASE=${1}/" /var/www/html/${1}/.env
@@ -104,12 +123,6 @@ docker-compose exec db mysql -e "grant all on ${1}.* to 'homestead'@'%' IDENTIFI
 #更新container權限
 docker-compose exec db mysql -e "FLUSH PRIVILEGES"
 
-#檢測hosts檔是否已新增 
-sudo cat /etc/hosts|tr -s " "|grep "127.0.0.1 ${1}.dev"
-#找不到時，就新增至Hosts
-if [ $? -eq 1 ]; then
-    echo "127.0.0.1 ${1}.dev" |sudo tee -a /etc/hosts
-fi
 #拷貝default.conf修改
 #docker exec -ti ${containerName}_web_1 cp /etc/nginx/conf.d/default.conf /etc/nginx/conf.d/${1}.conf
 docker-compose exec web cp /etc/nginx/conf.d/default.conf /etc/nginx/conf.d/${1}.conf
