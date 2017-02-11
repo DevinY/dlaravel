@@ -90,10 +90,6 @@ if [ $? -eq 1 ]; then
     fi
 fi
 
-while [ ! -f sites/${1}/.env ]
-do
-  sleep 1
-done
 #composer create-project --prefer-dist laravel/laravel ${1}
 
 #docker-compose exec php /root/.composer/vendor/bin/laravel new ${1}
