@@ -5,6 +5,8 @@ etc/*
 !etc/default-ssl.sample
 etc/php/php.ini
 sites/
+run/
+*.swp
 data/
 docker-compose.yml
 docker-compose-custom.yml

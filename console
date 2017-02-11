@@ -2,6 +2,17 @@
 #取得scripts的執行路徑
 base_path="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
+function fial_exit {
+    if [ $? -eq 1 ]; then
+        exit;
+    fi
+}
+
+#建立sites資料夾，如果不存在
+if [ ! -d "${base_path}/sites/" ]; then
+   mkdir -p "${base_path}/sites/"
+fi
+
 #開發測試中Beta
 if [ "${1}" == "alias" ]; then
 calias="alias c=${base_path}/console"
@@ -100,6 +111,7 @@ fi
 if [ "${1}" == "restart" ]; then
 docker-compose -f ${base_path}/docker-compose.yml down
 docker-compose -f ${base_path}/docker-compose.yml up -d
+fial_exit 
 echo "DB:"
 ${base_path}/scripts/db-ports
 echo "Web:"
@@ -108,12 +120,14 @@ exit;
 fi
 
 if [ "${1}" == "up" ]; then
+
     if [ ! -f "${base_path}/docker-compose.yml" ]; then
         echo ${base_path}
         #檔案不存在，進行預設的soft link
         ln -s ${base_path}/docker-compose-random.yml ${base_path}/docker-compose.yml
     fi
     docker-compose -f ${base_path}/docker-compose.yml up -d
+    fial_exit 
 echo "DB:"
 #設定DB的時區到Asia/Taipei
 ${base_path}/scripts/db-ports

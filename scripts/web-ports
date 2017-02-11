@@ -3,7 +3,7 @@ base_path="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 projectFolder=`echo ${base_path}|sed 's#/scripts##'`
 source ${projectFolder}/scripts/checker
 
-docker ps |grep -q ${containerName}_web_1
+docker-compose -f ${base_path}/../docker-compose.yml ps |grep ${containerName}_web_1|grep -q Up
 if [ $? -eq 1 ]; then
 echo ${containerName}_web_1 is not running
 exit
