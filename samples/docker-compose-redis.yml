@@ -1,4 +1,7 @@
 
+# redis ports
+#- "6379"
+
 #Dockerhub官方redis image
  redis:
   image: redis
