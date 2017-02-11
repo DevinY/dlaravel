@@ -1,46 +1,6 @@
-version: '2'
-services:
- web:
-  image: nginx
-  dns: 8.8.8.8
-  ports:
-      # 使用隨機的port 80
-      - "80:80"
-      - "443:443"
-      # 隨機的mysql連結埠
-      - "3306:3306"
-  volumes:
-  - ./sites:/var/www/html
-  - ./etc:/etc/nginx/conf.d
-  hostname: d-laravel
-  
- php:
-  image: deviny/fpm:7.1.1
-  network_mode: "service:web"
 
-  volumes:
-  - ./etc/php:/usr/local/etc/php
-  - ./sites:/var/www/html
-  - ./data:/var/lib/mysql
-  - ./run/mysqld:/var/run/mysqld
-
- db:
-  image: mysql:5.7.17
-  network_mode: "service:web"
-
-  environment:
-      MYSQL_DATABASE: homestead
-      MYSQL_USER: homestead
-      MYSQL_PASSWORD: secret
-      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
-      TZ: Asia/Taipei
-
-  volumes:
-      - ./etc/mysql/my.cnf:/etc/mysql/my.cnf
-      - ./data:/var/lib/mysql
-      - ./run/mysqld:/var/run/mysqld
-
- #用來提升網頁io的速度
+#用來提升網頁io的速度
+### beanstalk container ##################################
  bg-sync:
     image: cweagans/bg-sync
     volumes:

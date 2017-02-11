@@ -1,5 +1,6 @@
 version: '2'
 services:
+### 網頁伺服器的container ##################################
  web:
   image: nginx
   dns: 8.8.8.8
@@ -14,6 +15,7 @@ services:
   - ./etc:/etc/nginx/conf.d
   hostname: d-laravel
   
+### PHP-FPM container ##################################
  php:
   image: deviny/fpm:7.1.1
   network_mode: "service:web"
@@ -22,6 +24,7 @@ services:
   - ./etc/php:/usr/local/etc/php
   - ./sites:/var/www/html
 
+### 資料庫 container ##################################
  db:
   image: mysql:5.7.17
   network_mode: "service:web"
