@@ -1,0 +1,54 @@
+#!/bin/bash
+if [ "${1}" == "clear" ]; then
+    echo "移除hosts內所有的*.dev域名嗎?(y/n)"
+    read  ans
+        if [ ${ans} = 'y' ]; then
+            #移除hosts下，所有的.dev名稱
+            sudo sed -i.bak '/\.dev$/d' /etc/hosts
+        fi
+    exit; 
+fi
+
+#移除系統上所有的containers及images及hosts
+if [ "${1}" == "uninstall" ]; then
+    echo "注意!!將清空所有的docker images及containers及在hosts內的所有*.dev設定(y/n)"
+    read  ans
+        if [ ${ans} = 'y' ]; then
+        docker-compose -f docker-compose.yml down --remove-orphans > /dev/null 2>&1
+        sudo sed -i.bak '/\.dev$/d' /etc/hosts
+        docker rm $(docker ps -a -q)
+        docker rmi $(docker images -q)
+        fi
+    exit; 
+fi
+
+echo "重整hosts檔，並移除hosts內所有的*.dev域名，並且使用sites資料夾重建嗎?(y/n)"
+read  ans
+if [ ${ans} = 'n' ]; then
+        exit
+else 
+#建立sites資料夾，如果不存在
+if [ ! -d "sites/" ]; then
+    echo "sites資料夾未建立"
+    exit;
+fi
+#移除hosts下，所有的.dev名稱
+sudo sed -i.bak '/\.dev$/d' /etc/hosts
+#抓出sites資料夾下所有的目錄
+ls -ld sites/*|grep ^d|cut -d '/' -f2| awk '{ printf "127.0.0.1 %s.dev\n", $0}' > ./etc/dlaravel_sites
+#暫存目前的hosts檔
+sudo cat /etc/hosts > ./etc/hosts_temp
+#組合產生出來的127.0.0.1 *.dev清單，到暫存的hosts內
+sudo cat ./etc/dlaravel_sites >> ./etc/hosts_temp
+#確認hosts_temp是存在的，才調整/etc/hosts檔
+if [ $? -eq 0 ]; then
+#移動並更新
+sudo mv ./etc/hosts_temp /etc/hosts
+#調整權限
+sudo chown root /etc/hosts
+sudo chgrp wheel /etc/hosts
+fi
+#移除暫存的檔案
+rm ./etc/dlaravel_sites
+fi
+dscacheutil -flushcache
