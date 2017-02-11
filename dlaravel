@@ -16,8 +16,8 @@ if [ "${1}" == "uninstall" ]; then
         if [ ${ans} = 'y' ]; then
         docker-compose -f docker-compose.yml down --remove-orphans > /dev/null 2>&1
         sudo sed -i.bak '/\.dev$/d' /etc/hosts
-        docker rm $(docker ps -a -q)
-        docker rmi $(docker images -q)
+        docker rm $(docker ps -a -q) > /dev/null 2>&1
+        docker rmi $(docker images -q) > /dev/null 2>&1
         fi
     exit; 
 fi
