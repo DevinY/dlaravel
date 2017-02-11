@@ -96,7 +96,7 @@ if [ $? -eq 1 ]; then
     fi
 fi
 
-echo "CREATE FINISHED"
+#echo "CREATE FINISHED"
 
 #檢測hosts檔是否已新增 
 sudo cat /etc/hosts|tr -s " "|grep "127.0.0.1 ${1}.dev"
