@@ -10,9 +10,16 @@ D-Laravel採用了dockr-compose的微服務架構，
 
 ###為什麼用D-Laravel
 
-Docker跟Vagrant比起來，docker的啟動速度是秒級的。
+提供簡易的Bash執行docker-compose指令，快速生成laravel專案環境。
 
-可快速產生HTTPS加密的域名設定及自我簽署的憑證，並完成nginx設定(MacOS Only)。
+可用最新的PHP在Mac OS上執行。
+
+快速產生self-signed自我簽署的憑證，並完成HTTPS設定。
+
+不安裝DnsMasq. 不使用時也不會佔用port 80. 
+(好啦，我是對著Valet說的，我自己用Valet有不好的經驗，才出現D-Laravel:p) 
+
+秒級的啟動速度。
 
 可模擬不同的資料庫環境。
 
@@ -21,12 +28,6 @@ Docker跟Vagrant比起來，docker的啟動速度是秒級的。
 簡易的docker-compose v2設定檔。
 
 使用dokcerhub標註offical的image，建立Laravel基本執行環境。
-
-對於不了解docker指令的使用者，提供簡易的Bash進行docker-compose指令快速操作。
-
-可使用最新的PHP在Mac OS上執行。
-
-可以快速協助設定self-signed憑證。
 
 用docker聽起來，好像比較潮。:p
 <pre>
@@ -111,7 +112,7 @@ git pull
 ./console exec composer create-project --prefer-dist laravel/lumen project1
 </pre>
 ####調整設定檔的image切換
-PHP: (dockerhub，官方php image重build符合Laravel環境)
+PHP: (OFFICIAL REPOSITORY重build符合Laravel環境)
 https://hub.docker.com/r/deviny/fpm/tags/
 <pre>
  image: deviny/fpm:7.1.0
@@ -119,13 +120,15 @@ https://hub.docker.com/r/deviny/fpm/tags/
  image: deviny/fpm:5.6.30
 </pre>
 
-Nginx: (官方nginx)
+Nginx: (OFFICIAL REPOSITORY)
 https://hub.docker.com/r/library/nginx/
 
-Mysql: (官方mysql)
+Mysql: (OFFICIAL REPOSITORY)
 https://hub.docker.com/_/mysql/
+
 註: 原data資料夾已產生時，變更不同的mysql版本，在docker-compose.yml的設定檔內，
 你需可能需調整資料庫夾data的名稱，確保新版的mysql image能正常運作。
+例如:我將data設更為data_mysql8
 
 <pre>
 db:
