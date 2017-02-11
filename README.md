@@ -2,13 +2,9 @@
 
 D-Laravel採用了dockr-compose的微服務架構，
 
-經由簡易的console及create bash，幫您快速建立出基本的Laravel開發環境。
+經由超簡易的console及create指令，幫您快速建立出基本的Laravel開發環境，
 
-主要包含，nginx(網頁服務)、php-fpm(php)及mysql(資料庫)，
-
-使用D-Laravel，代表了，我們的Mac系統，不再需要安裝mysql，nginx及php-fpm，
-
-我只要透過docker container來建立起獨立的容器空間即可。
+使用D-Laravel，代表了，我們的Mac系統，不再需要安裝mysql，nginx及php-fpm。
 
 可自訂docker-compose-custom.yml快速創建出自己的開發環境。
 
@@ -22,9 +18,9 @@ Docker跟Vagrant比起來，docker的啟動速度是秒級的。
 
 可同時開啟多個不同的測試站台。
 
-可以自行控制使用php的版本，必要時自己重編docker php-fpm image。
+簡易的docker-compose v2設定檔。
 
-使用dokcer官方的php image，建立Laravel所需的執行環境。
+使用dokcerhub標註offical的image，建立Laravel基本執行環境。
 
 對於不了解docker指令的使用者，提供簡易的Bash進行docker-compose指令快速操作。
 
@@ -114,12 +110,33 @@ git pull
 
 ./console exec composer create-project --prefer-dist laravel/lumen project1
 </pre>
+####調整設定檔的image切換
+PHP: (dockerhub，官方php image重build符合Laravel環境)
+https://hub.docker.com/r/deviny/fpm/tags/
+<pre>
+ image: deviny/fpm:7.1.0
+ image: deviny/fpm:7.0.15
+ image: deviny/fpm:5.6.30
+</pre>
+
+Nginx: (官方nginx)
+https://hub.docker.com/r/library/nginx/
+
+Mysql: (官方mysql)
+https://hub.docker.com/_/mysql/
+註: 原data資料夾已產生時，變更不同的mysql版本，在docker-compose.yml的設定檔內，
+你需可能需調整資料庫夾data的名稱，確保新版的mysql image能正常運作。
+
+<pre>
+db:
+  image: mysql:8
+  略..
+  volumes:
+      - ./etc/mysql/my.cnf:/etc/mysql/my.cnf
+      - ./data_mysql8:/var/lib/mysql
+</pre>
 
 ####進階
-Dlaravel，完全採用官方版本的image進行設定，使用上大家可以放心。
-但由於PHP的官方dokcer image並沒有Laravel所需的擴充套件，
-因此dlaravel的fpm由image是由的php dokcer官方的image重build出來的。
-
 如果您想學習或重build自己php的fpm image版本，例如擴展php的功能，
 那麼可到下方連結參考，就可了解dlaravel的fpm image怎麼來的，及如何用docker重build一個自己的phpfpm image。
 https://github.com/DevinY/fpm/blob/master/README.md
