@@ -111,7 +111,7 @@ git pull
 ./console exec composer create-project --prefer-dist laravel/lumen project1
 </pre>
 ####調整設定檔的image切換
-PHP: (dockerhub，官方php image重build符合Laravel環境)
+PHP: (OFFICIAL REPOSITORY重build符合Laravel環境)
 https://hub.docker.com/r/deviny/fpm/tags/
 <pre>
  image: deviny/fpm:7.1.0
@@ -119,10 +119,10 @@ https://hub.docker.com/r/deviny/fpm/tags/
  image: deviny/fpm:5.6.30
 </pre>
 
-Nginx: (官方nginx)
+Nginx: (OFFICIAL REPOSITORY)
 https://hub.docker.com/r/library/nginx/
 
-Mysql: (官方mysql)
+Mysql: (OFFICIAL REPOSITORY)
 https://hub.docker.com/_/mysql/
 
 註: 原data資料夾已產生時，變更不同的mysql版本，在docker-compose.yml的設定檔內，
