@@ -27,7 +27,7 @@ D-Laravel採用了dockr-compose的微服務架構，
 
 簡易的docker-compose v2設定檔。
 
-使用dokcerhub標註offical的image，建立Laravel基本執行環境。
+使用Dockerhub標註offical的image，建立Laravel基本執行環境。
 
 用docker聽起來，好像比較潮。:p
 <pre>
