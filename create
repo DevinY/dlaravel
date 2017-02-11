@@ -56,7 +56,7 @@ fi
 
 
 #檢測是否執行
-docker ps |grep -q ${containerName}_php_1
+docker-compose  -f docker-compose.yml ps |grep ${containerName}_web_1|grep -q Up
 if [ $? -eq 1 ]; then
     echo "${containerName}_php_1 is not running."
     echo "Would you like to create the project and run docker-compose up (y/n):"
@@ -65,11 +65,31 @@ if [ $? -eq 1 ]; then
        exit
     else 
        docker-compose up -d
+        if [ ${?} -ne 0 ]; then
+            #啟動失敗，停止動作
+            exit;
+        fi
     fi
 fi
 
+function dlaravel_new {
+    docker exec -ti ${containerName}_php_1 sudo -u dlaravel /home/dlaravel/.composer/vendor/bin/laravel new ${1}
+}
 #安裝新的Laravel
-docker exec -ti ${containerName}_php_1 sudo -u dlaravel /home/dlaravel/.composer/vendor/bin/laravel new ${1}
+#檢測本機是否安裝laravel installer
+which -s laravel
+if [ $? -eq 1 ]; then
+        dlaravel_new
+    else
+    #加速安裝，使用Mac系統上的laravel installer
+    laravel new sites/${1}
+    #falback用container內的laravel
+    if [ ${?} -ne 0 ]; then
+        echo "Failback to run installer from container."
+        dlaravel_new
+    fi
+fi
+
 #composer create-project --prefer-dist laravel/laravel ${1}
 
 #docker-compose exec php /root/.composer/vendor/bin/laravel new ${1}
