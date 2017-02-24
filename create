@@ -79,13 +79,14 @@ if [ $? -eq 1 ]; then
 fi
 
 function dlaravel_new {
+    echo "Run laravel installer in container: laravel new ${1}"
     docker exec -ti ${containerName}_php_1 sudo -u dlaravel /home/dlaravel/.composer/vendor/bin/laravel new ${1}
 }
 #安裝新的Laravel
 #檢測本機是否安裝laravel installer
 which -s laravel
 if [ $? -eq 1 ]; then
-        dlaravel_new
+        dlaravel_new ${1}
     else
     #加速安裝，使用Mac系統上的laravel installer
     laravel new sites/${1}
