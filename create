@@ -1,3 +1,4 @@
+#!/bin/bash
 source ./scripts/checker
 
 #未指定專案名稱

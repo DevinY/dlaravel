@@ -6,6 +6,9 @@ containerName=`printf '%s\n' "${projectFolder##*/}"|tr '[:upper:]' '[:lower:]'|s
 if [ ! -f "${projectFolder}/docker-compose.yml" ];then
     ln -vsf docker-compose-random.yml docker-compose.yml
 fi
+#檢測是否為widnows desktop
+uname -a |grep -q desktop
+if [ $? -eq 1 ]; then
 
 which -s docker
 if [ $? -eq 1 ]; then
@@ -17,4 +20,18 @@ which -s docker-compose
 if [ $? -eq 1 ]; then
 echo 'Please go to https://docs.docker.com/compose/install/ to install docker-compose'
 exit
+fi
+    else
+which docker
+if [ $? -eq 1 ]; then
+echo 'Please go to https://docs.docker.com/engine/installation/ to install docker'
+exit;
+fi
+
+which docker-compose
+if [ $? -eq 1 ]; then
+echo 'Please go to https://docs.docker.com/compose/install/ to install docker-compose'
+exit
+fi
+
 fi
