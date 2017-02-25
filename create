@@ -85,7 +85,7 @@ function dlaravel_new {
 }
 #安裝新的Laravel
 #檢測本機是否安裝laravel installer
-which -s laravel
+which laravel >/dev/null 2>&1
 if [ $? -eq 1 ]; then
         dlaravel_new ${1}
     else
