@@ -1,6 +1,48 @@
 #!/bin/bash
 source ./scripts/checker
 
+function dlaravelconfig {
+
+#檢測hosts檔是否已新增 
+sudo cat /etc/hosts|tr -s " "|grep "127.0.0.1 ${1}.dev"
+#找不到時，就新增至Hosts
+if [ $? -eq 1 ]; then
+    echo "127.0.0.1 ${1}.dev" |sudo tee -a /etc/hosts
+fi
+#docker-compose exec php /root/.composer/vendor/bin/laravel new ${1}
+docker-compose exec php sudo -u dlaravel sed -i "s/DB_DATABASE=homestead/DB_DATABASE=${1}/" /var/www/html/${1}/.env
+
+#建資料庫
+docker-compose exec db mysql -e "CREATE DATABASE IF NOT EXISTS ${1}"
+
+#授權
+docker-compose exec db mysql -e "grant all on ${1}.* to 'homestead'@'%' IDENTIFIED by 'secret'"
+
+#更新container權限
+docker-compose exec db mysql -e "FLUSH PRIVILEGES"
+
+#拷貝default.conf修改
+#docker exec -ti ${containerName}_web_1 cp /etc/nginx/conf.d/default.conf /etc/nginx/conf.d/${1}.conf
+docker-compose exec web cp /etc/nginx/conf.d/default.conf /etc/nginx/conf.d/${1}.conf
+
+#變更內容
+#docker exec -ti ${containerName}_web_1 sed -i "s/laravel/${1}/g" /etc/nginx/conf.d/${1}.conf
+#docker exec -ti ${containerName}_web_1 sed -i "s/localhost/${1}.dev/" /etc/nginx/conf.d/${1}.conf
+docker-compose exec web sed -i "s/laravel/${1}/g" /etc/nginx/conf.d/${1}.conf
+docker-compose exec web sed -i "s/localhost/${1}.dev/" /etc/nginx/conf.d/${1}.conf
+
+source ./scripts/nginx-reload
+web_port=`docker inspect --format='{{(index (index .NetworkSettings.Ports "80/tcp") 0).HostPort}}'  ${containerName}_web_1`
+echo " http://${1}.dev:${web_port}"
+}
+
+#由container建立Laravel
+function dlaravel_new {
+    echo "Run laravel installer in container: laravel new ${1}"
+    docker exec -ti ${containerName}_php_1 sudo -u dlaravel /home/dlaravel/.composer/vendor/bin/laravel new ${1}
+}
+
+
 #未指定專案名稱
 if [ $# -lt 1 ]; then
     echo "./create [project name]"
@@ -47,8 +89,6 @@ if [[ "${1}" =~ [\.] ]]; then
     exit;
 fi
 
-
-
 #檢測目錄是否已存在
 if [ -e "sites/${1}" ]; then
     echo "The sites/${1} folder exists"
@@ -70,19 +110,9 @@ if [ $? -eq 1 ]; then
             #啟動失敗，停止動作
             exit;
         fi
-            #等待啟動完成
-            while [ ! $? -eq 0  ]
-            do
-            sleep 2
-            docker-compose  -f docker-compose.yml ps |grep ${containerName}_db_1|grep -q Up
-            done
     fi
 fi
 
-function dlaravel_new {
-    echo "Run laravel installer in container: laravel new ${1}"
-    docker exec -ti ${containerName}_php_1 sudo -u dlaravel /home/dlaravel/.composer/vendor/bin/laravel new ${1}
-}
 #安裝新的Laravel
 #檢測本機是否安裝laravel installer
 which laravel >/dev/null 2>&1
@@ -94,47 +124,8 @@ if [ $? -eq 1 ]; then
     #falback用container內的laravel
     if [ ${?} -ne 0 ]; then
         echo "Failback to run installer from container."
-        dlaravel_new
+        dlaravel_new ${1}
     fi
 fi
 
-#echo "CREATE FINISHED"
-
-#檢測hosts檔是否已新增 
-sudo cat /etc/hosts|tr -s " "|grep "127.0.0.1 ${1}.dev"
-#找不到時，就新增至Hosts
-if [ $? -eq 1 ]; then
-    echo "127.0.0.1 ${1}.dev" |sudo tee -a /etc/hosts
-fi
-
-#composer create-project --prefer-dist laravel/laravel ${1}
-while [ ! -f sites/${1}/.env ]
-do
-  sleep 1
-done
-
-#docker-compose exec php /root/.composer/vendor/bin/laravel new ${1}
-docker-compose exec php sed -i "s/DB_DATABASE=homestead/DB_DATABASE=${1}/" /var/www/html/${1}/.env
-
-#建資料庫
-docker-compose exec db mysql -e "CREATE DATABASE IF NOT EXISTS ${1}"
-
-#授權
-docker-compose exec db mysql -e "grant all on ${1}.* to 'homestead'@'%' IDENTIFIED by 'secret'"
-
-#更新container權限
-docker-compose exec db mysql -e "FLUSH PRIVILEGES"
-
-#拷貝default.conf修改
-#docker exec -ti ${containerName}_web_1 cp /etc/nginx/conf.d/default.conf /etc/nginx/conf.d/${1}.conf
-docker-compose exec web cp /etc/nginx/conf.d/default.conf /etc/nginx/conf.d/${1}.conf
-
-#變更內容
-#docker exec -ti ${containerName}_web_1 sed -i "s/laravel/${1}/g" /etc/nginx/conf.d/${1}.conf
-#docker exec -ti ${containerName}_web_1 sed -i "s/localhost/${1}.dev/" /etc/nginx/conf.d/${1}.conf
-docker-compose exec web sed -i "s/laravel/${1}/g" /etc/nginx/conf.d/${1}.conf
-docker-compose exec web sed -i "s/localhost/${1}.dev/" /etc/nginx/conf.d/${1}.conf
-
-source ./scripts/nginx-reload
-web_port=`docker inspect --format='{{(index (index .NetworkSettings.Ports "80/tcp") 0).HostPort}}'  ${containerName}_web_1`
-echo " http://${1}.dev:${web_port}"
+dlaravelconfig  ${1}
