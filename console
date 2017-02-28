@@ -28,7 +28,7 @@ if [ "${1}" == "clear" ]; then
         exit
     else 
         #檢測是否有container啟動中
-        docker ps|grep -q Up
+         docker ps|grep -q Up
         if [ $? -eq 0 ]; then
          docker stop $(docker ps --format '{{.Names}}')
         fi
@@ -120,20 +120,19 @@ exit;
 fi
 
 if [ "${1}" == "up" ]; then
-
     if [ ! -f "${base_path}/docker-compose.yml" ]; then
         echo ${base_path}
         #檔案不存在，進行預設的soft link
         ln -s ${base_path}/docker-compose-random.yml ${base_path}/docker-compose.yml
     fi
-    docker-compose -f ${base_path}/docker-compose.yml up -d
-    fial_exit 
-echo "DB:"
-#設定DB的時區到Asia/Taipei
-${base_path}/scripts/db-ports
-echo "Web:"
-${base_path}/scripts/web-ports
-exit;
+        docker-compose -f ${base_path}/docker-compose.yml up -d
+        fial_exit 
+    echo "DB:"
+        #設定DB的時區到Asia/Taipei
+        ${base_path}/scripts/db-ports
+        echo "Web:"
+        ${base_path}/scripts/web-ports
+    exit;
 fi
 
 #執行
@@ -165,11 +164,11 @@ fi
 
 #啟動時檢測網頁資訊
 if [ "${1}" == "info" ]; then
-echo "DB:"
-${base_path}/scripts/db-ports
-echo "Web:"
-${base_path}/scripts/web-ports
-exit;
+    echo "DB:"
+    ${base_path}/scripts/db-ports
+    echo "Web:"
+    ${base_path}/scripts/web-ports
+    exit;
 fi
 
 #執行ps
@@ -206,7 +205,7 @@ openssl req \
 
 sudo security add-trusted-cert -d -r trustRoot -k "/Library/Keychains/System.keychain" ${base_path}/sites/${2}/ssl/cert.crt
 
-docker ps |grep -q ${containerName}_php_1
+docker-compose -f ${base_path}/docker-compose.yml ps|grep -q php-fpm
 if [ $? -eq 0 ]; then
     source ./scripts/nginx-reload
 fi
