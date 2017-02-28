@@ -2,8 +2,9 @@
 #取得scripts的執行路徑
 base_path="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-function fial_exit {
+function fail_exit {
     if [ $? -eq 1 ]; then
+    docker-compose -f ${base_path}/docker-compose.yml logs
         exit;
     fi
 }
@@ -111,7 +112,7 @@ fi
 if [ "${1}" == "restart" ]; then
 docker-compose -f ${base_path}/docker-compose.yml down
 docker-compose -f ${base_path}/docker-compose.yml up -d
-fial_exit 
+fail_exit ${base_path} 
 echo "DB:"
 ${base_path}/scripts/db-ports
 echo "Web:"
@@ -126,7 +127,7 @@ if [ "${1}" == "up" ]; then
         ln -s ${base_path}/docker-compose-random.yml ${base_path}/docker-compose.yml
     fi
         docker-compose -f ${base_path}/docker-compose.yml up -d
-        fial_exit 
+        fail_exit ${base_path} 
     echo "DB:"
         #設定DB的時區到Asia/Taipei
         ${base_path}/scripts/db-ports
