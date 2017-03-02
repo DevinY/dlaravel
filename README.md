@@ -1,6 +1,6 @@
 
-If you want english explanation, please refers to below link. 
-[D-Laravel English manual](#D-Laravel (English manual))
+If you want english explanation, please refers to below link.   
+[D-Laravel English manual](#d-laravel-english-manual)
 
 
 #D-Laravel 
