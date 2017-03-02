@@ -245,7 +245,7 @@ https://docs.docker.com/docker-for-mac/
 </pre>
 
 
-####2. git clone D- repo and execute "./console pull" in laravel folder
+####2. git clone D-Laravel repo and execute "./console pull" in laravel folder
 <pre>
 git clone https://github.com/DevinY/dlaravel.git
 cd dlaravel
