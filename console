@@ -259,7 +259,7 @@ if [ "${1}" == "" ]; then
         if [ $? -eq 1 ]; then
         docker-compose -f ${base_path}/docker-compose.yml up -d
         fi
-        docker-compose -f ${base_path}/docker-compose.yml  exec php sudo -u dlaravel bash
+        docker-compose -f ${base_path}/docker-compose.yml exec php sudo -u dlaravel bash 
 
     else
     echo "${1} - Parameter not found"
