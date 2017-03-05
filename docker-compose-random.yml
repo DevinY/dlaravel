@@ -35,11 +35,13 @@ services:
   network_mode: "service:web"
 
   environment:
-      MYSQL_DATABASE: homestead
-      MYSQL_USER: homestead
-      MYSQL_PASSWORD: secret
-      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
-      TZ: Asia/Taipei
+   - MYSQL_DATABASE= homestead
+   - MYSQL_USER= homestead
+   - MYSQL_PASSWORD= secret
+   #變更mysql_root預設密碼，請同時調整dlaravle下的etc/mysql/my.cnf
+   - MYSQL_ROOT_PASSWORD=secret
+   #- MYSQL_ALLOW_EMPTY_PASSWORD= "yes"
+   - TZ= Asia/Taipei
 
   volumes:
       - ./etc/mysql/my.cnf:/etc/mysql/my.cnf

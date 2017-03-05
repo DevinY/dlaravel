@@ -88,8 +88,10 @@ cd dlaravel
 
 ####四、停止請在目錄下執行./console down
 <pre>
-注意事項: 這個只是拿來開發測試用的，Mysql的root是沒有密碼的。
+注意事項: 這個只是拿來開發測試用的，MySQL的預設密碼為"secret"。
 你可能需要修改docker-compose.yml啟動時的TZ，目前設為Asia/Taipei
+如果可以由docker-compose.yml的設定中調整MySQL root的密碼，
+請務必同時修改dlaravel/etc/mysql/my.cnf中的密碼設定。
 </pre>
 
 ####五、更新d-laravel bash程式及一些基本設定檔。
@@ -274,8 +276,11 @@ You need to provide privilege to modify /etc/hosts file, so D-Laravel will ask f
 ####4. executing "./console down" in D-Laravel foldee
 <pre>
 Attention:
-D-Laravel is only used for development, Mysql root password is empty.
+D-Laravel is only used for development, Mysql root default root password is "secret".
+
 You may need to revise TZ in docker-compose.yml, default is Asia/Taipei.
+You may change the mysql's root password in docker-compose.yml, but also you
+should change the same root password in etc/mysql/my.cnf.
 </pre>
 
 
