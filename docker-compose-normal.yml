@@ -24,6 +24,9 @@ services:
   volumes:
   - ./etc/php:/usr/local/etc/php
   - ./sites:/var/www/html
+  #environment:
+  #- PHP_IDE_CONFIG=serverName=dlaravel
+  #- XDEBUG_CONFIG="remote_host=???? profiler_enable=1"
   #建立bash_aliases在etc下，可用來自訂dlaravel使用者的環境變數
   #- ./etc/bash_aliases:/home/dlaravel/.bash_aliases
 
