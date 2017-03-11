@@ -21,6 +21,12 @@ echo ${calias}
 exit;
 fi
 
+#移除停址的container
+if [ "${1}" == "rm" ]; then
+    docker-compose -f ${base_path}/docker-compose.yml rm
+    exit;
+fi
+
 # 停止並移除所有啟動中及停用的container
 if [ "${1}" == "clear" ]; then
     echo "Would You like to stop / remove all Docker containers?(y/n)"
