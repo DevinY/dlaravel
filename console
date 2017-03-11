@@ -171,6 +171,8 @@ fi
 
 #啟動時檢測網頁資訊
 if [ "${1}" == "info" ]; then
+    readlink -n ${base_path}/docker-compose.yml
+    echo ""
     echo "DB:"
     ${base_path}/scripts/db-ports
     echo "Web:"
