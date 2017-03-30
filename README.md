@@ -1,5 +1,6 @@
 
-If you want English manual, please refers to below link.   
+If you want English manual, please refers to below link.    
+
 [D-Laravel English manual](#d-laravel-english-manual)
 
 
