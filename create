@@ -21,9 +21,9 @@ docker-compose exec db mysql -e "grant all on ${1}.* to 'homestead'@'%' IDENTIFI
 #更新container權限
 docker-compose exec db mysql -e "FLUSH PRIVILEGES"
 
-#拷貝default.conf修改
-#docker exec -ti ${containerName}_web_1 cp /etc/nginx/conf.d/default.conf /etc/nginx/conf.d/${1}.conf
-docker-compose exec web cp /etc/nginx/conf.d/default.conf /etc/nginx/conf.d/${1}.conf
+#拷貝default.sample修改
+#docker exec -ti ${containerName}_web_1 cp /etc/nginx/conf.d/default.sample /etc/nginx/conf.d/${1}.conf
+docker-compose exec web cp /etc/nginx/conf.d/default.sample /etc/nginx/conf.d/${1}.conf
 
 #變更內容
 #docker exec -ti ${containerName}_web_1 sed -i "s/laravel/${1}/g" /etc/nginx/conf.d/${1}.conf
@@ -68,7 +68,7 @@ if [ "$#" -eq 2 ]; then
             exit
         fi
 
-        cp ./etc/default.conf ./etc/${2}.conf
+        cp ./etc/default.sample ./etc/${2}.conf
         sed -i '' "s/localhost/${2}.dev/" ./etc/${2}.conf
         sed -i '' "s/laravel/${2}/" ./etc/${2}.conf
             sudo cat /etc/hosts|tr -s " "|grep "127.0.0.1 ${2}.dev"

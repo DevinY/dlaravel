@@ -34,6 +34,7 @@ if [ "${1}" == "clear" ]; then
     if [ ${ans} = 'n' ]; then
         exit
     else 
+
         #檢測是否有container啟動中
          docker ps|grep -q Up
         if [ $? -eq 0 ]; then
@@ -127,6 +128,11 @@ exit;
 fi
 
 if [ "${1}" == "up" ]; then
+    #建立基本的nginx conf
+    if [ ! -f "${base_path}/etc/dlaravel_default.conf" ]; then
+        cp ${base_path}/etc/default.sample ${base_path}/etc/dlaravel_default.conf
+    fi
+
     if [ ! -f "${base_path}/docker-compose.yml" ]; then
         echo ${base_path}
         #檔案不存在，進行預設的soft link

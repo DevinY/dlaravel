@@ -22,7 +22,7 @@ if [ "${1}" == "uninstall" ]; then
     exit; 
 fi
 
-echo "重整hosts檔，並移除hosts內所有的*.dev域名，並且使用sites資料夾重建嗎?(y/n)"
+echo "重整hosts檔，將移除/etc/hosts內所有的*.dev域名及dlaravel的etc/*.conf所有nginx設定檔，使用sites資料夾重建設定嗎?(y/n)"
 read  ans
 if [ ${ans} = 'n' ]; then
         exit
@@ -47,6 +47,17 @@ sudo mv ./etc/hosts_temp /etc/hosts
 #調整權限
 sudo chown root /etc/hosts
 sudo chgrp wheel /etc/hosts
+#重建 *.conf
+#移除nginx下的所有*.conf的設定檔
+find ./etc -name "*.conf" -exec rm {} \; 
+for D in `find ./sites -maxdepth 1 -type d|sed 's#./sites/##'`
+do
+    if [ ${D} != './sites' ]; then
+        cp ./etc/default.sample ./etc/${D}.conf
+        sed -i '' "s/localhost/${D}.dev/" ./etc/${D}.conf
+        sed -i '' "s/laravel/${D}/" ./etc/${D}.conf
+    fi
+done
 fi
 #移除暫存的檔案
 rm ./etc/dlaravel_sites
