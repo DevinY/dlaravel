@@ -201,8 +201,9 @@ if [ ! -d "${base_path}/sites/${2}" ]; then
     exit
 fi
 #檢測project是否有ssl的資料夾
-if [ ! -d "${base_path}/sites/${2}/ssl" ]; then
-    mkdir -p "${base_path}/sites/${2}/ssl"
+if [ ! -d "${base_path}/etc/ssl/${2}" ]; then
+#    /etc/nginx/conf.d
+    mkdir -p "${base_path}/etc/ssl/${2}"
 fi
 
 #拷nginx ssl的sample設定
@@ -213,12 +214,12 @@ sed -i '' "s/laravel/${2}/" ./etc/${2}-ssl.conf
 
 openssl req \
 -subj "/C=TW/ST=Taiwan/L=Panchiao/CN=${2}.dev" \
--new -newkey rsa:2048 -sha256 -days 3650 -nodes -x509 -keyout ${base_path}/sites/${2}/ssl/cert.key -out ${base_path}/sites/${2}/ssl/cert.crt
+-new -newkey rsa:2048 -sha256 -days 3650 -nodes -x509 -keyout ${base_path}/etc/ssl/${2}/cert.key -out ${base_path}/etc/ssl/${2}/cert.crt
 
 #不管有沒有先刪一次
 #sudo security delete-certificate -c "${2}.dev" -t /Library/Keychains/System.keychain
 
-sudo security add-trusted-cert -d -r trustRoot -k "/Library/Keychains/System.keychain" ${base_path}/sites/${2}/ssl/cert.crt
+sudo security add-trusted-cert -d -r trustRoot -k "/Library/Keychains/System.keychain" ${base_path}/etc/ssl/${2}/cert.crt
 
 docker-compose -f ${base_path}/docker-compose.yml ps|grep -q php-fpm
 if [ $? -eq 0 ]; then
