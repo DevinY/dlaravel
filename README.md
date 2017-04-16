@@ -122,8 +122,8 @@ git pull
 PHP: (OFFICIAL REPOSITORY重build符合Laravel環境)
 https://hub.docker.com/r/deviny/fpm/tags/
 <pre>
- image: deviny/fpm:7.1.3
- image: deviny/fpm:7.0.17
+ image: deviny/fpm:7.1.4
+ image: deviny/fpm:7.0.18
  image: deviny/fpm:5.6.30
 </pre>
 
@@ -312,8 +312,8 @@ Ex. Create project manually by using lumen
 #### Adjust images in setting
 PHP: [Official repository rebuilds php to fit Laravel environment](https://hub.docker.com/r/deviny/fpm/tags/)
 <pre>
- image: deviny/fpm:7.1.3
- image: deviny/fpm:7.0.17
+ image: deviny/fpm:7.1.4
+ image: deviny/fpm:7.0.18
  image: deviny/fpm:5.6.30
 </pre>
 
