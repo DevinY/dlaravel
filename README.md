@@ -267,7 +267,7 @@ ex.
 It will build http://test1.dev website (can't be accessed from outside)
 So you can use this command to build many different projects.
 
-You need to provide privilege to modify /etc/hosts file, so D-Laravel will ask for your systme number during executing "./create project". (Mac OS using only)
+You need to provide privilege to modify /etc/hosts file, so D-Laravel will ask for your systme password during executing "./create project". (Mac OS using only)
 </pre>
 
 
