@@ -201,25 +201,40 @@ if [ ! -d "${base_path}/sites/${2}" ]; then
     exit
 fi
 #檢測project是否有ssl的資料夾
-if [ ! -d "${base_path}/etc/ssl/${2}" ]; then
-#    /etc/nginx/conf.d
-    mkdir -p "${base_path}/etc/ssl/${2}"
-fi
+#if [ ! -d "${base_path}/etc/ssl/${2}" ]; then
+#    mkdir -p "${base_path}/etc/ssl/${2}"
+#fi
 
 #拷nginx ssl的sample設定
-cp ./etc/default-ssl.sample ./etc/${2}-ssl.conf
+cp ./etc/default-ssl.sample ${base_path}/etc/${2}-ssl.conf
 
 #變更文字
-sed -i '' "s/laravel/${2}/" ./etc/${2}-ssl.conf
+sed -i '' "s/laravel/${2}/" ${base_path}/etc/${2}-ssl.conf
+
+#產生設定檔 
+cp ${base_path}/etc/v3.sample ${base_path}/etc/v3.ext
+FILES=${base_path}/etc/*
+dns_index=1
+for f in $FILES
+do
+if [[ "$f" = *-ssl\.conf ]]; then
+        cat ${f}|grep server_name|sed "s/server_name/DNS.${dns_index}=/" >> ${base_path}/etc/v3.ext
+        #移除分號
+        sed -i '' "s/;//g" ${base_path}/etc/v3.ext
+        dns_index=$(($dns_index+1))
+fi
+done
+sudo security delete-certificate -c "dlaravel.dev" -t /Library/Keychains/System.keychain
 
 openssl req \
--subj "/C=TW/ST=Taiwan/L=Panchiao/CN=${2}.dev" \
--new -newkey rsa:2048 -sha256 -days 3650 -nodes -x509 -keyout ${base_path}/etc/ssl/${2}/cert.key -out ${base_path}/etc/ssl/${2}/cert.crt
+-new -newkey rsa:2048 -sha256 \
+-days 3650 -nodes -x509 -keyout ${base_path}/etc/ssl/cert.key -out ${base_path}/etc/ssl/cert.crt \
+-config ${base_path}/etc/v3.ext -extensions 'v3_req'
 
 #不管有沒有先刪一次
 #sudo security delete-certificate -c "${2}.dev" -t /Library/Keychains/System.keychain
 
-sudo security add-trusted-cert -d -r trustRoot -k "/Library/Keychains/System.keychain" ${base_path}/etc/ssl/${2}/cert.crt
+sudo security add-trusted-cert -d -r trustRoot -k "/Library/Keychains/System.keychain" ${base_path}/etc/ssl/cert.crt
 
 docker-compose -f ${base_path}/docker-compose.yml ps|grep -q php-fpm
 if [ $? -eq 0 ]; then
