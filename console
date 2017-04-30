@@ -226,11 +226,9 @@ fi
 done
 
 #移除所有已存在的
-hashes=$(security find-certificate -c "dlaravel.dev" -a -Z|grep SHA-1|awk '{ print $NF }')
-for hash in $hashes; do
-#    echo deleting $hash
-    sudo security delete-certificate -Z $hash
-done
+security find-certificate -c "dlaravel.dev" -a -Z | \
+  sudo awk '/SHA-1/{system("security delete-certificate -Z "$NF)}'
+
 
 openssl req \
 -new -newkey rsa:2048 -sha256 \
