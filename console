@@ -224,7 +224,13 @@ if [[ "$f" = *-ssl\.conf ]]; then
         dns_index=$(($dns_index+1))
 fi
 done
-sudo security delete-certificate -c "dlaravel.dev" -t /Library/Keychains/System.keychain
+
+#移除所有已存在的
+hashes=$(security find-certificate -c "dlaravel.dev" -a -Z|grep SHA-1|awk '{ print $NF }')
+for hash in $hashes; do
+#    echo deleting $hash
+    sudo security delete-certificate -Z $hash
+done
 
 openssl req \
 -new -newkey rsa:2048 -sha256 \
