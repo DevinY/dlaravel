@@ -200,10 +200,10 @@ if [ ! -d "${base_path}/sites/${2}" ]; then
     echo "Unabel to find project \"${2}\"!" 
     exit
 fi
-#檢測project是否有ssl的資料夾
-#if [ ! -d "${base_path}/etc/ssl/${2}" ]; then
-#    mkdir -p "${base_path}/etc/ssl/${2}"
-#fi
+檢測project是否有ssl的資料夾
+if [ ! -d "${base_path}/etc/ssl" ]; then
+    mkdir -p "${base_path}/etc/ssl"
+fi
 
 #拷nginx ssl的sample設定
 cp ./etc/default-ssl.sample ${base_path}/etc/${2}-ssl.conf
