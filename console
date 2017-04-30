@@ -200,7 +200,7 @@ if [ ! -d "${base_path}/sites/${2}" ]; then
     echo "Unabel to find project \"${2}\"!" 
     exit
 fi
-檢測project是否有ssl的資料夾
+#檢測project是否有ssl的資料夾
 if [ ! -d "${base_path}/etc/ssl" ]; then
     mkdir -p "${base_path}/etc/ssl"
 fi
