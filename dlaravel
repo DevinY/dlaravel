@@ -11,7 +11,9 @@ fi
 
 #移除系統上所有的containers及images及hosts
 if [ "${1}" == "uninstall" ]; then
-    echo "注意!!將清空所有的docker images及containers及在hosts內的所有*.dev設定(y/n)"
+    echo "Warning!!All your docker images and containers will be removed!!"
+    echo "Please make sure you know what you are doing."
+    echo "警告!!將清空所有的docker images及containers及在hosts內的所有*.dev設定(y/n)"
     read  ans
         if [ ${ans} = 'y' ]; then
         docker-compose -f docker-compose.yml down --remove-orphans > /dev/null 2>&1
@@ -49,15 +51,13 @@ sudo chown root /etc/hosts
 sudo chgrp wheel /etc/hosts
 #重建 *.conf
 #移除nginx下的所有*.conf的設定檔
+mv ./etc/default.conf ./etc/default.temp
+mv ./etc/default-ssl.conf ./etc/default-ssl.temp
 find ./etc -name "*.conf" -exec rm {} \; 
-for D in `find ./sites -maxdepth 1 -type d|sed 's#./sites/##'`
-do
-    if [ ${D} != './sites' ]; then
-        cp ./etc/default.sample ./etc/${D}.conf
-        sed -i '' "s/localhost/${D}.dev/" ./etc/${D}.conf
-        sed -i '' "s/laravel/${D}/" ./etc/${D}.conf
-    fi
-done
+#還原
+mv ./etc/default.temp ./etc/default.conf
+mv ./etc/default-ssl.temp ./etc/default-ssl.conf
+
 fi
 #移除暫存的檔案
 rm ./etc/dlaravel_sites

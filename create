@@ -62,17 +62,6 @@ fi
 #只建立nginx的設定檔
 if [ "$#" -eq 2 ]; then
     if [ "${1}" = "--conf" ]; then
-        grep -r "server_name ${2}.dev" --include="*.conf" --color ./etc
-        #如果已存在，就不進行
-        if [ $? -eq 0 ]; then
-            echo "server_name ${2}.dev exists"
-            echo "create failed!"
-            exit
-        fi
-
-        cp ./etc/default.sample ./etc/${2}.conf
-        sed -i '' "s/localhost/${2}.dev/" ./etc/${2}.conf
-        sed -i '' "s/laravel/${2}/" ./etc/${2}.conf
             sudo cat /etc/hosts|tr -s " "|grep "127.0.0.1 ${2}.dev"
             #找不到時，就新增至Hosts
             if [ $? -eq 1 ]; then
