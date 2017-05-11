@@ -9,6 +9,11 @@ sudo cat /etc/hosts|tr -s " "|grep "127.0.0.1 ${1}.dev"
 if [ $? -eq 1 ]; then
     echo "127.0.0.1 ${1}.dev" |sudo tee -a /etc/hosts
 fi
+sudo cat /etc/hosts|tr -s " "|grep "127.0.0.1 www.${1}.dev"
+if [ $? -eq 1 ]; then
+    echo "127.0.0.1 www.${1}.dev" |sudo tee -a /etc/hosts
+fi
+
 #docker-compose exec php /root/.composer/vendor/bin/laravel new ${1}
 docker-compose exec php sudo -u dlaravel sed -i "s/DB_DATABASE=homestead/DB_DATABASE=${1}/" /var/www/html/${1}/.env
 
@@ -22,14 +27,11 @@ docker-compose exec db mysql -e "grant all on ${1}.* to 'homestead'@'%' IDENTIFI
 docker-compose exec db mysql -e "FLUSH PRIVILEGES"
 
 #拷貝default.sample修改
-#docker exec -ti ${containerName}_web_1 cp /etc/nginx/conf.d/default.sample /etc/nginx/conf.d/${1}.conf
-docker-compose exec web cp /etc/nginx/conf.d/default.sample /etc/nginx/conf.d/${1}.conf
+#docker-compose exec web cp /etc/nginx/conf.d/default.sample /etc/nginx/conf.d/${1}.conf
 
 #變更內容
-#docker exec -ti ${containerName}_web_1 sed -i "s/laravel/${1}/g" /etc/nginx/conf.d/${1}.conf
-#docker exec -ti ${containerName}_web_1 sed -i "s/localhost/${1}.dev/" /etc/nginx/conf.d/${1}.conf
-docker-compose exec web sed -i "s/laravel/${1}/g" /etc/nginx/conf.d/${1}.conf
-docker-compose exec web sed -i "s/localhost/${1}.dev/" /etc/nginx/conf.d/${1}.conf
+#docker-compose exec web sed -i "s/laravel/${1}/g" /etc/nginx/conf.d/${1}.conf
+#docker-compose exec web sed -i "s/localhost/${1}.dev/" /etc/nginx/conf.d/${1}.conf
 
 source ./scripts/nginx-reload
 web_port=`docker inspect --format='{{(index (index .NetworkSettings.Ports "80/tcp") 0).HostPort}}'  ${containerName}_web_1`

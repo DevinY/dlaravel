@@ -47,8 +47,8 @@ D-laravel停止時，不會佔用80埠，拜docker-compose之賜，極易調整L
 ./console alias    (印出console的別名範本，自行加到.bashrc或.zshrc永久生效)
 
 為了讓Chrome正常顯示，需要把生成的域名存入系統鑰匙圈中，因此會詢問系統密碼(MacOS only)。
-./console secure test1 
-(https://test1.dev 網址)
+./console secure
+更新，並加密所有sites資料夾內的域名
 </pre>
 
 #### 主要目錄結構

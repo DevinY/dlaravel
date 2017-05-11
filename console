@@ -128,11 +128,6 @@ exit;
 fi
 
 if [ "${1}" == "up" ]; then
-    #建立基本的nginx conf
-    if [ ! -f "${base_path}/etc/dlaravel_default.conf" ]; then
-        cp ${base_path}/etc/default.sample ${base_path}/etc/dlaravel_default.conf
-    fi
-
     if [ ! -f "${base_path}/docker-compose.yml" ]; then
         echo ${base_path}
         #檔案不存在，進行預設的soft link
@@ -195,40 +190,22 @@ fi
 
 #使用self-signed的憑證 
 if [ "${1}" == "secure" ]; then
-#檢測Project資料夾
-if [ ! -d "${base_path}/sites/${2}" ]; then
-    echo "Unabel to find project \"${2}\"!" 
-    exit
-fi
 #檢測project是否有ssl的資料夾
 if [ ! -d "${base_path}/etc/ssl" ]; then
     mkdir -p "${base_path}/etc/ssl"
 fi
 
-#拷nginx ssl的sample設定
-cp ./etc/default-ssl.sample ${base_path}/etc/${2}-ssl.conf
-
-#變更文字
-sed -i '' "s/laravel/${2}/" ${base_path}/etc/${2}-ssl.conf
-
 #產生設定檔 
 cp ${base_path}/etc/v3.sample ${base_path}/etc/v3.ext
-FILES=${base_path}/etc/*
-dns_index=1
-for f in $FILES
-do
-if [[ "$f" = *-ssl\.conf ]]; then
-        cat ${f}|grep server_name|sed "s/server_name/DNS.${dns_index}=/" >> ${base_path}/etc/v3.ext
-        #移除分號
-        sed -i '' "s/;//g" ${base_path}/etc/v3.ext
-        dns_index=$(($dns_index+1))
-fi
+for server_name in $(ls -d ${base_path}/sites/*|rev|cut -d/ -f1|rev); do 
+    echo "DNS.${dns_index}=www.${server_name}.dev" >> ${base_path}/etc/v3.ext
+    echo "DNS.${dns_index}=${server_name}.dev" >> ${base_path}/etc/v3.ext
+    dns_index=$(($dns_index+1))
 done
 
 #移除所有已存在的
 security find-certificate -c "dlaravel.dev" -a -Z | \
   sudo awk '/SHA-1/{system("security delete-certificate -Z "$NF)}'
-
 
 openssl req \
 -new -newkey rsa:2048 -sha256 \

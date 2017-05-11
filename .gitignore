@@ -1,11 +1,10 @@
 etc/*
 !etc/mysql
 !etc/php
-!etc/default.sample
-!etc/default-ssl.sample
+!etc/default.conf
+!etc/default-ssl.conf
 etc/php/php.ini
 ext/
-sites/
 run/
 *.swp
 data/
