@@ -190,6 +190,24 @@ fi
 
 #使用self-signed的憑證 
 if [ "${1}" == "secure" ]; then
+#檢測sites內的資料夾數量
+projectNum=`ls ${base_path}/sites/|wc -l`
+if [ ${projectNum} -eq 0 ]; then
+    echo "No Projects are found, you can create one by following command."
+    echo "For example as below:"
+    echo "./create [project name]"
+    echo "or";
+    echo "To manually create new default project:"
+    echo "mkdir -p sites/default/public;touch sites/default/public/index.php"
+    exit;
+fi
+
+#檢測是否有nginx的ssl設定檔了
+if [ ! -f "${base_path}/etc/default-ssl.conf" ]; then
+   cp ${base_path}/etc/default-ssl.sample ${base_path}/etc/default-ssl.conf
+fi
+
+
 #檢測project是否有ssl的資料夾
 if [ ! -d "${base_path}/etc/ssl" ]; then
     mkdir -p "${base_path}/etc/ssl"

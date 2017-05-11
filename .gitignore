@@ -2,7 +2,7 @@ etc/*
 !etc/mysql
 !etc/php
 !etc/default.conf
-!etc/default-ssl.conf
+!etc/default-ssl.sample
 etc/php/php.ini
 ext/
 run/
