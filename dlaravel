@@ -52,11 +52,17 @@ sudo chgrp wheel /etc/hosts
 #重建 *.conf
 #移除nginx下的所有*.conf的設定檔
 mv ./etc/default.conf ./etc/default.temp
-mv ./etc/default-ssl.conf ./etc/default-ssl.temp
+#檢測是否有ssl.conf
+if [ -f "./etc/default-ssl.conf" ]; then
+    mv ./etc/default-ssl.conf ./etc/default-ssl.temp
+fi
 find ./etc -name "*.conf" -exec rm {} \; 
 #還原
 mv ./etc/default.temp ./etc/default.conf
+
+if [ -f "./etc/default-ssl.temp" ]; then
 mv ./etc/default-ssl.temp ./etc/default-ssl.conf
+fi
 
 fi
 #移除暫存的檔案
