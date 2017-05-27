@@ -6,7 +6,7 @@ If you want English manual, please refers to below link.  
 
 # D-Laravel
 
-D-Laravel採用了dockr-compose的微服務架構，
+D-Laravel採用了docker-compose的微服務架構，
 
 經由超簡易的console及create指令，幫您快速建立出基本的Laravel開發環境，
 
@@ -107,12 +107,12 @@ git pull
 ./create [project名稱] 會建立及下載laravel，搞定一切設定，包含資料庫，
 但如果是一個已存在的Project，只需有nginx的設定，應該怎麼做呢?
 
-使用--conf產生nginx的網頁伺服器設定檔。(會建立在dlaravel/etc資料夾下)
-./create --conf [project名稱] 例如:project1
+使用--conf 即可修改系統的/etc/hosts檔，加入project的域名，如: project1.dev。
+./create --conf [project名稱] 例如:./create --conf project1
 
 可以將已存在的Laravel專案移到sites資料夾內。
 
-或是手動方式執行composer create-project (非預設的版本等)
+或是使用composer create-project指令建立Project.
 例如使用手動指令手動建立Project，這裡用lumen示範。
 ./console exec，可用於執行php contaiener內的命令
 
@@ -150,6 +150,10 @@ db:
 如果您想學習或重build自己php的fpm image版本，例如擴展php的功能，
 那麼可到下方連結參考，就可了解dlaravel的fpm image怎麼來的，及如何用docker重build一個自己的phpfpm image。
 https://github.com/DevinY/fpm/blob/master/README.md
+
+YouTube上操作如何重build fpm image的過程。
+
+https://www.youtube.com/watch?v=vzCcWpWstP4
 
 Docker指令及DevinY/dlaravel提供的./console的bash指令
 
@@ -293,8 +297,8 @@ You can git pull latest version and setting in D-Laravel folder.
 ./create [project name] will create and build laravel, it would set all configures automatically including DB.
 But how do we do if project already exists and only needs nginx setting?
 
-Using "--conf" to generate server setting. (It will be created in D-Laravel/etc folder)
-./create --conf [project name]
+Using "--conf" to update /etc/hosts file, for example: "127.0.0.1 project1.dev". 
+./create --conf [project name] (./create --conf project1)
 
 
 You can move exist Laravel project to D-Laravel site folder.
