@@ -159,7 +159,7 @@ if [ "${1}" == "exec" ]; then
             number=$((${number} + 1));
             if [ ${number} -eq 2 ]; then
                 #echo ${@}
-                docker-compose -f ${base_path}/docker-compose.yml exec php ${@} 
+                ${winpty} docker-compose -f ${base_path}/docker-compose.yml exec php ${@} 
                 exit
             fi
         shift
@@ -174,7 +174,7 @@ fi
 
 #進資料庫
 if [ "${1}" == "mysql" ]; then
-docker-compose -f ${base_path}/docker-compose.yml exec db mysql
+${winpty} docker-compose -f ${base_path}/docker-compose.yml exec db mysql
 exit;
 fi
 
@@ -252,13 +252,13 @@ fi
 
 #顯示log
 if [ "${1}" == "logs" ]; then
-    docker-compose -f ${base_path}/docker-compose.yml logs -f web
+    ${winpty} docker-compose -f ${base_path}/docker-compose.yml logs -f web
 exit
 fi
 
 #重新載入nginx設定
 if [ "${1}" == "reload" ]; then
-docker-compose -f ${base_path}/docker-compose.yml exec web nginx -s reload
+    ${winpty} docker-compose -f ${base_path}/docker-compose.yml exec web nginx -s reload
 exit
 fi
 function help {
@@ -292,7 +292,7 @@ fi
 if [ "${1}" == "" ]; then
 
         #檢測是否執行
-        ${winpty} docker-compose -f ${base_path}/docker-compose.yml ps |grep -q 9000
+        docker-compose -f ${base_path}/docker-compose.yml ps |grep -q 9000
         if [ $? -eq 1 ]; then
         ${winpty} docker-compose -f ${base_path}/docker-compose.yml up -d
         fi
