@@ -2,9 +2,17 @@
 #取得scripts的執行路徑
 base_path="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
+winpty=""
+#is windows
+which winpty >/dev/null 2>&1
+if [ $? -eq 0 ]; then
+    winpty=`which winpty`
+    hosts_file='/c/Windows/system32/drivers/etc/hosts'
+fi
+
 function fail_exit {
     if [ $? -eq 1 ]; then
-    docker-compose -f ${base_path}/docker-compose.yml logs
+    ${winpty} docker-compose -f ${base_path}/docker-compose.yml logs
         exit;
     fi
 }
@@ -284,11 +292,11 @@ fi
 if [ "${1}" == "" ]; then
 
         #檢測是否執行
-        docker-compose -f ${base_path}/docker-compose.yml ps |grep -q 9000
+        ${winpty} docker-compose -f ${base_path}/docker-compose.yml ps |grep -q 9000
         if [ $? -eq 1 ]; then
-        docker-compose -f ${base_path}/docker-compose.yml up -d
+        ${winpty} docker-compose -f ${base_path}/docker-compose.yml up -d
         fi
-        docker-compose -f ${base_path}/docker-compose.yml exec php sudo -u dlaravel bash 
+        ${winpty} docker-compose -f ${base_path}/docker-compose.yml exec php sudo -u dlaravel bash 
 
     else
     echo "${1} - Parameter not found"

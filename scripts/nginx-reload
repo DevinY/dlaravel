@@ -3,5 +3,5 @@ currentPath=`pwd`
 source ${currentPath}/scripts/checker
 
 echo "Reload web service: ${containerName}_web_1"
-docker exec -ti ${containerName}_web_1 nginx -s reload
+${winpty} docker exec -ti ${containerName}_web_1 nginx -s reload
 
