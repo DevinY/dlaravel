@@ -18,7 +18,7 @@ D-Laravel採用了docker-compose的微服務架構，
 
 提供簡易的Bash執行docker-compose指令，快速生成laravel專案環境。
 
-可用最新的PHP在Mac OS上執行。
+可用最新的PHP在Mac OS、Linux、Widnows 10的gitbash環境執行。
 
 快速產生self-signed自我簽署的憑證，並完成HTTPS設定。
 
@@ -46,7 +46,8 @@ D-laravel停止時，不會佔用80埠，拜docker-compose之賜，極易調整L
 (打./console指令太長了嗎，上方指令可暫時用c代表./console，所以執行後，輸入:c info、c up或c down..即可執行。)
 ./console alias    (印出console的別名範本，自行加到.bashrc或.zshrc永久生效)
 
-為了讓Chrome正常顯示，需要把生成的域名存入系統鑰匙圈中，因此會詢問系統密碼(MacOS only)。
+為了讓Chrome正常顯示，需要把生成的域名存入系統鑰匙圈中，
+因此會詢問系統密碼(此功能只支援MacOS系統)。
 ./console secure
 更新，並加密所有sites資料夾內的域名
 </pre>
@@ -62,30 +63,37 @@ console(簡化的bash，用來快速使用各種docker-compose的命令。例如
 docker-compose.yml (一個softlink，連結到不同的設定檔，例如:./console custom，即何將連結連到docker-compose-custom.yml)
 </pre>
 
-#### 一、請先安裝docker-for-mac
+#### 一、請先安裝docker
 <pre>
+Mac OS系統:
 https://docs.docker.com/docker-for-mac/
+
+Windows 10:
+docker + gitbash環境
+
+建議:
+
+可在系統上安裝Laravel installer(非必要，但可加快建立Project的速度)
+您需安裝php及composer，然後執行:
+composer global require "laravel/installer"
 </pre>
 
-#### 二、例如用git clone這個repo，並進入laravel資料夾，然後執行：./console pull。
+#### 二、例如:可用git clone下載這個repo，並進入dlaravel工作目錄。
 <pre>
 git clone https://github.com/DevinY/dlaravel.git
 cd dlaravel
-
-下方pull的動作是可以略過，啟動時，會依docker-compose.yml的設定自動下載所需的images。
-./console pull
-當第一次執行會花較久的時間從dockhub上，下載docker-compose所需要的images.
 </pre>
 
 #### 三、執行./create ['project name'] 建立開發專案
 <pre>
-例如:
+例如: (第一次執行會自動下載所需的Image，需較長的時間)
 ./create test1
+
 那麼就會建立出 http://test1.dev 網站(本機測試用的外部無法存取)。
 可以建立多個project站台
 
-需有系統權修改/etc/hosts檔，./create的過程中會需要詢問您的系統密碼:
-目前只可在Mac OS上使用。
+由於create的bash需有系統權修改/etc/hosts檔，./create的過程中會需要詢問您的系統密碼:
+create指令、可在Mac OS、Linux及Windows 10的gitbash環境使用。
 </pre>
 
 
