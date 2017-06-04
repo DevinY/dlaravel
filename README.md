@@ -56,6 +56,7 @@ D-laravel停止時，不會佔用80埠，拜docker-compose之賜，極易調整L
 etc/   (nginx、php.ini及mysql的相關設定檔)
 data/  (mysql的資料檔案，./console up 自動生成)
 sites/ (專案的資夾，./create test1時，會建立在這個此目錄下)
+samples/ (一些設定範本，例如: php.ini及一些額外的docker-compose yaml檔設定)
 create (簡化的bash，用來快速的建立laravel的專案)
 console(簡化的bash，用來快速使用各種docker-compose的命令。例如:./console mysql即可進入mysql)
 docker-compose.yml (一個softlink，連結到不同的設定檔，例如:./console custom，即何將連結連到docker-compose-custom.yml)
