@@ -18,6 +18,9 @@ if [ ${projectNum} -gt 0 ]; then
     #for Mac
     if [ ${hosts_file} == '/etc/hosts' ]; then
 for i in $(ls -d ${projectFolder}/sites/*|rev|cut -d/ -f1|rev); do 
+        if [ ${i} == 'xdebug.log' ]; then
+            continue
+        fi
         if [ ${web_port} == 80 ]; then
         echo -n http://;echo ${i}.dev|cut -d/ -f 2; 
         else
