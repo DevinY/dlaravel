@@ -37,9 +37,9 @@ services:
   network_mode: "service:web"
 
   environment:
-   - MYSQL_DATABASE= homestead
-   - MYSQL_USER= homestead
-   - MYSQL_PASSWORD= secret
+   - MYSQL_DATABASE=homestead
+   - MYSQL_USER=homestead
+   - MYSQL_PASSWORD=secret
    - MYSQL_ALLOW_EMPTY_PASSWORD= "yes"
    - TZ= Asia/Taipei
 

@@ -33,10 +33,10 @@ docker-compose exec php sudo -u dlaravel sed -i "s/DB_DATABASE=homestead/DB_DATA
     fi
 
 #建資料庫
-${winpty} docker-compose exec db mysql -e "CREATE DATABASE IF NOT EXISTS ${1}"
+${winpty} docker-compose exec db mysql -e "CREATE DATABASE IF NOT EXISTS \`${1}\`"
 
 #授權
-${winpty} docker-compose exec db mysql -e "grant all on ${1}.* to 'homestead'@'%' IDENTIFIED by 'secret'"
+${winpty} docker-compose exec db mysql -e "grant all on \`${1}\`.* to 'homestead'@'%' IDENTIFIED by 'secret'"
 
 #更新container權限
 ${winpty} docker-compose exec db mysql -e "FLUSH PRIVILEGES"
