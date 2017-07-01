@@ -265,6 +265,8 @@ function help {
     echo "usage: ${0} [<option>]"
     echo ""
     echo "options:"
+    if [ "${LANG:0:2}" = "zh" ]; then
+
     echo "  up : 建立並啟動container。"
     echo "  down : 停止並移除container。"
     echo "  restart : 停止再啟動down and up，不明怪問題時應該有用"
@@ -282,9 +284,41 @@ function help {
     echo "  exec : 執行php container內的命令，例如: ./console exec php -v"
     echo "  clear : 移除所有docker ps -a 所有停止的Container!!包含您自己過去創建的所有停止的container哦!!"
     echo "  ./console : 進入php container內"
+        else
+    echo "  up : Run containers in the background."
+    echo "  down : Stops containers and removes containers, networks, volumes, and images created by up."
+    echo "  restart : docker-compose down and docker-compose up."
+    echo "  ps : Lists Contaienrs. (docker-compose -f ${base_path}/docker-compose.yml ps)"
+    echo "  alias : Display console's alias setting."
+    echo "  logs : web service'slog, ctrl+c to stop."
+    echo "  info : list webs and port of database."
+    echo "  reload : Reload nginx."
+    echo "  mysql : Enter mysql interactive mode."
+    echo "  link : Display current link of docker-compose file."
+    echo "  secure: Add self-signed ceftifiecate, to enable https support."
+    echo "  normal : change docker-compose.yal link to docker-compose-normal.yml, for using ports 80:443:3306"
+    echo "  random : change docker-compose.yml link to docker-compose-random.yml，for using random ports，you can check issue ./console ps"
+    echo "  custom : change docker-compose.yml link link to docker-compose-custom.yml， for custom purpose."
+    echo "  exec : exec php container's command， for example: ./console exec php -v"
+    echo "  clear : Remove all your containers that listed by docker ps -a !!"
+    echo "  ./console : Enter php container"
+    echo ""
+    echo "I'm not native speak in English, please feel free to send me PR to fix the help."
+
+    fi
 }
 #說明
 if [ "${1}" == "help" ]; then
+    help
+    exit;
+fi
+
+if [ "${1}" == "-h" ]; then
+    help
+    exit;
+fi
+
+if [ "${1}" == "--help" ]; then
     help
     exit;
 fi

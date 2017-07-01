@@ -1,6 +1,28 @@
 #!/bin/bash
 source ./scripts/checker
 
+function help {
+    echo "usage: ${0} [<option>] [Project name]"
+    echo ""
+    echo "Example"
+    echo "./create [project name]: Create a new laravel proejct into sites folder."
+    echo ""
+    echo "options:"
+    echo "  --help : help"
+    echo "  --host [project name]: Adding [project name].dev to /etc/hosts, But don't want to install laravel framework."
+}
+#說明
+if [ "${1}" == "--help" ]; then
+    help
+    exit;
+fi
+
+#未指定專案名稱
+if [ $# -lt 1 ]; then
+    help
+    exit;
+fi
+
 #check winpty
 function dlaravelconfig {
     if [ ${hosts_file} == '/etc/hosts' ]; then
@@ -74,11 +96,36 @@ function dlaravel_new {
 }
 
 
-#未指定專案名稱
-if [ $# -lt 1 ]; then
-    echo "./create [project name]"
-    echo "./create --conf [project name] : 只建立nginx設定檔"
-    exit;
+#create --host
+if [ "$#" -eq 2 ]; then
+    if [ "${1}" = "--host" ]; then
+            
+            if [ ${hosts_file} == '/etc/hosts' ]; then
+                sudo cat /etc/hosts|tr -s " "|grep "127.0.0.1 ${2}.dev"
+                #找不到時，就新增至Hosts
+                if [ $? -eq 1 ]; then
+                echo "127.0.0.1 ${2}.dev" |sudo tee -a /etc/hosts
+                fi
+                else
+
+                #for windows 10
+                cat /c/Windows/System32/drivers/etc/hosts|grep "127.0.0.1 ${2}.dev"
+                if [ $? -eq 1 ]; then
+                echo 127.0.0.1 ${2}.dev >> /c/Windows/System32/drivers/etc/hosts  
+                fi
+            fi
+
+            docker ps |grep -q ${containerName}_php_1
+            if [ $? -eq 0 ]; then
+                source ./scripts/nginx-reload
+            fi
+        echo "To manually create new empty project:"
+        echo "mkdir -p sites/${2}/public;touch sites/${2}/public/index.php"
+        exit
+    fi
+
+    echo "./create --conf ['project name']"
+    exit
 fi
 
 #只建立nginx的設定檔
