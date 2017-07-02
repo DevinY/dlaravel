@@ -303,7 +303,7 @@ function help {
     echo "  clear : Remove all your containers that listed by docker ps -a !!"
     echo "  ./console : Enter php container"
     echo ""
-    echo "I'm not native speak in English, please feel free to send me PR to fix the help."
+    echo "I'm not native speaker in English, please feel free to send me a PR to fix the help."
 
     fi
 }
