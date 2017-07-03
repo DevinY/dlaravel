@@ -224,9 +224,10 @@ fi
 #產生設定檔 
 cp ${base_path}/etc/v3.sample ${base_path}/etc/v3.ext
 for server_name in $(ls -d ${base_path}/sites/*|rev|cut -d/ -f1|rev); do 
-    echo "DNS.${dns_index}=www.${server_name}.dev" >> ${base_path}/etc/v3.ext
-    echo "DNS.${dns_index}=${server_name}.dev" >> ${base_path}/etc/v3.ext
     dns_index=$(($dns_index+1))
+    echo "DNS.${dns_index}=www.${server_name}.dev" >> ${base_path}/etc/v3.ext
+    dns_index=$(($dns_index+1))
+    echo "DNS.${dns_index}=${server_name}.dev" >> ${base_path}/etc/v3.ext
 done
 
 #移除所有已存在的
