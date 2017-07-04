@@ -142,6 +142,9 @@ if [ "${1}" == "up" ]; then
         ln -s ${base_path}/docker-compose-random.yml ${base_path}/docker-compose.yml
     fi
         docker-compose -f ${base_path}/docker-compose.yml up -d
+        #暫時保留
+        #${winpty} docker-compose exec web /bin/bash -c 'cd /etc/;ln -sf /usr/share/zoneinfo/Asia/Taipei localtime;dpkg-reconfigure -f noninteractive tzdata'
+
         fail_exit ${base_path} 
     echo "DB:"
         #設定DB的時區到Asia/Taipei
@@ -329,6 +332,9 @@ if [ "${1}" == "" ]; then
         docker-compose -f ${base_path}/docker-compose.yml ps |grep -q 9000
         if [ $? -eq 1 ]; then
         ${winpty} docker-compose -f ${base_path}/docker-compose.yml up -d
+        #設定timezone
+        #${winpty} docker-compose exec web /bin/bash -c 'cd /etc/;ln -sf /usr/share/zoneinfo/Asia/Taipei localtime;dpkg-reconfigure -f noninteractive tzdata'
+
         fi
         ${winpty} docker-compose -f ${base_path}/docker-compose.yml exec php sudo -u dlaravel bash 
 
