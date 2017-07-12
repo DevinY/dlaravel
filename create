@@ -87,6 +87,7 @@ web_port=`docker inspect --format='{{(index (index .NetworkSettings.Ports "80/tc
 function dlaravel_new {
     if [ ${hosts_file} == '/etc/hosts' ]; then
         echo "Run laravel installer in container: laravel new ${1}"
+	docker-compose exec php chown dlaravel /var/www/html
         docker exec -ti ${containerName}_php_1 sudo -u dlaravel /home/dlaravel/.composer/vendor/bin/laravel new ${1}
     else
         echo "Please install laravel installer on Windows 10"
