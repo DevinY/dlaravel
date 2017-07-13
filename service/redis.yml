@@ -1,0 +1,9 @@
+# redis ports
+#- "127.0.0.1:6379:6379"
+
+#Dockerhub官方redis image
+version: '3'
+services:
+ redis:
+  image: redis
+  network_mode: "service:web"

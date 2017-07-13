@@ -1,0 +1,10 @@
+# Beanstalk ports
+#- "11300:11300"
+
+### 非官方的版本，不過星星數最高的，我測過有作用
+### beanstalk container ##################################
+version: '3'
+services:
+ beanstalk:
+   image: bevand10/alpine-beanstalk
+   network_mode: "service:web"
