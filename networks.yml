@@ -1,18 +1,31 @@
+###############################################################
+#進階運用:
+# D-Laravel的bash不支援此種模式，僅供參考及學習用。
+# 這裡設定想像成三個container在這個dlaravel_net的路裡面是三台不同的電腦(web、db及php)
+# 將三個container加入到同一個網路中
+# 彼此可以ping到對方，例如:在php的container內ping db
+# nginx的設定檔預設，調整至 etc/networks/default.conf
+#        fastcgi_pass 127.0.0.1:9000;改為fastcgi_pass php:9000
+# 在Laravel Project的.env中，你要指定db非127.0.0.1的連線
+#        DB_HOST=127.0.0.1 改為 DB_HOST=db
+###############################################################
 version: '3'
 services:
 ### 網頁伺服器的container ##################################
  web:
   image: nginx
+  networks:
+    - dlaravel_net
   dns: 8.8.8.8
   ports:
       # 使用隨機的port 80
-      - "80"
+      - "80:80"
       - "443"
       # 隨機的mysql連結埠
       - "3306"
   volumes:
   - ./sites:/var/www/html
-  - ./etc:/etc/nginx/conf.d
+  - ./etc/networks:/etc/nginx/conf.d
   hostname: d-laravel
   
 ### PHP-FPM container ##################################
@@ -20,7 +33,8 @@ services:
   image: deviny/fpm:7.1.7
   #image: deviny/fpm:7.0.21
   #image: deviny/fpm:5.6.31
-  network_mode: "service:web"
+  networks:
+    - dlaravel_net
 
   volumes:
   - ./etc/php:/usr/local/etc/php
@@ -34,7 +48,8 @@ services:
 ### 資料庫 container ##################################
  db:
   image: mysql:5.7.17
-  network_mode: "service:web"
+  networks:
+    - dlaravel_net
 
   environment:
    - MYSQL_DATABASE=homestead
@@ -46,3 +61,7 @@ services:
   volumes:
       - ./etc/mysql/my.cnf:/etc/mysql/my.cnf
       - ./data:/var/lib/mysql
+
+######top-level netowks key#######
+networks:
+    dlaravel_net:

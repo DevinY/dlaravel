@@ -2,6 +2,7 @@ etc/*
 !etc/mysql
 !etc/php
 !etc/default.conf
+!etc/networks/default.conf
 !etc/default-ssl.sample
 !etc/public.conf
 etc/php/php.ini

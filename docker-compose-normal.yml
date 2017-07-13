@@ -1,4 +1,4 @@
-version: '2'
+version: '3'
 services:
 ### 網頁伺服器的container ##################################
  web:
