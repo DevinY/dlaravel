@@ -51,4 +51,3 @@ services:
       - ./data:/var/lib/mysql
       #這裡的log依my.cnf的路徑設定，預設container在/var/log/mysql
       - ./etc/mysql/my.cnf:/etc/mysql/my.cnf
-      - ./logs/db:/var/log/mysql
