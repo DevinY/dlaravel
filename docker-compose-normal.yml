@@ -14,6 +14,7 @@ services:
   volumes:
   - ./sites:/var/www/html
   - ./etc:/etc/nginx/conf.d
+  - ./logs/web:/var/log/nginx
   hostname: d-laravel
   
 ### PHP-FPM container ##################################
