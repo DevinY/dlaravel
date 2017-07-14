@@ -5,10 +5,10 @@ services:
   image: nginx
   dns: 8.8.8.8
   ports:
-      # 使用隨機的port 80
+      #使用隨機的port 80
       - "80"
       - "443"
-      # 隨機的mysql連結埠
+      #隨機的mysql連結埠
       - "3306"
   volumes:
   - ./sites:/var/www/html
@@ -25,6 +25,8 @@ services:
   volumes:
   - ./etc/php:/usr/local/etc/php
   - ./sites:/var/www/html
+  #- ./etc/php-fpm.d/www.conf:/usr/local/etc/php-fpm.d/www.conf
+  #- ./logs/php:/var/log
   #environment:
   #- PHP_IDE_CONFIG=serverName=dlaravel
   #- XDEBUG_CONFIG="remote_host=???? profiler_enable=1"
@@ -40,9 +42,11 @@ services:
    - MYSQL_DATABASE=homestead
    - MYSQL_USER=homestead
    - MYSQL_PASSWORD=secret
-   - MYSQL_ALLOW_EMPTY_PASSWORD= "yes"
+   - MYSQL_ALLOW_EMPTY_PASSWORD="yes"
    - TZ=Asia/Taipei
 
   volumes:
-      - ./etc/mysql/my.cnf:/etc/mysql/my.cnf
       - ./data:/var/lib/mysql
+      #這裡的log依my.cnf的路徑設定，預設container在/var/log/mysql
+      - ./etc/mysql/my.cnf:/etc/mysql/my.cnf
+      - ./logs/db:/var/log/mysql

@@ -56,6 +56,8 @@ D-laravel停止時，不會佔用80埠，拜docker-compose之賜，極易調整L
 <pre>
 etc/   (nginx、php.ini及mysql的相關設定檔)
 data/  (mysql的資料檔案，./console up 自動生成)
+logs/  (用來掛載及放置container的logs)
+service/ (放置擴充用的yml檔)
 sites/ (專案的資夾，./create test1時，會建立在這個此目錄下)
 samples/ (一些設定範本，例如: php.ini及一些額外的docker-compose yaml檔設定)
 create (簡化的bash，用來快速的建立laravel的專案)
@@ -131,9 +133,9 @@ git pull
 PHP: (OFFICIAL REPOSITORY重build符合Laravel環境)
 https://hub.docker.com/r/deviny/fpm/tags/
 <pre>
- image: deviny/fpm:7.1.6
- image: deviny/fpm:7.0.20
- image: deviny/fpm:5.6.30
+ image: deviny/fpm:7.1.7
+ image: deviny/fpm:7.0.21
+ image: deviny/fpm:5.6.31
 </pre>
 
 Nginx: (OFFICIAL REPOSITORY)
@@ -325,9 +327,9 @@ Ex. Create project manually by using lumen
 #### Adjust images in setting
 PHP: [Official repository rebuilds php to fit Laravel environment](https://hub.docker.com/r/deviny/fpm/tags/)
 <pre>
- image: deviny/fpm:7.1.6
- image: deviny/fpm:7.0.20
- image: deviny/fpm:5.6.30
+ image: deviny/fpm:7.1.7
+ image: deviny/fpm:7.0.21
+ image: deviny/fpm:5.6.31
 </pre>
 
 Nginx: [OFFICIAL REPOSITORY](https://hub.docker.com/r/library/nginx/)

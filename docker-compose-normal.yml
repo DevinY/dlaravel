@@ -7,7 +7,7 @@ services:
   ports:
       #使用固定 port 80
       - "80:80"
-      #需透過./console secure [project name]啟用。
+      #需透過./console secure 啟用。
       - "443:443"
       #只綁定localhost
       - "127.0.0.1:3306:3306"
@@ -26,6 +26,8 @@ services:
   volumes:
   - ./etc/php:/usr/local/etc/php
   - ./sites:/var/www/html
+  #- ./etc/php-fpm.d/www.conf:/usr/local/etc/php-fpm.d/www.conf
+  #- ./logs/php:/var/log
   #environment:
   #- PHP_IDE_CONFIG=serverName=dlaravel
   #- XDEBUG_CONFIG="remote_host=???? profiler_enable=1"
@@ -38,12 +40,14 @@ services:
   network_mode: "service:web"
 
   environment:
-   - MYSQL_DATABASE= homestead
-   - MYSQL_USER= homestead
+   - MYSQL_DATABASE=homestead
+   - MYSQL_USER=homestead
    - MYSQL_PASSWORD= secret
-   - MYSQL_ALLOW_EMPTY_PASSWORD= "yes"
+   - MYSQL_ALLOW_EMPTY_PASSWORD="yes"
    - TZ=Asia/Taipei
 
   volumes:
-      - ./etc/mysql/my.cnf:/etc/mysql/my.cnf
       - ./data:/var/lib/mysql
+      #這裡的log依my.cnf的路徑設定，預設container在/var/log/mysql
+      - ./etc/mysql/my.cnf:/etc/mysql/my.cnf
+      - ./logs/db:/var/log/mysql

@@ -1,9 +1,11 @@
 etc/*
-!etc/mysql
 !etc/php
+!etc/php-fpm.d
 !etc/default.conf
 !etc/networks/default.conf
 !etc/default-ssl.sample
+!etc/mysql/my.cnf
+!etc/mysql/my.cnf.sample
 !etc/public.conf
 etc/php/php.ini
 ext/
@@ -12,3 +14,4 @@ run/
 data/
 docker-compose.yml
 docker-compose-custom.yml
+!.gitignore
