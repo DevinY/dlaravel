@@ -22,6 +22,12 @@ if [ ! -d "${base_path}/sites/" ]; then
    mkdir -p "${base_path}/sites/"
 fi
 
+#顯示目前版本
+if [ "${1}" == "version" ]; then
+cat ${base_path}/etc/dlaravel-release
+exit;
+fi
+
 #開發測試中Beta
 if [ "${1}" == "alias" ]; then
 calias="alias c=${base_path}/console"
@@ -288,6 +294,7 @@ function help {
     echo "  reload : 重載nginx的設定."
     echo "  clear : 移除所有docker ps -a 所有停止的Container!!包含您自己過去創建的所有停止的container哦!!"
     echo "  ./console : 進入php container內"
+    echo "  version : 顯示目前的版本."
         else
     echo "  up : Run containers in the background."
     echo "  down : Stops containers and removes containers, networks, volumes, and images created by up."
@@ -305,7 +312,8 @@ function help {
     echo "  exec : exec php container's command， for example: ./console exec php -v"
     echo "  reload : nginx reload config file."
     echo "  clear : Remove all your containers that listed by docker ps -a !!"
-    echo "  ./console : Enter php container"
+    echo "  ./console : Enter php container."
+    echo "  version : Display current version."
     echo ""
     echo "I'm not native speaker in English, please feel free to send me a PR to fix the help."
 
