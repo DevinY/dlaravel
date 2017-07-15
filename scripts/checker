@@ -1,7 +1,7 @@
 #!/bin/bash
 base_path="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 projectFolder=`echo ${base_path}|sed 's#/scripts##'`
-containerName=`printf '%s\n' "${projectFolder##*/}"|tr '[:upper:]' '[:lower:]'|sed 's/-//g'`
+containerName=`printf '%s\n' "${projectFolder##*/}"|tr '[:upper:]' '[:lower:]'|sed 's/-//g'|sed 's/\.//g'`
 hosts_file='/etc/hosts'
 #檢測是否有docker-compose連結，沒有就建一個
 if [ ! -f "${projectFolder}/docker-compose.yml" ];then
