@@ -13,3 +13,8 @@ services:
       - SYNC_MAX_INOTIFY_WATCHES=40000
       - SYNC_VERBOSE=1
     privileged: true
+    networks:
+    - dlaravel_net
+
+networks:
+    dlaravel_net:

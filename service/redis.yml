@@ -6,4 +6,8 @@ version: '3'
 services:
  redis:
   image: redis
-  network_mode: "service:web"
+  networks:
+    - dlaravel_net
+
+networks:
+    dlaravel_net:

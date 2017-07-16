@@ -5,24 +5,23 @@ services:
   image: nginx
   dns: 8.8.8.8
   ports:
-      #使用隨機的port 80
+      # 使用隨機的port 80
       - "80"
       - "443"
-      #隨機的mysql連結埠
-      - "3306"
   volumes:
   - ./sites:/var/www/html
   - ./etc:/etc/nginx/conf.d
   - ./logs/web:/var/log/nginx
-  hostname: d-laravel
+  hostname: web
+  networks:
+    - dlaravel_net
   
 ### PHP-FPM container ##################################
  php:
   image: deviny/fpm:7.1.7
+  hostname: php
   #image: deviny/fpm:7.0.21
   #image: deviny/fpm:5.6.31
-  network_mode: "service:web"
-
   volumes:
   - ./etc/php:/usr/local/etc/php
   - ./sites:/var/www/html
@@ -33,20 +32,27 @@ services:
   #- XDEBUG_CONFIG="remote_host=???? profiler_enable=1"
   #建立bash_aliases在etc下，可用來自訂dlaravel使用者的環境變數
   #- ./etc/bash_aliases:/home/dlaravel/.bash_aliases
+  networks:
+    - dlaravel_net
 
 ### 資料庫 container ##################################
  db:
   image: mysql:5.7.17
-  network_mode: "service:web"
-
+  hostname: db
+  ports:
+    - "3306"
+  volumes:
+      - ./etc/mysql/my.cnf:/etc/mysql/my.cnf
+      - ./data:/var/lib/mysql
   environment:
    - MYSQL_DATABASE=homestead
    - MYSQL_USER=homestead
    - MYSQL_PASSWORD=secret
-   - MYSQL_ALLOW_EMPTY_PASSWORD="yes"
+   - MYSQL_ALLOW_EMPTY_PASSWORD= "yes"
    - TZ=Asia/Taipei
+  networks:
+    - dlaravel_net
 
-  volumes:
-      - ./data:/var/lib/mysql
-      #這裡的log依my.cnf的路徑設定，預設container在/var/log/mysql
-      - ./etc/mysql/my.cnf:/etc/mysql/my.cnf
+######top-level netowks key#######
+networks:
+    dlaravel_net:

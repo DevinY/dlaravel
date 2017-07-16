@@ -40,6 +40,8 @@ if [ $? -eq 1 ]; then
 fi
 
 #docker-compose exec php /root/.composer/vendor/bin/laravel new ${1}
+#調整資料庫連線到db的container
+docker-compose exec php sudo -u dlaravel sed -i "s/DB_HOST=127.0.0.1/DB_HOST=db/" /var/www/html/${1}/.env
 docker-compose exec php sudo -u dlaravel sed -i "s/DB_DATABASE=homestead/DB_DATABASE=${1}/" /var/www/html/${1}/.env
 
     else
@@ -48,9 +50,9 @@ docker-compose exec php sudo -u dlaravel sed -i "s/DB_DATABASE=homestead/DB_DATA
       if [ $? -eq 1 ]; then
        echo 127.0.0.1 ${1}.dev >> /c/Windows/System32/drivers/etc/hosts  
       fi
-    
-      sed -i "s/DB_DATABASE=homestead/DB_DATABASE=${1}/" sites/${1}/.env
 
+      sed -i "s/DB_HOST=127.0.0.1/DB_HOST=db/" sites/${1}/.env
+      sed -i "s/DB_DATABASE=homestead/DB_DATABASE=${1}/" sites/${1}/.env
 
     fi
 
