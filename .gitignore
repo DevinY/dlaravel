@@ -1,6 +1,7 @@
 etc/*
 !etc/dlaravel-release
 !etc/php
+!etc/cache
 !etc/php-fpm.d
 !etc/default.conf
 !etc/networks/default.conf

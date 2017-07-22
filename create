@@ -89,7 +89,10 @@ web_port=`docker inspect --format='{{(index (index .NetworkSettings.Ports "80/tc
 function dlaravel_new {
     if [ ${hosts_file} == '/etc/hosts' ]; then
         echo "Run laravel installer in container: laravel new ${1}"
+        #確保ubuntu環境能順利寫入資料
 	docker-compose exec php chown dlaravel /var/www/html
+        #確保dlaravel有權限寫入/var/log，例如xdebug.log
+	docker-compose exec php chown dlaravel /var/log
         docker exec -ti ${containerName}_php_1 sudo -u dlaravel /home/dlaravel/.composer/vendor/bin/laravel new ${1}
     else
         echo "Please install laravel installer on Windows 10"
@@ -193,19 +196,23 @@ if [ $? -eq 1 ]; then
     fi
 fi
 
+dlaravel_new ${1}
+
 #安裝新的Laravel
 #檢測本機是否安裝laravel installer
-which laravel >/dev/null 2>&1
-if [ $? -eq 1 ]; then
-        dlaravel_new ${1}
-    else
-    #加速安裝，使用Mac系統上的laravel installer
-    laravel new sites/${1}
-    #falback用container內的laravel
-    if [ ${?} -ne 0 ]; then
-        echo "Failback to run installer from container."
-        dlaravel_new ${1}
-    fi
-fi
+
+#停用下方程式，一律改用container內的laravel installer安裝
+#which laravel >/dev/null 2>&1
+#if [ $? -eq 1 ]; then
+#        dlaravel_new ${1}
+#    else
+#    #加速安裝，使用Mac系統上的laravel installer
+#    laravel new sites/${1}
+#    #falback用container內的laravel
+#    if [ ${?} -ne 0 ]; then
+#        echo "Failback to run installer from container."
+#        dlaravel_new ${1}
+#    fi
+#fi
 
 dlaravelconfig  ${1}

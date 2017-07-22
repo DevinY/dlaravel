@@ -151,6 +151,11 @@ if [ "${1}" == "up" ]; then
         #暫時保留
         #${winpty} docker-compose exec web /bin/bash -c 'cd /etc/;ln -sf /usr/share/zoneinfo/Asia/Taipei localtime;dpkg-reconfigure -f noninteractive tzdata'
 
+        #確保ubuntu環境能順利寫入資料
+	docker-compose exec php chown dlaravel /var/www/html
+        #確保dlaravel有權限寫入/var/log，例如xdebug.log
+	docker-compose exec php chown dlaravel /var/log
+
         fail_exit ${base_path} 
     echo "DB:"
         #設定DB的時區到Asia/Taipei
