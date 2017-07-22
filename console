@@ -15,6 +15,10 @@ function fail_exit {
     ${winpty} docker-compose -f ${base_path}/docker-compose.yml logs
         exit;
     fi
+    #確保ubuntu環境能順利寫入資料
+    ${winpty} docker-compose -f ${base_path}/docker-compose.yml exec php chown dlaravel /var/www/html
+    #確保dlaravel有權限寫入/var/log，例如xdebug.log
+    ${winpty} docker-compose -f ${base_path}/docker-compose.yml exec php chown dlaravel /var/log
 }
 
 #建立sites資料夾，如果不存在
@@ -150,12 +154,6 @@ if [ "${1}" == "up" ]; then
         docker-compose -f ${base_path}/docker-compose.yml up -d
         #暫時保留
         #${winpty} docker-compose exec web /bin/bash -c 'cd /etc/;ln -sf /usr/share/zoneinfo/Asia/Taipei localtime;dpkg-reconfigure -f noninteractive tzdata'
-
-        #確保ubuntu環境能順利寫入資料
-	docker-compose exec php chown dlaravel /var/www/html
-        #確保dlaravel有權限寫入/var/log，例如xdebug.log
-	docker-compose exec php chown dlaravel /var/log
-
         fail_exit ${base_path} 
     echo "DB:"
         #設定DB的時區到Asia/Taipei
@@ -348,6 +346,11 @@ if [ "${1}" == "" ]; then
         ${winpty} docker-compose -f ${base_path}/docker-compose.yml up -d
         #設定timezone
         #${winpty} docker-compose exec web /bin/bash -c 'cd /etc/;ln -sf /usr/share/zoneinfo/Asia/Taipei localtime;dpkg-reconfigure -f noninteractive tzdata'
+
+        #確保ubuntu環境能順利寫入資料
+        ${winpty} docker-compose -f ${base_path}/docker-compose.yml exec php chown dlaravel /var/www/html
+        #確保dlaravel有權限寫入/var/log，例如xdebug.log
+        ${winpty} docker-compose -f ${base_path}/docker-compose.yml exec php chown dlaravel /var/log
 
         fi
         ${winpty} docker-compose -f ${base_path}/docker-compose.yml exec php sudo -u dlaravel bash 
