@@ -10,6 +10,7 @@ function help {
     echo "options:"
     echo "  --help : help"
     echo "  --host [project name]: Adding [project name].dev to /etc/hosts, But don't want to install laravel framework."
+    echo "  --db [project name]: Create a database name and user name that is the same as project name."
 }
 #說明
 if [ "${1}" == "--help" ]; then
@@ -108,6 +109,21 @@ function dlaravel_new {
 
 #create --host
 if [ "$#" -eq 2 ]; then
+    if [ "${1}" = "--db" ]; then
+        #建立資料庫，如果不存在
+        ${winpty} docker-compose -f docker-compose.yml exec db mysql -e "CREATE DATABASE IF NOT EXISTS \`${2}\`"
+
+        #建立使用者
+        ${winpty} docker-compose -f docker-compose.yml exec db mysql -e "CREATE USER IF NOT EXISTS \"${2}\""
+        #建立密碼，同使用者名稱
+        ${winpty} docker-compose -f docker-compose.yml exec db mysql -e "SET PASSWORD FOR \`${2}\`=\"${2}\""
+        #授權
+        ${winpty} docker-compose -f docker-compose.yml exec db mysql -e "GRANT ALL ON \`${2}\`.* TO \"${2}\""
+        #更新container權限
+        ${winpty} docker-compose -f docker-compose.yml exec db mysql -e "FLUSH PRIVILEGES"
+        echo "Done."
+        exit;
+    fi
     if [ "${1}" = "--host" ]; then
             
             if [ ${hosts_file} == '/etc/hosts' ]; then
