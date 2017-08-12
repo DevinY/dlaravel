@@ -256,7 +256,7 @@ docker-compose.yml (A soft link to connect different settings. ex. linking to do
 </pre>
 
 
-#### 1. Please install docker-for-mac first
+#### 1. Please install docker.
 <pre>
 Mac OS:
 https://docs.docker.com/docker-for-mac/
