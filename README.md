@@ -70,14 +70,13 @@ docker-compose.yml (一個softlink，連結到不同的設定檔，例如:./cons
 Mac OS系統:
 https://docs.docker.com/docker-for-mac/
 
+Ubuntu:
+https://docs.docker.com/engine/installation/linux/docker-ce/ubuntu/#install-docker-ce
+
 Windows 10:
-docker + gitbash環境
+https://docs.docker.com/docker-for-windows/install/
+gitbash環境 (console及create需在gitbash環境執行，並且gitbash需可正確執行laravel installer!!)
 
-建議:
-
-可在系統上安裝Laravel installer(非必要，但可加快建立Project的速度)
-您需安裝php及composer，然後執行:
-composer global require "laravel/installer"
 </pre>
 
 #### 二、例如:可用git clone下載這個repo，並進入dlaravel工作目錄。
@@ -95,7 +94,7 @@ cd dlaravel
 可以建立多個project站台
 
 由於create的bash需有系統權修改/etc/hosts檔，./create的過程中會需要詢問您的系統密碼:
-create指令、可在Mac OS、Linux及Windows 10的gitbash環境使用。
+create指令、可在Mac OS、Linux及Windows 10的gitbash(Laravel installer)環境使用。
 </pre>
 
 
@@ -259,7 +258,18 @@ docker-compose.yml (A soft link to connect different settings. ex. linking to do
 
 #### 1. Please install docker-for-mac first
 <pre>
+Mac OS:
 https://docs.docker.com/docker-for-mac/
+
+Ubuntu:
+https://docs.docker.com/engine/installation/linux/docker-ce/ubuntu/#install-docker-ce
+
+Windows 10: (required for laravel install in gitbash!!)
+https://docs.docker.com/docker-for-windows/install/
+
+To run console and create bash on Windows 10:
+Gitbash is required.
+Laravel installer have to run correctly in gitbash also.
 </pre>
 
 
