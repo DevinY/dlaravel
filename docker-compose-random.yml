@@ -18,10 +18,10 @@ services:
   
 ### PHP-FPM container ##################################
  php:
-  image: deviny/fpm:7.1.8
-  hostname: php
-  #image: deviny/fpm:7.0.22
+  image: deviny/fpm:7.1.9
+  #image: deviny/fpm:7.0.23
   #image: deviny/fpm:5.6.31
+  hostname: php
   volumes:
   - ./etc/php:/usr/local/etc/php
   - ./sites:/var/www/html
