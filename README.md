@@ -45,11 +45,10 @@ D-laravel停止時，不會佔用80埠，拜docker-compose之賜，極易調整L
 `./console alias`  
 (打./console指令太長了嗎，上方指令可暫時用c代表./console，所以執行後，輸入:c info、c up或c down..即可執行。)
 ./console alias    (印出console的別名範本，自行加到.bashrc或.zshrc永久生效)
+./console version  (顯示D-Laravel的版本)
 
-為了讓Chrome正常顯示，需要把生成的域名存入系統鑰匙圈中，
-因此會詢問系統密碼(此功能只支援MacOS系統)。
+產生自我簽署憑證給目前所有的Project. (此功能只支援MacOS系統)。
 ./console secure
-更新，並加密所有sites資料夾內的域名
 </pre>
 
 #### 主要目錄結構
@@ -117,8 +116,8 @@ git pull
 ./create [project名稱] 會建立及下載laravel，搞定一切設定，包含資料庫，
 但如果是一個已存在的Project，只需有nginx的設定，應該怎麼做呢?
 
-使用--conf 即可修改系統的/etc/hosts檔，加入project的域名，如: project1.dev。
-./create --conf [project名稱] 例如:./create --conf project1
+使用--host 即可修改系統的/etc/hosts檔，加入project的域名，如: project1.dev。
+./create --host [project名稱] 例如:./create --host project1
 
 可以將已存在的Laravel專案移到sites資料夾內。
 
@@ -132,8 +131,8 @@ git pull
 PHP: (OFFICIAL REPOSITORY重build符合Laravel環境)
 https://hub.docker.com/r/deviny/fpm/tags/
 <pre>
- image: deviny/fpm:7.1.8
- image: deviny/fpm:7.0.22
+ image: deviny/fpm:7.1.9
+ image: deviny/fpm:7.0.23
  image: deviny/fpm:5.6.31
 </pre>
 
@@ -238,10 +237,10 @@ It seems fashion if use docker. :P
 `./console alias`  
 (If you think ./console command is too log, you could create c alias in terminal which simplifies command to "c info", "c up", or "c down")
 ./console alias (print console alias samples, it can be added to .bashrc or .zshrc)   
+./console version
 
-Below's command saves the generated domain name in system keychain to let Chrome working normally, it would ask for system password.(MacOS only)
-./console secure test1 
-(https://test1.dev domain)
+Generate self-signed certificate for all current projects. (this feature only supports MacOS system)
+./console secure
 </pre>
 
 
@@ -318,8 +317,8 @@ You can git pull latest version and setting in D-Laravel folder.
 ./create [project name] will create and build laravel, it would set all configures automatically including DB.
 But how do we do if project already exists and only needs nginx setting?
 
-Using "--conf" to update /etc/hosts file, for example: "127.0.0.1 project1.dev". 
-./create --conf [project name] (./create --conf project1)
+Using "--host" to update /etc/hosts file, for example: "127.0.0.1 project1.dev". 
+./create --host [project name] (./create --host project1)
 
 
 You can move exist Laravel project to D-Laravel site folder.
@@ -337,8 +336,8 @@ Ex. Create project manually by using lumen
 #### Adjust images in setting
 PHP: [Official repository rebuilds php to fit Laravel environment](https://hub.docker.com/r/deviny/fpm/tags/)
 <pre>
- image: deviny/fpm:7.1.8
- image: deviny/fpm:7.0.22
+ image: deviny/fpm:7.1.9
+ image: deviny/fpm:7.0.23
  image: deviny/fpm:5.6.31
 </pre>
 
