@@ -1,5 +1,12 @@
 #!/bin/bash
 base_path="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+dlaravel_path=${PWD##*/}
+
+if [[ ${dlaravel_path} =~ [_] ]]; then
+    echo "D-Laravel folder can't have underscore. [${dlaravel_path}]";
+    exit;
+fi
+
 projectFolder=`echo ${base_path}|sed 's#/scripts##'`
 containerName=`printf '%s\n' "${projectFolder##*/}"|tr '[:upper:]' '[:lower:]'|sed 's/-//g'|sed 's/\.//g'`
 hosts_file='/etc/hosts'
