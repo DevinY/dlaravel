@@ -111,16 +111,22 @@ git pull
 所以在dlaravel的目錄下，您可以透過git pull取得最新的版本及設定。
 </pre>
 
-#### 五、別名
+#### 五、別名及功能
 <pre>
 alias laravel='docker-compose exec -u dlaravel php /home/dlaravel/.composer/vendor/bin/laravel'
 </pre>
 使用dlaravel的身份執行container內的laravel installer
 
 <pre>
-alias composer='docker-compose exec -u dlaravel php /usr/local/bin/composer'
+function composer() {
+if [ $(basename ${PWD}) = "sites" ]; then
+    docker-compose exec -u dlaravel php composer -d=./ $@
+else
+    docker-compose exec -u dlaravel php composer -d=$(basename ${PWD}) $@
+fi
+}
 </pre>
-使用dlaravel的身份，執行container內的composer
+使用dlaravel的身份，執行container內的composer，會依您所在的資料夾切換目錄
 
 <pre>
 alias artisan='docker-compose exec -u dlaravel php php $(basename ${PWD})/artisan'
