@@ -111,6 +111,22 @@ git pull
 所以在dlaravel的目錄下，您可以透過git pull取得最新的版本及設定。
 </pre>
 
+#### 五、別名
+<pre>
+alias laravel='docker-compose exec -u dlaravel php /home/dlaravel/.composer/vendor/bin/laravel'
+</pre>
+使用dlaravel的身份執行container內的laravel installer
+
+<pre>
+alias composer='docker-compose exec -u dlaravel php /usr/local/bin/composer'
+</pre>
+使用dlaravel的身份，執行container內的composer
+
+<pre>
+alias artisan='docker-compose exec -u dlaravel php php $(basename ${PWD})/artisan'
+</pre>
+我們可以在自己的電腦加入別名，這樣就可不需進入container內執行php artisan指令了.
+例如:artisan --version
 #### 其他
 <pre>
 ./create [project名稱] 會建立及下載laravel，搞定一切設定，包含資料庫，
@@ -172,7 +188,7 @@ Docker指令及DevinY/dlaravel提供的./console的bash指令
 | docker-compose up -d  |./console up   |啟動container   |
 | docker-compose down  |./console down  |停止container   |
 | docker-compose ps或docker ps|./console ps  |查看docker-compose的process   |
-| docker-compose exec php sudo -u dlaravel bash   |./console  |進入php的container   |
+| docker-compose exec -u dlaravel php bash   |./console  |進入php的container   |
 | docker-compose exec php 指令  |./console exec 指令 |執行php container 指令，例如: ./console exec php -v|
 | docker-compose exec db mysql   |./console mysql  |執行mysql   |
 | docker-compose exec web nginx -s reload   |./console reload  |重載nginx設定   |
@@ -377,7 +393,7 @@ please refers to below's link, it will help you to understand how D-Laravel fpm 
 | docker-compose up -d  |./console up   |start container   |
 | docker-compose down  |./console down  |stop container   |
 | docker-compose ps or docker ps|./console ps  |show docker-compose process   |
-| docker-compose exec php sudo -u dlaravel bash   |./console  |access php container   |
+| docker-compose exec -u dlaravel php bash   |./console  |access php container   |
 | docker-compose exec php command  |./console exec command |execute php container command，ex. ./console exec php -v|
 | docker-compose exec db mysql   |./console mysql  |exectue mysql   |
 | docker-compose exec web nginx -s reload   |./console reload  |reload nginx setting   |
