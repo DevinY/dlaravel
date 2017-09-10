@@ -111,7 +111,7 @@ git pull
 所以在dlaravel的目錄下，您可以透過git pull取得最新的版本及設定。
 </pre>
 
-#### 五、別名及功能(不需進入container即可執行container內的composer或artisan指令)
+#### 六、別名及功能(不需進入container即可執行container內的composer或artisan指令)
 
 非必要項，自己有需要可新增或調整名稱。
 
