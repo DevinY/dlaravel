@@ -6,6 +6,7 @@ etc/*
 !etc/default.conf
 !etc/networks/default.conf
 !etc/default-ssl.sample
+!etc/supervisor
 !etc/mysql/my.cnf
 !etc/mysql/my.cnf.sample
 !etc/public.conf

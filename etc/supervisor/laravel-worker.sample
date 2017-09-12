@@ -1,0 +1,9 @@
+[program:laravel-worker]
+process_name=%(program_name)s_%(process_num)02d
+command=php /var/www/html/test1/artisan queue:work --queue=email --sleep=3 --tries=3
+autostart=true
+autorestart=true
+user=dlaravel
+numprocs=8
+redirect_stderr=true
+stdout_logfile=/var/log/supervisor/worker.log
