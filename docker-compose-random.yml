@@ -29,6 +29,8 @@ services:
   - ./etc/cache:/home/dlaravel/.composer/cache
   #- ./etc/php-fpm.d/www.conf:/usr/local/etc/php-fpm.d/www.conf
   #- ./logs/php:/var/log
+  #- ./etc/supervisor:/etc/supervisor/conf.d
+  #- ./logs/supervisor:/var/log/supervisor
   environment:
    - TZ=Asia/Taipei
   #- PHP_IDE_CONFIG=serverName=dlaravel
