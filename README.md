@@ -120,6 +120,8 @@ alias laravel='docker-compose exec -u dlaravel php /home/dlaravel/.composer/vend
 </pre>
 使用dlaravel的身份執行container內的laravel installer
 
+
+
 <pre>
 function composer() {
 if [ $(basename ${PWD}) = "sites" ]; then
@@ -131,11 +133,18 @@ fi
 </pre>
 使用dlaravel的身份，執行container內的composer，會依您所在的資料夾切換目錄
 
+
 <pre>
 alias artisan='docker-compose exec -u dlaravel php php $(basename ${PWD})/artisan'
 </pre>
 我們可以在自己的電腦加入別名，這樣就可不需進入container內執行php artisan指令了.
 例如:artisan --version
+
+
+<pre>
+alias phpunit='docker-compose exec -u dlaravel php $(basename ${PWD})/vendor/bin/phpunit -c $(basename ${PWD})/phpunit.xml'
+</pre>
+加入這個alias可以執行簡phpunit。
 #### 其他
 <pre>
 ./create [project名稱] 會建立及下載laravel，搞定一切設定，包含資料庫，
