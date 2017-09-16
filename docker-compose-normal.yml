@@ -42,7 +42,7 @@ services:
 
 ### 資料庫 container ##################################
  db:
-  image: mysql:5.7.17
+  image: mysql:5.7.19
   hostname: db
   ports:
     - "127.0.0.1:3306:3306"
