@@ -135,10 +135,11 @@ fi
 
 
 <pre>
-alias artisan='docker-compose exec -u dlaravel php php $(basename ${PWD})/artisan'
+alias a='docker-compose exec -u dlaravel php php $(basename ${PWD})/artisan'
 </pre>
 我們可以在自己的電腦加入別名，這樣就可不需進入container內執行php artisan指令了.
-例如:artisan --version
+讓artisan的指令更簡潔，這理我直接將別名命名為a。
+例如: a --version
 
 
 <pre>
