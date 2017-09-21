@@ -34,6 +34,25 @@ cat ${base_path}/etc/dlaravel-release
 exit;
 fi
 
+#調整Container DLaravel使用者ID
+if [ "${1}" == "chowner" ]; then
+
+	    plateform=`uname -s`
+	    if [ ${plateform} == 'Linux' ]; then
+             dlaravel_gid=`whoami|id -g`
+             dlaravel_uid=`whoami|id -u`
+             docker-compose -f ${base_path}/docker-compose.yml exec php userdel dlaravel
+             docker-compose -f ${base_path}/docker-compose.yml exec php groupadd -g ${dlaravel_gid} dlaravel
+             docker-compose -f ${base_path}/docker-compose.yml exec php useradd -u ${dlaravel_uid} -g ${dlaravel_gid} dlaravel
+             docker-compose -f ${base_path}/docker-compose.yml exec php chown -R ${dlaravel_uid} /home/dlaravel
+
+             echo "You have to commit your php fpm image, and restart container."
+	     echo "Example: docker commit 67306ecd0879 deviny/fpm:7.1.9"
+	     echo "./console restart"
+            fi
+exit;
+fi
+
 #開發測試中Beta
 if [ "${1}" == "alias" ]; then
 calias="alias c=${base_path}/console"
@@ -297,6 +316,7 @@ function help {
     echo "  custom : 變更docker-compose連結，產生或使用自定的設定檔"
     echo "  exec : 執行php container內的命令，例如: ./console exec php -v"
     echo "  reload : 重載nginx的設定."
+    echo "  chowner: D-Laravel的使用者uid及gid在容器內預設為1000，在linux環境中，您可能需要調整dlaravel的uid與gid與您的目前使用者相同"
     echo "  clear : 移除所有docker ps -a 所有停止的Container!!包含您自己過去創建的所有停止的container哦!!"
     echo "  ./console : 進入php container內"
     echo "  version : 顯示目前的版本."
@@ -316,6 +336,7 @@ function help {
     echo "  custom : change docker-compose.yml link link to docker-compose-custom.yml， for custom purpose."
     echo "  exec : exec php container's command， for example: ./console exec php -v"
     echo "  reload : nginx reload config file."
+    echo "  chowner: D-Laravel users uid and gid are 1000 in container, in the linux environment, you may need to adjust D-Laravel uid and gid with your current user the same."
     echo "  clear : Remove all your containers that listed by docker ps -a !!"
     echo "  ./console : Enter php container."
     echo "  version : Display current version."

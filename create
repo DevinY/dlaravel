@@ -91,10 +91,6 @@ function dlaravel_new {
     if [ ${hosts_file} == '/etc/hosts' ]; then
         echo "Run laravel installer in container: laravel new ${1}"
 
-	    plateform=`uname -s`
-	    if [ ${plateform} == 'Linux' ]; then
-	        chmod 777 etc/cache 
-        fi
         #確保ubuntu環境能順利寫入資料
 	    ${winpty} docker-compose exec php chown dlaravel /var/www/html
         #確保dlaravel有權限寫入/var/log，例如xdebug.log
