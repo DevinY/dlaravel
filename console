@@ -1,4 +1,10 @@
 #!/bin/bash
+uid=`whoami|id -u`
+if [ ${uid} -eq 0 ]; then
+    echo "Don't run D-Laravel as root!"
+    exit;
+fi
+
 #取得scripts的執行路徑
 base_path="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
