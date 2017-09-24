@@ -1,3 +1,4 @@
+.env
 etc/*
 !etc/dlaravel-release
 !etc/php

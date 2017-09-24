@@ -4,11 +4,17 @@ if [ ${uid} -eq 0 ]; then
     echo "Don't run D-Laravel as root!"
     exit;
 fi
+winpty=""
 
 #取得scripts的執行路徑
 base_path="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-winpty=""
+#檢測是否有環境設定檔
+if [ -f "${base_path}/.env" ]; then
+export MYSQL_ROOT_PASSWORD=""
+source ${base_path}/.env
+fi
+
 #is windows
 which winpty >/dev/null 2>&1
 if [ $? -eq 0 ]; then
@@ -101,8 +107,8 @@ fi
 #下載images
 if [ "${1}" == "pull" ]; then
     docker pull nginx 
-    docker pull mysql:5.7.17
-    docker pull deviny/fpm:7.1.1
+    docker pull mysql:5.7.19
+    docker pull deviny/fpm:7.1.9
     exit;
 fi
 
@@ -213,7 +219,13 @@ fi
 
 #進資料庫
 if [ "${1}" == "mysql" ]; then
-${winpty} docker-compose -f ${base_path}/docker-compose.yml exec db mysql
+    #echo ${MYSQL_ROOT_PASSWORD}
+    if [ -z "${MYSQL_ROOT_PASSWORD}" ]; then
+        ${winpty} docker-compose -f ${base_path}/docker-compose.yml exec db mysql
+        else
+        echo "Your MySQL root password."
+        ${winpty} docker-compose -f ${base_path}/docker-compose.yml exec db mysql -uroot -p
+    fi
 exit;
 fi
 

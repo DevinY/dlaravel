@@ -1,6 +1,31 @@
 #!/bin/bash
 source ./scripts/checker
 
+#檢測是否有環境設定檔
+if [ -f "./.env" ]; then
+export MYSQL_ROOT_PASSWORD=""
+source ./.env
+fi
+
+function is_running {
+#檢測是否執行
+docker-compose  -f docker-compose.yml ps |grep ${containerName}_web_1|grep -q Up
+if [ $? -eq 1 ]; then
+    echo "${containerName}_php_1 is not running."
+    echo "Would you like to create the project and run docker-compose up (y/n):"
+    read  ans
+    if [ ${ans} = 'n' ]; then
+       exit
+    else 
+       docker-compose up -d
+        if [ ${?} -ne 0 ]; then
+            #啟動失敗，停止動作
+            exit;
+        fi
+    fi
+fi
+}
+
 function help {
     echo "usage: ${0} [<option>] [Project name]"
     echo ""
@@ -57,14 +82,27 @@ ${winpty} docker-compose exec php sudo -u dlaravel sed -i "s/DB_DATABASE=homeste
 
     fi
 
-#建資料庫
-${winpty} docker-compose exec db mysql -e "CREATE DATABASE IF NOT EXISTS \`${1}\`"
 
-#授權
-${winpty} docker-compose exec db mysql -e "grant all on \`${1}\`.* to 'homestead'@'%' IDENTIFIED by 'secret'"
+    if [ -z "${MYSQL_ROOT_PASSWORD}" ]; then
 
-#更新container權限
-${winpty} docker-compose exec db mysql -e "FLUSH PRIVILEGES"
+        #建資料庫
+        ${winpty} docker-compose exec db mysql -e "CREATE DATABASE IF NOT EXISTS \`${1}\`"
+        #授權
+        ${winpty} docker-compose exec db mysql -e "grant all on \`${1}\`.* to 'homestead'@'%' IDENTIFIED by 'secret'"
+        #更新container權限
+        ${winpty} docker-compose exec db mysql -e "FLUSH PRIVILEGES"
+        else
+        #建資料庫
+        ${winpty} docker-compose exec db mysql -e "CREATE DATABASE IF NOT EXISTS \`${1}\`" -uroot -p${MYSQL_ROOT_PASSWORD} > /dev/null 2>&1
+        #授權
+        ${winpty} docker-compose exec db mysql -e "grant all on \`${1}\`.* to 'homestead'@'%' IDENTIFIED by 'secret'" -uroot -p${MYSQL_ROOT_PASSWORD} > /dev/null 2>&1
+
+        #更新container權限
+        ${winpty} docker-compose exec db mysql -e "FLUSH PRIVILEGES" -uroot -p${MYSQL_ROOT_PASSWORD} > /dev/null 2>&1
+
+    fi
+
+
 
 
 #拷貝default.sample修改
@@ -113,18 +151,34 @@ function dlaravel_new {
 
 #create --host
 if [ "$#" -eq 2 ]; then
-    if [ "${1}" = "--db" ]; then
-        #建立資料庫，如果不存在
-        ${winpty} docker-compose -f docker-compose.yml exec db mysql -e "CREATE DATABASE IF NOT EXISTS \`${2}\`"
 
-        #建立使用者
-        ${winpty} docker-compose -f docker-compose.yml exec db mysql -e "CREATE USER IF NOT EXISTS \"${2}\""
-        #建立密碼，同使用者名稱
-        ${winpty} docker-compose -f docker-compose.yml exec db mysql -e "SET PASSWORD FOR \`${2}\`=\"${2}\""
-        #授權
-        ${winpty} docker-compose -f docker-compose.yml exec db mysql -e "GRANT ALL ON \`${2}\`.* TO \"${2}\""
-        #更新container權限
-        ${winpty} docker-compose -f docker-compose.yml exec db mysql -e "FLUSH PRIVILEGES"
+    if [ "${1}" = "--db" ]; then
+        is_running
+        if [ -z "${MYSQL_ROOT_PASSWORD}" ]; then
+            #建立資料庫，如果不存在
+            ${winpty} docker-compose -f docker-compose.yml exec db mysql -e "CREATE DATABASE IF NOT EXISTS \`${2}\`"
+            #建立使用者
+            ${winpty} docker-compose -f docker-compose.yml exec db mysql -e "CREATE USER IF NOT EXISTS \"${2}\""
+            #建立密碼，同使用者名稱
+            ${winpty} docker-compose -f docker-compose.yml exec db mysql -e "SET PASSWORD FOR \`${2}\`=\"${2}\""
+            #授權
+            ${winpty} docker-compose -f docker-compose.yml exec db mysql -e "GRANT ALL ON \`${2}\`.* TO \"${2}\""
+            #更新container權限
+            ${winpty} docker-compose -f docker-compose.yml exec db mysql -e "FLUSH PRIVILEGES"
+            else
+            #建立資料庫，如果不存在
+            ${winpty} docker-compose -f docker-compose.yml exec db mysql -e "CREATE DATABASE IF NOT EXISTS \`${2}\`" -uroot -p${MYSQL_ROOT_PASSWORD} > /dev/null 2>&1
+            #建立使用者
+            ${winpty} docker-compose -f docker-compose.yml exec db mysql -e "CREATE USER IF NOT EXISTS \"${2}\"" -uroot -p${MYSQL_ROOT_PASSWORD} > /dev/null 2>&1
+            #建立密碼，同使用者名稱
+            ${winpty} docker-compose -f docker-compose.yml exec db mysql -e "SET PASSWORD FOR \`${2}\`=\"${2}\"" -uroot -p${MYSQL_ROOT_PASSWORD} > /dev/null 2>&1
+            #授權
+            ${winpty} docker-compose -f docker-compose.yml exec db mysql  -e "GRANT ALL ON \`${2}\`.* TO \"${2}\"" -uroot -p${MYSQL_ROOT_PASSWORD} > /dev/null 2>&1
+            #更新container權限
+            ${winpty} docker-compose -f docker-compose.yml exec db mysql  -e "FLUSH PRIVILEGES" -uroot -p${MYSQL_ROOT_PASSWORD}  > /dev/null 2>&1
+
+        fi
+
         echo "Done."
         exit;
     fi
@@ -202,43 +256,12 @@ if [ -e "sites/${1}" ]; then
     exit
 fi
 
-
-#檢測是否執行
-docker-compose  -f docker-compose.yml ps |grep ${containerName}_web_1|grep -q Up
-if [ $? -eq 1 ]; then
-    echo "${containerName}_php_1 is not running."
-    echo "Would you like to create the project and run docker-compose up (y/n):"
-    read  ans
-    if [ ${ans} = 'n' ]; then
-       exit
-    else 
-       docker-compose up -d
-        if [ ${?} -ne 0 ]; then
-            #啟動失敗，停止動作
-            exit;
-        fi
-    fi
-fi
+is_running 
 
 #dlaravel_new ${1}
 
 #create --host
 if [ "$#" -eq 2 ]; then
-    if [ "${1}" = "--db" ]; then
-        #建立資料庫，如果不存在
-        ${winpty} docker-compose -f docker-compose.yml exec db mysql -e "CREATE DATABASE IF NOT EXISTS \`${2}\`"
-
-        #建立使用者
-        ${winpty} docker-compose -f docker-compose.yml exec db mysql -e "CREATE USER IF NOT EXISTS \"${2}\""
-        #建立密碼，同使用者名稱
-        ${winpty} docker-compose -f docker-compose.yml exec db mysql -e "SET PASSWORD FOR \`${2}\`=\"${2}\""
-        #授權
-        ${winpty} docker-compose -f docker-compose.yml exec db mysql -e "GRANT ALL ON \`${2}\`.* TO \"${2}\""
-        #更新container權限
-        ${winpty} docker-compose -f docker-compose.yml exec db mysql -e "FLUSH PRIVILEGES"
-        echo "Done."
-        exit;
-    fi
     if [ "${1}" = "--host" ]; then
             
             if [ ${hosts_file} == '/etc/hosts' ]; then
