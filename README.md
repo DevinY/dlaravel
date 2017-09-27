@@ -345,6 +345,33 @@ git pull
 You can git pull latest version and setting in D-Laravel folder.
 </pre>
 
+#### 6. alias and function (without entering the container can be implemented within the container composer or artisan instructions)
+
+<pre>
+alias laravel = 'docker-compose exec -u dlaravel php / home/dlaravel/.composer/vendor/bin/laravel'
+</pre>
+Execute the laravel installer in the container using the identity of dlaravel
+
+<pre>
+function composer () {
+if [$ (basename $ {PWD}) = "sites"];
+     docker-compose exec -u dlaravel php composer -d =. / $ @
+else
+     docker-compose exec -u dlaravel php composer -d = $ (basename $ {PWD}) $ @
+fi
+}
+</pre>
+Use dlaravel identity, the implementation of the container composer, according to your folder to switch the directory
+
+<pre>
+alias a = 'docker-compose -f ../../docker-compose.yml exec -u dlaravel php php $ (basename $ {PWD}) / artisan'
+</pre>
+We can add aliases to our computer so that you do not have to go into the container to execute the php artisan directive. Let artisan's instructions be more concise, which I call the alias directly as a. For example: a --version
+
+<pre>
+alias phpunit = 'docker-compose -f ../../docker-compose.yml exec -u dlaravel php $ (basename $ {PWD}) / vendor / bin / phpunit -c $ (basename $ {PWD}) / phpunit.xml '
+</pre>
+Join this alias can do simple phpunit.
 
 #### Others
 <pre>
