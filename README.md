@@ -133,9 +133,8 @@ fi
 </pre>
 使用dlaravel的身份，執行container內的composer，會依您所在的資料夾切換目錄
 
-
 <pre>
-alias a='docker-compose exec -u dlaravel php php $(basename ${PWD})/artisan'
+alias a='docker-compose -f ../../docker-compose.yml exec -u dlaravel php php $(basename ${PWD})/artisan'
 </pre>
 我們可以在自己的電腦加入別名，這樣就可不需進入container內執行php artisan指令了.
 讓artisan的指令更簡潔，這理我直接將別名命名為a。
@@ -143,7 +142,7 @@ alias a='docker-compose exec -u dlaravel php php $(basename ${PWD})/artisan'
 
 
 <pre>
-alias phpunit='docker-compose exec -u dlaravel php $(basename ${PWD})/vendor/bin/phpunit -c $(basename ${PWD})/phpunit.xml'
+alias phpunit='docker-compose -f ../../docker-compose.yml exec -u dlaravel php $(basename ${PWD})/vendor/bin/phpunit -c $(basename ${PWD})/phpunit.xml'
 </pre>
 加入這個alias可以執行簡phpunit。
 #### 其他
