@@ -146,7 +146,8 @@ if [ "${1}" == "custom" ]; then
         ln -vsf ${base_path}/docker-compose-custom.yml ${base_path}/docker-compose.yml 
         docker-compose -f ${base_path}/docker-compose.yml up -d
     else
-        cp ${base_path}/docker-compose-random.yml ${base_path}/docker-compose-custom.yml
+    #如果docker-compose-custom.yml不存在，使用normal為範本
+        cp ${base_path}/docker-compose-normal.yml ${base_path}/docker-compose-custom.yml
         ln -vsf ${base_path}/docker-compose-custom.yml ${base_path}/docker-compose.yml 
         echo "docker-compose-custom.yml is created."
         docker-compose -f ${base_path}/docker-compose.yml up -d

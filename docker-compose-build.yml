@@ -1,3 +1,10 @@
+###################################################3
+# 此檔案有版本控制，參考用
+# 透過-f參數，指定yaml檔，啟動container
+# docker-compose -f docker-compose-build.yml up -d
+# 如果image已存在時，需加上--build
+# docker-compose -f docker-compose-build.yml up --build -d
+###################################################3
 version: '3'
 services:
 ### 網頁伺服器的container ##################################
@@ -18,8 +25,10 @@ services:
   
 ### PHP-FPM container ##################################
  php:
+  image: dlaravelfpm
+  build:
+   context: ./dockerfiles/fpm/7.1
   network_mode: "service:web"
-  image: deviny/fpm:7.1.10
   #image: deviny/fpm:7.0.24
   #image: deviny/fpm:5.6.31
   volumes:

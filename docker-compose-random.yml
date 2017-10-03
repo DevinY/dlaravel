@@ -5,9 +5,9 @@ services:
   image: nginx
   dns: 8.8.8.8
   ports:
-      # 使用隨機的port 80
-      - "80"
-      - "443"
+    # 使用隨機的port 80
+    - "80"
+    - "443"
   volumes:
   - ./sites:/var/www/html
   - ./etc:/etc/nginx/conf.d
@@ -18,16 +18,15 @@ services:
   
 ### PHP-FPM container ##################################
  php:
-  image: deviny/fpm:7.1.9
   network_mode: "service:web"
-  #image: deviny/fpm:7.0.23
+  image: deviny/fpm:7.1.10
+  #image: deviny/fpm:7.0.24
   #image: deviny/fpm:5.6.31
   volumes:
   - ./etc/php:/usr/local/etc/php
   - ./sites:/var/www/html
   #建立composer cache
   - ./etc/cache:/home/dlaravel/.composer/cache
-  #- ./etc/php-fpm.d/www.conf:/usr/local/etc/php-fpm.d/www.conf
   #- ./logs/php:/var/log
   #- ./etc/supervisor:/etc/supervisor/conf.d
   #- ./logs/supervisor:/var/log/supervisor
@@ -45,8 +44,8 @@ services:
   ports:
     - "3306"
   volumes:
-      - ./etc/mysql/my.cnf:/etc/mysql/my.cnf
-      - ./data:/var/lib/mysql
+    - ./etc/mysql/my.cnf:/etc/mysql/my.cnf
+    - ./data:/var/lib/mysql
   environment:
    - MYSQL_DATABASE=homestead
    - MYSQL_USER=homestead
