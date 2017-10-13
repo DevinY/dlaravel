@@ -19,3 +19,4 @@ data/
 docker-compose.yml
 docker-compose-custom.yml
 !.gitignore
+var/

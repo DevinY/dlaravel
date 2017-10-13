@@ -85,7 +85,6 @@ if [ "${1}" == "clear" ]; then
     if [ ${ans} = 'n' ]; then
         exit
     else 
-
         #檢測是否有container啟動中
          docker ps|grep -q Up
         if [ $? -eq 0 ]; then
@@ -159,10 +158,23 @@ fi
 
 #停止docker-compose
 if [ "${1}" == "down" ]; then
-    if [ -e ${base_path}/docker-compose.yml ]; then
-        docker-compose -f ${base_path}/docker-compose.yml down --remove-orphans
+
+    if [ -z "${DOCKER_SERVICES}" ]; then
+        if [ -e ${base_path}/docker-compose.yml ]; then
+            docker-compose -f ${base_path}/docker-compose.yml down --remove-orphans
+            else
+            docker-compose -f ${base_path}/docker-compose-random.yml down --remove-orphans
+        fi
         else
-        docker-compose -f ${base_path}/docker-compose-random.yml down --remove-orphans
+
+        array_service=(${DOCKER_SERVICES})
+        CONSOLE_DOWN=""
+        for i in "${array_service[@]}"
+        do
+         : 
+        CONSOLE_DOWN+="-f ${base_path}/${i} "
+        done
+        docker-compose -p $(basename ${base_path}) ${CONSOLE_DOWN} down --remove-orphans
     fi
 exit;
 fi
@@ -185,7 +197,19 @@ if [ "${1}" == "up" ]; then
         #檔案不存在，進行預設的soft link
         ln -s ${base_path}/docker-compose-random.yml ${base_path}/docker-compose.yml
     fi
+
+    if [ -z "${DOCKER_SERVICES}" ]; then
         docker-compose -f ${base_path}/docker-compose.yml up -d
+        else
+        array_service=(${DOCKER_SERVICES})
+        CONSOLE_UP=""
+        for i in "${array_service[@]}"
+        do
+         : 
+        CONSOLE_UP+="-f ${base_path}/${i} "
+        done
+        docker-compose -p $(basename ${base_path}) ${CONSOLE_UP} up -d
+    fi
         #暫時保留
         #${winpty} docker-compose exec web /bin/bash -c 'cd /etc/;ln -sf /usr/share/zoneinfo/Asia/Taipei localtime;dpkg-reconfigure -f noninteractive tzdata'
         fail_exit ${base_path} 
