@@ -11,7 +11,7 @@ services:
   volumes:
   - ./sites:/var/www/html
   - ./etc:/etc/nginx/conf.d
-  - ./logs/web:/var/log/nginx
+  - ./var/log/web:/var/log/nginx
   hostname: web
   networks:
     - dlaravel_net
@@ -27,9 +27,9 @@ services:
   - ./sites:/var/www/html
   #建立composer cache
   - ./etc/cache:/home/dlaravel/.composer/cache
-  #- ./logs/php:/var/log
+  #- ./var/log/php:/var/log
   #- ./etc/supervisor:/etc/supervisor/conf.d
-  #- ./logs/supervisor:/var/log/supervisor
+  #- ./var/log/supervisor:/var/log/supervisor
   environment:
    - TZ=Asia/Taipei
   #- PHP_IDE_CONFIG=serverName=dlaravel

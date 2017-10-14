@@ -22,9 +22,21 @@ if [ $? -eq 0 ]; then
     hosts_file='/c/Windows/system32/drivers/etc/hosts'
 fi
 
+#array_service
+function  array_service {
+        array_service=(${DOCKER_SERVICES})
+        CONSOLE_CMD=""
+        for i in "${array_service[@]}"
+        do
+         : 
+        CONSOLE_CMD+="-f ${base_path}/${i} "
+        done
+}
+
+#display logs when error
 function fail_exit {
     if [ $? -eq 1 ]; then
-    ${winpty} docker-compose -f ${base_path}/docker-compose.yml logs
+        ${winpty} docker-compose -f ${base_path}/docker-compose.yml logs
         exit;
     fi
     if [ -z "${winpty}" ]; then
@@ -33,6 +45,70 @@ function fail_exit {
     #確保dlaravel有權限寫入/var/log，例如xdebug.log
     ${winpty} docker-compose -f ${base_path}/docker-compose.yml exec php chown dlaravel /var/log
     fi
+}
+
+#dlarave console up
+function console_up {
+    if [ ! -f "${base_path}/docker-compose.yml" ]; then
+        echo ${base_path}
+        #檔案不存在，進行預設的soft link
+        ln -s ${base_path}/docker-compose-random.yml ${base_path}/docker-compose.yml
+    fi
+
+    if [ -z "${DOCKER_SERVICES}" ]; then
+        docker-compose -f ${base_path}/docker-compose.yml up -d
+        else
+        array_service
+        docker-compose -p $(basename ${base_path}) ${CONSOLE_CMD} up -d
+    fi
+        #暫時保留
+        #${winpty} docker-compose exec web /bin/bash -c 'cd /etc/;ln -sf /usr/share/zoneinfo/Asia/Taipei localtime;dpkg-reconfigure -f noninteractive tzdata'
+        fail_exit ${base_path} 
+    echo "DB:"
+        #設定DB的時區到Asia/Taipei
+        ${base_path}/scripts/db-ports
+        echo "Web:"
+        ${base_path}/scripts/web-ports
+}
+#dlaravel console down
+function console_down {
+    if [ -z "${DOCKER_SERVICES}" ]; then
+        if [ -e ${base_path}/docker-compose.yml ]; then
+            docker-compose -f ${base_path}/docker-compose.yml down --remove-orphans
+            else
+            docker-compose -f ${base_path}/docker-compose-random.yml down --remove-orphans
+        fi
+        else
+        array_service
+        docker-compose -p $(basename ${base_path}) ${CONSOLE_CMD} down --remove-orphans
+    fi
+}
+#dlaravel console ps
+function console_ps {
+
+    if [ -f "${base_path}/.docker-compose.yml" ]; then
+        echo "Can't find ${base_path}/docker-compose.yml"
+    fi
+
+    if [ -z "${DOCKER_SERVICES}" ]; then
+          ${winpty} docker-compose -f ${base_path}/docker-compose.yml ps
+        else
+        array_service
+        ${winpty} docker-compose -p $(basename ${base_path}) ${CONSOLE_CMD} ps
+    fi
+
+}
+
+#dlaravel console kill
+function console_kill {
+
+    if [ -z "${DOCKER_SERVICES}" ]; then
+            ${winpty} docker-compose -f ${base_path}/docker-compose.yml down > /dev/null 2>&1
+        else
+        array_service
+        ${winpty} docker-compose kill $(${winpty} docker-compose -p $(basename ${base_path}) ${CONSOLE_CMD} ps -q)
+    fi
+
 }
 
 #建立sites資料夾，如果不存在
@@ -53,10 +129,10 @@ if [ "${1}" == "chowner" ]; then
 	    if [ ${plateform} == 'Linux' ]; then
              dlaravel_gid=`whoami|id -g`
              dlaravel_uid=`whoami|id -u`
-             docker-compose -f ${base_path}/docker-compose.yml exec php userdel dlaravel
-             docker-compose -f ${base_path}/docker-compose.yml exec php groupadd -g ${dlaravel_gid} dlaravel
-             docker-compose -f ${base_path}/docker-compose.yml exec php useradd -u ${dlaravel_uid} -g ${dlaravel_gid} dlaravel
-             docker-compose -f ${base_path}/docker-compose.yml exec php chown -R ${dlaravel_uid} /home/dlaravel
+             ${winpty} docker-compose -f ${base_path}/docker-compose.yml exec php userdel dlaravel
+             ${winpty} docker-compose -f ${base_path}/docker-compose.yml exec php groupadd -g ${dlaravel_gid} dlaravel
+             ${winpty} docker-compose -f ${base_path}/docker-compose.yml exec php useradd -u ${dlaravel_uid} -g ${dlaravel_gid} dlaravel
+             ${winpty} docker-compose -f ${base_path}/docker-compose.yml exec php chown -R ${dlaravel_uid} /home/dlaravel
 
              echo "You have to commit your php fpm image, and restart container."
 	     echo "Example: docker commit 67306ecd0879 deviny/fpm:7.1.9"
@@ -74,7 +150,7 @@ fi
 
 #移除停址的container
 if [ "${1}" == "rm" ]; then
-    docker-compose -f ${base_path}/docker-compose.yml rm
+    ${winpty} docker-compose -f ${base_path}/docker-compose.yml rm
     exit;
 fi
 
@@ -114,12 +190,13 @@ fi
 #變更模式, web:80, db:127.0.0.1:3306
 if [ "${1}" == "normal" ]; then
     #先嚐試停止
-    docker-compose -f ${base_path}/docker-compose.yml down > /dev/null 2>&1
+    console_kill
+
     echo "docker-compose setting file changed."
     echo "HOST DB: listen on 127.0.0.1:3306."
     echo "HOST WEB: listen on port 80."
     ln -vsf ${base_path}/docker-compose-normal.yml ${base_path}/docker-compose.yml
-    docker-compose -f ${base_path}/docker-compose.yml up -d
+    console_up
     ${base_path}/console info
     exit;
 fi
@@ -127,12 +204,13 @@ fi
 #隨機
 if [ "${1}" == "random" ]; then
     #先嚐試停止
-    docker-compose -f ${base_path}/docker-compose.yml down > /dev/null 2>&1
+    console_kill
+
     echo "docker-compose setting file changed."
     echo "HOST DB: listen on random port."
     echo "HOST WEB: listen on random port."
     ln -vsf ${base_path}/docker-compose-random.yml ${base_path}/docker-compose.yml
-    docker-compose -f ${base_path}/docker-compose.yml up -d
+    console_up
     ${base_path}/console info
     exit;
 fi
@@ -141,15 +219,15 @@ fi
 if [ "${1}" == "custom" ]; then
     #檢測docker-compose-custom.yml是否存在
     if [ -e "${base_path}/docker-compose-custom.yml" ]; then
-        docker-compose -f ${base_path}/docker-compose.yml down > /dev/null 2>&1
+        console_kill
         ln -vsf ${base_path}/docker-compose-custom.yml ${base_path}/docker-compose.yml 
-        docker-compose -f ${base_path}/docker-compose.yml up -d
+        console_up
     else
-    #如果docker-compose-custom.yml不存在，使用normal為範本
+        #如果docker-compose-custom.yml不存在，使用normal為範本
         cp ${base_path}/docker-compose-normal.yml ${base_path}/docker-compose-custom.yml
         ln -vsf ${base_path}/docker-compose-custom.yml ${base_path}/docker-compose.yml 
         echo "docker-compose-custom.yml is created."
-        docker-compose -f ${base_path}/docker-compose.yml up -d
+        console_up
     fi 
     ${base_path}/console info
     exit;
@@ -158,66 +236,24 @@ fi
 
 #停止docker-compose
 if [ "${1}" == "down" ]; then
-
-    if [ -z "${DOCKER_SERVICES}" ]; then
-        if [ -e ${base_path}/docker-compose.yml ]; then
-            docker-compose -f ${base_path}/docker-compose.yml down --remove-orphans
-            else
-            docker-compose -f ${base_path}/docker-compose-random.yml down --remove-orphans
-        fi
-        else
-
-        array_service=(${DOCKER_SERVICES})
-        CONSOLE_DOWN=""
-        for i in "${array_service[@]}"
-        do
-         : 
-        CONSOLE_DOWN+="-f ${base_path}/${i} "
-        done
-        docker-compose -p $(basename ${base_path}) ${CONSOLE_DOWN} down --remove-orphans
-    fi
-exit;
+    console_down
+    exit
 fi
 
 #重啟
 if [ "${1}" == "restart" ]; then
-docker-compose -f ${base_path}/docker-compose.yml down
-docker-compose -f ${base_path}/docker-compose.yml up -d
-fail_exit ${base_path} 
-echo "DB:"
-${base_path}/scripts/db-ports
-echo "Web:"
-${base_path}/scripts/web-ports
-exit;
+    console_down
+    console_up
+    fail_exit ${base_path} 
+    echo "DB:"
+    ${base_path}/scripts/db-ports
+    echo "Web:"
+    ${base_path}/scripts/web-ports
+    exit;
 fi
 
 if [ "${1}" == "up" ]; then
-    if [ ! -f "${base_path}/docker-compose.yml" ]; then
-        echo ${base_path}
-        #檔案不存在，進行預設的soft link
-        ln -s ${base_path}/docker-compose-random.yml ${base_path}/docker-compose.yml
-    fi
-
-    if [ -z "${DOCKER_SERVICES}" ]; then
-        docker-compose -f ${base_path}/docker-compose.yml up -d
-        else
-        array_service=(${DOCKER_SERVICES})
-        CONSOLE_UP=""
-        for i in "${array_service[@]}"
-        do
-         : 
-        CONSOLE_UP+="-f ${base_path}/${i} "
-        done
-        docker-compose -p $(basename ${base_path}) ${CONSOLE_UP} up -d
-    fi
-        #暫時保留
-        #${winpty} docker-compose exec web /bin/bash -c 'cd /etc/;ln -sf /usr/share/zoneinfo/Asia/Taipei localtime;dpkg-reconfigure -f noninteractive tzdata'
-        fail_exit ${base_path} 
-    echo "DB:"
-        #設定DB的時區到Asia/Taipei
-        ${base_path}/scripts/db-ports
-        echo "Web:"
-        ${base_path}/scripts/web-ports
+    console_up
     exit;
 fi
 
@@ -267,9 +303,9 @@ fi
 
 #執行ps
 if [ "${1}" == "ps" ]; then
-echo ${base_path}
-docker-compose -f ${base_path}/docker-compose.yml ps
-exit
+    echo ${base_path}
+    console_ps
+    exit
 fi
 
 #使用self-signed的憑證 
@@ -407,7 +443,7 @@ fi
 if [ "${1}" == "" ]; then
 
         #檢測是否執行
-        docker-compose -f ${base_path}/docker-compose.yml ps |grep -q 9000
+        ${winpty} docker-compose -f ${base_path}/docker-compose.yml ps |grep -q 9000
         if [ $? -eq 1 ]; then
         ${winpty} docker-compose -f ${base_path}/docker-compose.yml up -d
         #設定timezone

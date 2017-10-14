@@ -1,0 +1,35 @@
+version: '3'
+services:
+
+### Jenkins container ##################################
+ ci:
+  #build: .
+  image: deviny/jenkins:7.1.10
+  dns: 8.8.8.8
+  ports:
+      - "8081:8080"
+      - "50001:50000"
+      - "1915"
+  volumes:
+   - ./var/jenkins_home:/var/jenkins_home
+   - /var/run/docker.sock:/var/run/docker.sock 
+   - /usr/local/bin/docker:/usr/bin/docker
+  hostname: ci
+  environment:
+   - TZ=Asia/Taipei
+  networks:
+    - dlaravel_net
+
+### Chromedriver contaienr #######
+ chrome:
+  image: robcherry/docker-chromedriver
+  network_mode: "service:ci"
+  environment:
+     CHROMEDRIVER_WHITELISTED_IPS: ""
+     CHROMEDRIVER_PORT: "9515"
+  cap_add:
+   - "SYS_ADMIN"
+
+######top-level netowks key#######
+networks:
+    dlaravel_net:

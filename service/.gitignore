@@ -1,5 +1,5 @@
 *
 !beanstalkd.yml
-!bg-sync.yml
 !redis.yml
+!jenkins.yml
 !.gitignore

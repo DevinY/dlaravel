@@ -1,0 +1,4 @@
+*
+!.jenkins_home
+!.log
+!.gitignore
