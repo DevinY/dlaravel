@@ -8,7 +8,7 @@ services:
   dns: 8.8.8.8
   ports:
       - "8080:8080"
-      - "50001:50000"
+      - "50000:50000"
       - "1915"
   volumes:
    - ./var/jenkins_home:/var/jenkins_home
