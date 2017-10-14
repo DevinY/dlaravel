@@ -23,7 +23,7 @@ if [ $? -eq 0 ]; then
 fi
 
 #array_service
-function  array_service {
+function array_service {
         array_service=(${DOCKER_SERVICES})
         CONSOLE_CMD=""
         for i in "${array_service[@]}"
@@ -46,6 +46,15 @@ function fail_exit {
     ${winpty} docker-compose -f ${base_path}/docker-compose.yml exec php chown dlaravel /var/log
     fi
 }
+#dlaravel console log
+function console_logs {
+    if [ -z "${DOCKER_SERVICES}" ]; then
+     ${winpty} docker-compose -f ${base_path}/docker-compose.yml ${@}
+    else
+     array_service
+     ${winpty} docker-compose -p $(basename ${base_path}) ${CONSOLE_CMD} ${@}
+    fi
+}
 
 #dlarave console up
 function console_up {
@@ -59,7 +68,7 @@ function console_up {
         docker-compose -f ${base_path}/docker-compose.yml up -d
         else
         array_service
-        docker-compose -p $(basename ${base_path}) ${CONSOLE_CMD} up -d
+        ${winpty} docker-compose -p $(basename ${base_path}) ${CONSOLE_CMD} up -d
     fi
         #暫時保留
         #${winpty} docker-compose exec web /bin/bash -c 'cd /etc/;ln -sf /usr/share/zoneinfo/Asia/Taipei localtime;dpkg-reconfigure -f noninteractive tzdata'
@@ -365,7 +374,7 @@ fi
 
 #顯示log
 if [ "${1}" == "logs" ]; then
-    ${winpty} docker-compose -f ${base_path}/docker-compose.yml logs -f web
+    console_logs ${@}
 exit
 fi
 
@@ -385,7 +394,7 @@ function help {
     echo "  restart : 停止再啟動down and up，不明怪問題時應該有用"
     echo "  ps : Lists Contaienrs. (docker-compose -f ${base_path}/docker-compose.yml ps)"
     echo "  alias : 顯示consle的別名指令"
-    echo "  logs : web service的log, 用Ctrl+C中斷"
+    echo "  logs : container service的log, 用Ctrl+C中斷"
     echo "  info : 列出web及db在host的連接埠。"
     echo "  mysql : 快速進入mysql"
     echo "  link : 目前docker-compose 連結的設定檔"
@@ -405,7 +414,7 @@ function help {
     echo "  restart : docker-compose down and docker-compose up."
     echo "  ps : Lists Contaienrs. (docker-compose -f ${base_path}/docker-compose.yml ps)"
     echo "  alias : Display console's alias setting."
-    echo "  logs : web service'slog, ctrl+c to stop."
+    echo "  logs : service's log, ctrl+c to stop."
     echo "  info : list webs and port of database."
     echo "  mysql : Enter mysql interactive mode."
     echo "  link : Display current link of docker-compose file."
