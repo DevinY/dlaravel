@@ -55,6 +55,15 @@ function console_logs {
      ${winpty} docker-compose -p $(basename ${base_path}) ${CONSOLE_CMD} ${@}
     fi
 }
+#dlaravel console exec
+function console_exec {
+    if [ -z "${DOCKER_SERVICES}" ]; then
+     ${winpty} docker-compose -f ${base_path}/docker-compose.yml ${@}
+    else
+     array_service
+     ${winpty} docker-compose -p $(basename ${base_path}) ${CONSOLE_CMD} ${@}
+    fi
+}
 
 #dlarave console up
 function console_up {
@@ -266,25 +275,10 @@ if [ "${1}" == "up" ]; then
     exit;
 fi
 
-#執行
+#docker-compose exec
 if [ "${1}" == "exec" ]; then
-    number=0;
-    until [ -z "${1}" ]
-        do
-            number=$((${number} + 1));
-            if [ ${number} -eq 2 ]; then
-                #echo ${@}
-                ${winpty} docker-compose -f ${base_path}/docker-compose.yml exec php ${@} 
-                exit
-            fi
-        shift
-    done
-    echo "Run command of php container."
-    echo -e "./console exec [command].\n"
-    echo "for example:"
-    echo "./console exec php -v"
-    echo "./console exec composer -v"
-    exit
+    console_exec ${@}
+    exit;
 fi
 
 #進資料庫
@@ -402,7 +396,7 @@ function help {
     echo "  normal : 變更docker-compose連結，讓docker使用標準連結埠，80:443:3306"
     echo "  random : 變更docker-compose連結，讓docker啟用隨機的連接埠，可用./console ps查看"
     echo "  custom : 變更docker-compose連結，產生或使用自定的設定檔"
-    echo "  exec : 執行php container內的命令，例如: ./console exec php -v"
+    echo "  exec : 執行php container內的命令，例如: ./console exec php php -v"
     echo "  reload : 重載nginx的設定."
     echo "  chowner: D-Laravel的使用者uid及gid在容器內預設為1000，在linux環境中，您可能需要調整dlaravel的uid與gid與您的目前使用者相同"
     echo "  clear : 移除所有docker ps -a 所有停止的Container!!包含您自己過去創建的所有停止的container哦!!"
@@ -422,7 +416,7 @@ function help {
     echo "  normal : change docker-compose.yal link to docker-compose-normal.yml, for using ports 80:443:3306"
     echo "  random : change docker-compose.yml link to docker-compose-random.yml，for using random ports，you can check issue ./console ps"
     echo "  custom : change docker-compose.yml link link to docker-compose-custom.yml， for custom purpose."
-    echo "  exec : exec php container's command， for example: ./console exec php -v"
+    echo "  exec : exec php container's command， for example: ./console exec php php -v"
     echo "  reload : nginx reload config file."
     echo "  chowner: D-Laravel users uid and gid are 1000 in container, in the linux environment, you may need to adjust D-Laravel uid and gid with your current user the same."
     echo "  clear : Remove all your containers that listed by docker ps -a !!"
