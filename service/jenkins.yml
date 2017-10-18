@@ -13,8 +13,6 @@ services:
   volumes:
    - ./var/jenkins_home:/var/jenkins_home
    - ./var/jenkins_home/workspace:/var/jenkins_home/workspace
-   - /var/run/docker.sock:/var/run/docker.sock 
-   - /usr/local/bin/docker:/usr/bin/docker
   hostname: ci
   environment:
    - TZ=Asia/Taipei
