@@ -11,7 +11,6 @@ base_path="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 #檢測是否有環境設定檔
 if [ -f "${base_path}/.env" ]; then
-export MYSQL_ROOT_PASSWORD=""
 source ${base_path}/.env
 fi
 
@@ -44,6 +43,15 @@ function fail_exit {
     ${winpty} docker-compose -f ${base_path}/docker-compose.yml exec php chown dlaravel /var/www/html
     #確保dlaravel有權限寫入/var/log，例如xdebug.log
     ${winpty} docker-compose -f ${base_path}/docker-compose.yml exec php chown dlaravel /var/log
+    fi
+}
+#spcify service restart
+function console_restart {
+    if [ -z "${DOCKER_SERVICES}" ]; then
+     ${winpty} docker-compose -f ${base_path}/docker-compose.yml ${@}
+    else
+     array_service
+     ${winpty} docker-compose -p $(basename ${base_path}) ${CONSOLE_CMD} ${@}
     fi
 }
 #dlaravel console log
@@ -259,7 +267,7 @@ if [ "${1}" == "down" ]; then
 fi
 
 #重啟
-if [ "${1}" == "restart" ]; then
+if [ "${1}" == "restart" ] && [ ${#} -eq 1 ]; then
     console_down
     console_up
     fail_exit ${base_path} 
@@ -267,6 +275,18 @@ if [ "${1}" == "restart" ]; then
     ${base_path}/scripts/db-ports
     echo "Web:"
     ${base_path}/scripts/web-ports
+    exit;
+fi
+
+#重啟特定服務
+if [ "${1}" == "restart" ] && [ ${#} -gt 1 ]; then
+    #web綁定php-fpm了，所以需重啟php
+    if [ "${2}" == "web" ]; then
+        console_restart restart web
+        console_restart restart php
+       else
+        console_restart ${@}
+    fi
     exit;
 fi
 
