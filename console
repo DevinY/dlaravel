@@ -54,6 +54,17 @@ function console_restart {
      ${winpty} docker-compose -p $(basename ${base_path}) ${CONSOLE_CMD} ${@}
     fi
 }
+
+#specify service up
+function console_up_service {
+    if [ -z "${DOCKER_SERVICES}" ]; then
+     ${winpty} docker-compose -f ${base_path}/docker-compose.yml up -d ${@}
+    else
+     array_service
+     ${winpty} docker-compose -p $(basename ${base_path}) ${CONSOLE_CMD} up -d ${@}
+    fi
+}
+
 #dlaravel console log
 function console_logs {
     if [ -z "${DOCKER_SERVICES}" ]; then
@@ -82,10 +93,10 @@ function console_up {
     fi
 
     if [ -z "${DOCKER_SERVICES}" ]; then
-        docker-compose -f ${base_path}/docker-compose.yml up -d
+        docker-compose -f ${base_path}/docker-compose.yml up -d --remove-orphans
         else
         array_service
-        ${winpty} docker-compose -p $(basename ${base_path}) ${CONSOLE_CMD} up -d
+        ${winpty} docker-compose -p $(basename ${base_path}) ${CONSOLE_CMD} up -d --remove-orphans
     fi
         #暫時保留
         #${winpty} docker-compose exec web /bin/bash -c 'cd /etc/;ln -sf /usr/share/zoneinfo/Asia/Taipei localtime;dpkg-reconfigure -f noninteractive tzdata'
@@ -290,7 +301,21 @@ if [ "${1}" == "restart" ] && [ ${#} -gt 1 ]; then
     exit;
 fi
 
-if [ "${1}" == "up" ]; then
+#停止特定服務
+if [ "${1}" == "up" ] && [ ${#} -gt 1 ]; then
+    #取出服務
+    service=`echo ${@}|sed 's/up//'`
+    #web綁定php-fpm了，所以需重啟php
+    if [ "${2}" == "web" ]; then
+        console_up_service web
+        console_up_service php
+       else
+        console_up_service ${service}
+    fi
+    exit;
+fi
+
+if [ "${1}" == "up" ] && [ ${#} -eq 1 ]; then
     console_up
     exit;
 fi
