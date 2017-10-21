@@ -8,6 +8,7 @@ services:
     # 使用隨機的port 80
     - "80:80"
     - "443:443"
+    - "6001:6001"
   volumes:
   - ./sites:/var/www/html
   - ./etc:/etc/nginx/conf.d
@@ -50,7 +51,7 @@ services:
    - MYSQL_DATABASE=homestead
    - MYSQL_USER=homestead
    - MYSQL_PASSWORD=secret
-   - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD-abc}
+   #- MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD-abc}
    - MYSQL_ALLOW_EMPTY_PASSWORD= "yes"
    - TZ=Asia/Taipei
   networks:
