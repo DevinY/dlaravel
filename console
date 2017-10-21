@@ -491,19 +491,27 @@ fi
 if [ "${1}" == "" ]; then
 
         #檢測是否執行
-        ${winpty} docker-compose -f ${base_path}/docker-compose.yml ps |grep -q 9000
+        ${winpty} docker-compose -f ${base_path}/docker-compose.yml ps |grep -q web_1
         if [ $? -eq 1 ]; then
-        ${winpty} docker-compose -f ${base_path}/docker-compose.yml up -d
+        #啟動container，如果未啟動
+        console_up
+
         #設定timezone
         #${winpty} docker-compose exec web /bin/bash -c 'cd /etc/;ln -sf /usr/share/zoneinfo/Asia/Taipei localtime;dpkg-reconfigure -f noninteractive tzdata'
 
         #確保ubuntu環境能順利寫入資料
-        ${winpty} docker-compose -f ${base_path}/docker-compose.yml exec php chown dlaravel /var/www/html
+        #${winpty} docker-compose -f ${base_path}/docker-compose.yml exec php chown dlaravel /var/www/html
         #確保dlaravel有權限寫入/var/log，例如xdebug.log
-        ${winpty} docker-compose -f ${base_path}/docker-compose.yml exec php chown dlaravel /var/log
-
+        #${winpty} docker-compose -f ${base_path}/docker-compose.yml exec php chown dlaravel /var/log
         fi
-        ${winpty} docker-compose -f ${base_path}/docker-compose.yml exec php sudo -u dlaravel bash 
+
+        #${winpty} docker-compose -f ${base_path}/docker-compose.yml exec php sudo -u dlaravel bash 
+        if [ -z "${DOCKER_SERVICES}" ]; then
+            ${winpty} docker-compose  -f ${base_path}/docker-compose.yml exec -u dlaravel php bash  
+        else
+            array_service
+            ${winpty} docker-compose  -p $(basename ${base_path}) ${CONSOLE_CMD} exec -u dlaravel php bash
+        fi
 
     else
     echo "${1} - Parameter not found"
