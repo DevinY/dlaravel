@@ -51,7 +51,7 @@ services:
    - MYSQL_DATABASE=homestead
    - MYSQL_USER=homestead
    - MYSQL_PASSWORD=secret
-   #- MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD-abc}
+   #- MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD-secret}
    - MYSQL_ALLOW_EMPTY_PASSWORD= "yes"
    - TZ=Asia/Taipei
   networks:
