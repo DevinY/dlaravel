@@ -2,10 +2,30 @@
 source ./scripts/checker
 
 #檢測是否有環境設定檔
-if [ -f "./.env" ]; then
-export MYSQL_ROOT_PASSWORD=""
-source ./.env
+if [ -f "${base_path}/.env" ]; then
+source ${base_path}/.env
 fi
+
+#is windows
+which winpty >/dev/null 2>&1
+if [ $? -eq 0 ]; then
+    winpty=`which winpty`
+    hosts_file='/c/Windows/system32/drivers/etc/hosts'
+fi
+
+#array_service
+function array_service {
+        array_service=(${DOCKER_SERVICES})
+        CONSOLE_CMD=""
+        for i in "${array_service[@]}"
+        do
+         : 
+        CONSOLE_CMD+="-f ${base_path}/${i} "
+        done
+}
+
+#共用功能
+source ./scripts/functions
 
 function is_running {
 #檢測是否執行
@@ -17,7 +37,7 @@ if [ $? -eq 1 ]; then
     if [ ${ans} = 'n' ]; then
        exit
     else 
-       docker-compose up -d
+        console_up
         if [ ${?} -ne 0 ]; then
             #啟動失敗，停止動作
             exit;
@@ -130,9 +150,9 @@ function dlaravel_new {
         echo "Run laravel installer in container: laravel new ${1}"
 
         #確保ubuntu環境能順利寫入資料
-	    ${winpty} docker-compose exec php chown dlaravel /var/www/html
+	#${winpty} docker-compose exec php chown dlaravel /var/www/html
         #確保dlaravel有權限寫入/var/log，例如xdebug.log
-	    ${winpty} docker-compose exec php chown dlaravel /var/log
+	#${winpty} docker-compose exec php chown dlaravel /var/log
         docker exec -ti ${containerName}_php_1 sudo -u dlaravel /home/dlaravel/.composer/vendor/bin/laravel new ${1}
     else
 

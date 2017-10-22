@@ -21,132 +21,9 @@ if [ $? -eq 0 ]; then
     hosts_file='/c/Windows/system32/drivers/etc/hosts'
 fi
 
-#array_service
-function array_service {
-        array_service=(${DOCKER_SERVICES})
-        CONSOLE_CMD=""
-        for i in "${array_service[@]}"
-        do
-         : 
-        CONSOLE_CMD+="-f ${base_path}/${i} "
-        done
-}
+#功能
+source ${base_path}/scripts/functions
 
-#display logs when error
-function fail_exit {
-    if [ $? -eq 1 ]; then
-        ${winpty} docker-compose -f ${base_path}/docker-compose.yml logs
-        exit;
-    fi
-    if [ -z "${winpty}" ]; then
-    #確保ubuntu環境能順利寫入資料
-    ${winpty} docker-compose -f ${base_path}/docker-compose.yml exec php chown dlaravel /var/www/html
-    #確保dlaravel有權限寫入/var/log，例如xdebug.log
-    ${winpty} docker-compose -f ${base_path}/docker-compose.yml exec php chown dlaravel /var/log
-    fi
-}
-#spcify service restart
-function console_restart {
-    if [ -z "${DOCKER_SERVICES}" ]; then
-     ${winpty} docker-compose -f ${base_path}/docker-compose.yml ${@}
-    else
-     array_service
-     ${winpty} docker-compose -p $(basename ${base_path}) ${CONSOLE_CMD} ${@}
-    fi
-}
-
-#specify service up
-function console_up_service {
-    if [ -z "${DOCKER_SERVICES}" ]; then
-     ${winpty} docker-compose -f ${base_path}/docker-compose.yml up -d ${@}
-    else
-     array_service
-     ${winpty} docker-compose -p $(basename ${base_path}) ${CONSOLE_CMD} up -d ${@}
-    fi
-}
-
-#dlaravel console log
-function console_logs {
-    if [ -z "${DOCKER_SERVICES}" ]; then
-     ${winpty} docker-compose -f ${base_path}/docker-compose.yml ${@}
-    else
-     array_service
-     ${winpty} docker-compose -p $(basename ${base_path}) ${CONSOLE_CMD} ${@}
-    fi
-}
-#dlaravel console exec
-function console_exec {
-    if [ -z "${DOCKER_SERVICES}" ]; then
-     ${winpty} docker-compose -f ${base_path}/docker-compose.yml ${@}
-    else
-     array_service
-     ${winpty} docker-compose -p $(basename ${base_path}) ${CONSOLE_CMD} ${@}
-    fi
-}
-
-#dlarave console up
-function console_up {
-    if [ ! -f "${base_path}/docker-compose.yml" ]; then
-        echo ${base_path}
-        #檔案不存在，進行預設的soft link
-        ln -s ${base_path}/docker-compose-random.yml ${base_path}/docker-compose.yml
-    fi
-
-    if [ -z "${DOCKER_SERVICES}" ]; then
-        docker-compose -f ${base_path}/docker-compose.yml up -d --remove-orphans
-        else
-        array_service
-        ${winpty} docker-compose -p $(basename ${base_path}) ${CONSOLE_CMD} up -d --remove-orphans
-    fi
-        #暫時保留
-        #${winpty} docker-compose exec web /bin/bash -c 'cd /etc/;ln -sf /usr/share/zoneinfo/Asia/Taipei localtime;dpkg-reconfigure -f noninteractive tzdata'
-        fail_exit ${base_path} 
-    echo "DB:"
-        #設定DB的時區到Asia/Taipei
-        ${base_path}/scripts/db-ports
-        echo "Web:"
-        ${base_path}/scripts/web-ports
-}
-#dlaravel console down
-function console_down {
-    if [ -z "${DOCKER_SERVICES}" ]; then
-        if [ -e ${base_path}/docker-compose.yml ]; then
-            docker-compose -f ${base_path}/docker-compose.yml down --remove-orphans
-            else
-            docker-compose -f ${base_path}/docker-compose-random.yml down --remove-orphans
-        fi
-        else
-        array_service
-        docker-compose -p $(basename ${base_path}) ${CONSOLE_CMD} down --remove-orphans
-    fi
-}
-#dlaravel console ps
-function console_ps {
-
-    if [ -f "${base_path}/.docker-compose.yml" ]; then
-        echo "Can't find ${base_path}/docker-compose.yml"
-    fi
-
-    if [ -z "${DOCKER_SERVICES}" ]; then
-          ${winpty} docker-compose -f ${base_path}/docker-compose.yml ps
-        else
-        array_service
-        ${winpty} docker-compose -p $(basename ${base_path}) ${CONSOLE_CMD} ps
-    fi
-
-}
-
-#dlaravel console kill
-function console_kill {
-
-    if [ -z "${DOCKER_SERVICES}" ]; then
-            ${winpty} docker-compose -f ${base_path}/docker-compose.yml down > /dev/null 2>&1
-        else
-        array_service
-        ${winpty} docker-compose kill $(${winpty} docker-compose -p $(basename ${base_path}) ${CONSOLE_CMD} ps -q)
-    fi
-
-}
 
 #建立sites資料夾，如果不存在
 if [ ! -d "${base_path}/sites/" ]; then
@@ -234,7 +111,6 @@ if [ "${1}" == "normal" ]; then
     echo "HOST WEB: listen on port 80."
     ln -vsf ${base_path}/docker-compose-normal.yml ${base_path}/docker-compose.yml
     console_up
-    ${base_path}/console info
     exit;
 fi
 
@@ -248,7 +124,6 @@ if [ "${1}" == "random" ]; then
     echo "HOST WEB: listen on random port."
     ln -vsf ${base_path}/docker-compose-random.yml ${base_path}/docker-compose.yml
     console_up
-    ${base_path}/console info
     exit;
 fi
 
@@ -351,7 +226,6 @@ fi
 
 #執行ps
 if [ "${1}" == "ps" ]; then
-    echo ${base_path}
     console_ps
     exit
 fi

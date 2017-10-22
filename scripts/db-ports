@@ -1,8 +1,8 @@
 #!/bin/bash
-base_path="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-source ${base_path}/checker
+script_path="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+source ${script_path}/checker
 
-docker-compose  -f ${base_path}/../docker-compose.yml ps |grep ${containerName}_web_1|grep -q Up
+docker-compose  -f ${script_path}/../docker-compose.yml ps |grep ${containerName}_web_1|grep -q Up
 if [ $? -eq 1 ]; then
 echo ${containerName}_db_1 is not running
 exit

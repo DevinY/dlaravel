@@ -1,9 +1,9 @@
 #!/bin/bash
-base_path="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-projectFolder=`echo ${base_path}|sed 's#/scripts##'`
-source ${projectFolder}/scripts/checker
+scripts_path="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+base_path=`echo ${scripts_path}|sed 's#/scripts##'`
+source ${base_path}/scripts/checker
 
-docker-compose -f ${base_path}/../docker-compose.yml ps |grep ${containerName}_web_1|grep -q Up
+docker-compose -f ${scripts_path}/../docker-compose.yml ps |grep ${containerName}_web_1|grep -q Up
 if [ $? -eq 1 ]; then
 echo ${containerName}_web_1 is not running
 exit
@@ -11,13 +11,13 @@ fi
 
 web_port=`${win_pty} docker inspect --format='{{(index (index .NetworkSettings.Ports "80/tcp") 0).HostPort}}'  ${containerName}_web_1`
 #查看sites內的資料夾數量
-projectNum=`ls ${projectFolder}/sites/|wc -l`
+projectNum=`ls ${base_path}/sites/|wc -l`
 
 #印出sites資料夾目錄，轉換為Web
 if [ ${projectNum} -gt 0 ]; then
     #for Mac
     if [ ${hosts_file} == '/etc/hosts' ]; then
-for i in $(ls -d ${projectFolder}/sites/*|rev|cut -d/ -f1|rev); do 
+for i in $(ls -d ${base_path}/sites/*|rev|cut -d/ -f1|rev); do 
         if [ ${i} == 'xdebug.log' ]; then
             continue
         fi
