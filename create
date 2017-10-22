@@ -2,6 +2,8 @@
 source ./scripts/checker
 
 #檢測是否有環境設定檔
+#default由container內的laravel install安裝Laravel
+export LARAVEL_INSTALLER='container'
 if [ -f "${base_path}/.env" ]; then
 source ${base_path}/.env
 fi
@@ -147,23 +149,31 @@ web_port=`docker inspect --format='{{(index (index .NetworkSettings.Ports "80/tc
 #由container建立Laravel
 function dlaravel_new {
     if [ ${hosts_file} == '/etc/hosts' ]; then
-        echo "Run laravel installer in container: laravel new ${1}"
 
         #確保ubuntu環境能順利寫入資料
 	#${winpty} docker-compose exec php chown dlaravel /var/www/html
         #確保dlaravel有權限寫入/var/log，例如xdebug.log
 	#${winpty} docker-compose exec php chown dlaravel /var/log
-        docker exec -ti ${containerName}_php_1 sudo -u dlaravel /home/dlaravel/.composer/vendor/bin/laravel new ${1}
+        #由container進行Laravel安裝
+        if [ ${LARAVEL_INSTALLER} == 'container' ]; then
+          echo "Run laravel installer in container: laravel new ${1}"
+          docker exec -ti ${containerName}_php_1 sudo -u dlaravel /home/dlaravel/.composer/vendor/bin/laravel new ${1}
+        fi
+        #由主機端端的Laravel Installer安裝
+        if [ ${LARAVEL_INSTALLER} == 'host' ]; then
+          echo "Run laravel installer on host: laravel new ${1}"
+          laravel new sites/${1}
+        fi
     else
 
     which laravel >/dev/null 2>&1
 
-    if [ $? -eq 0 ]; then
-        laravel new sites/${1}
-    else
-        echo "Please install laravel installer from gitbash on Windows 10"
-        echo "or you can manually run laravel installer in the php container and create database by yourself."
-        exit
+        if [ $? -eq 0 ]; then
+              laravel new sites/${1}
+            else
+             echo "Please install laravel installer from gitbash on Windows 10"
+             echo "or you can manually run laravel installer in the php container and create database by yourself."
+             exit
         fi
     fi
 }
@@ -375,6 +385,7 @@ if [ $? -eq 1 ]; then
 fi
 
 #install new laravel project
+
 dlaravel_new ${1}
 
 dlaravelconfig ${1}
