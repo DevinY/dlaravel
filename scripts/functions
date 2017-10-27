@@ -1,8 +1,18 @@
 #!/bin/bash
+#set -e
 #取得scripts的執行路徑
 scripts_path="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 base_path=`echo ${scripts_path}|sed 's#/scripts##'`
 
+#檢測softlink是否可讀
+function chk_docker_compose_file_is_readable {
+    if [ ! -r "${base_path}/docker-compose.yml" ]; then
+        echo "Soft link Error"
+        echo "File ${base_path}/docker-compose.yml is not readdable!"
+        echo "force link to ${base_path}/docker-compose-normal.yml"
+        ln -vsf ${base_path}/docker-compose-normal.yml ${base_path}/docker-compose.yml
+    fi
+}
 #array_service
 function array_service {
         array_service=(${DOCKER_SERVICES})
@@ -13,23 +23,27 @@ function array_service {
         CONSOLE_CMD+="-f ${base_path}/${i} "
         done
 }
-
+#dlaravel console log
+function console_logs {
+    chk_docker_compose_file_is_readable 
+    if [ -z "${DOCKER_SERVICES}" ]; then
+     ${winpty} docker-compose -f ${base_path}/docker-compose.yml ${@}
+    else
+     array_service
+     ${winpty} docker-compose -p $(basename ${base_path}) ${CONSOLE_CMD} ${@}
+    fi
+}
 #display logs when error
 function fail_exit {
     if [ $? -eq 1 ]; then
-        ${winpty} docker-compose -f ${base_path}/docker-compose.yml logs
+        console_logs logs ${@}
         exit;
-    fi
-    if [ -z "${winpty}" ]; then
-    #確保ubuntu環境能順利寫入資料
-    ${winpty} docker-compose -f ${base_path}/docker-compose.yml exec php chown dlaravel /var/www/html
-    #確保dlaravel有權限寫入/var/log，例如xdebug.log
-    ${winpty} docker-compose -f ${base_path}/docker-compose.yml exec php chown dlaravel /var/log
     fi
 }
 
 #spcify service restart
 function console_restart {
+    chk_docker_compose_file_is_readable 
     if [ -z "${DOCKER_SERVICES}" ]; then
      ${winpty} docker-compose -f ${base_path}/docker-compose.yml ${@}
     else
@@ -40,6 +54,7 @@ function console_restart {
 
 #specify service up
 function console_up_service {
+    chk_docker_compose_file_is_readable 
     if [ -z "${DOCKER_SERVICES}" ]; then
      ${winpty} docker-compose -f ${base_path}/docker-compose.yml up -d ${@}
     else
@@ -48,17 +63,9 @@ function console_up_service {
     fi
 }
 
-#dlaravel console log
-function console_logs {
-    if [ -z "${DOCKER_SERVICES}" ]; then
-     ${winpty} docker-compose -f ${base_path}/docker-compose.yml ${@}
-    else
-     array_service
-     ${winpty} docker-compose -p $(basename ${base_path}) ${CONSOLE_CMD} ${@}
-    fi
-}
 #dlaravel console exec
 function console_exec {
+    chk_docker_compose_file_is_readable 
     if [ -z "${DOCKER_SERVICES}" ]; then
      ${winpty} docker-compose -f ${base_path}/docker-compose.yml ${@}
     else
@@ -92,20 +99,35 @@ function console_up {
 }
 #dlaravel console down
 function console_down {
+    chk_docker_compose_file_is_readable 
     if [ -z "${DOCKER_SERVICES}" ]; then
         if [ -e ${base_path}/docker-compose.yml ]; then
-            docker-compose -f ${base_path}/docker-compose.yml down --remove-orphans
+            docker-compose -f ${base_path}/docker-compose.yml down --remove-orphans  
             else
-            docker-compose -f ${base_path}/docker-compose-random.yml down --remove-orphans
+            docker-compose -f ${base_path}/docker-compose-random.yml down --remove-orphans  
         fi
         else
         array_service
-        docker-compose -p $(basename ${base_path}) ${CONSOLE_CMD} down --remove-orphans
+        docker-compose -p $(basename ${base_path}) ${CONSOLE_CMD} down --remove-orphans 
+    fi
+}
+#dlaravel console down
+function console_down_silent {
+    chk_docker_compose_file_is_readable 
+    if [ -z "${DOCKER_SERVICES}" ]; then
+        if [ -e ${base_path}/docker-compose.yml ]; then
+            docker-compose -f ${base_path}/docker-compose.yml down --remove-orphans  > /dev/null 2>&1
+            else
+            docker-compose -f ${base_path}/docker-compose-random.yml down --remove-orphans  > /dev/null 2>&1
+        fi
+        else
+        array_service
+        docker-compose -p $(basename ${base_path}) ${CONSOLE_CMD} down --remove-orphans > /dev/null 2>&1
     fi
 }
 #dlaravel console ps
 function console_ps {
-
+    chk_docker_compose_file_is_readable 
     if [ -f "${base_path}/.docker-compose.yml" ]; then
         echo "Can't find ${base_path}/docker-compose.yml"
     fi
@@ -118,10 +140,35 @@ function console_ps {
     fi
 
 }
+#dlaravel console_top 
+function console_top {
+    chk_docker_compose_file_is_readable 
+    if [ -f "${base_path}/.docker-compose.yml" ]; then
+        echo "Can't find ${base_path}/docker-compose.yml"
+    fi
+
+    if [ -z "${DOCKER_SERVICES}" ]; then
+          ${winpty} docker-compose -f ${base_path}/docker-compose.yml top
+        else
+        array_service
+        ${winpty} docker-compose -p $(basename ${base_path}) ${CONSOLE_CMD} top
+    fi
+
+}
+
+#specify service top
+function console_top_service {
+    chk_docker_compose_file_is_readable 
+    if [ -z "${DOCKER_SERVICES}" ]; then
+     ${winpty} docker-compose -f ${base_path}/docker-compose.yml top ${@}
+    else
+     array_service
+     ${winpty} docker-compose -p $(basename ${base_path}) ${CONSOLE_CMD} top ${@}
+    fi
+}
 
 #dlaravel console kill
 function console_kill {
-
     if [ -z "${DOCKER_SERVICES}" ]; then
             ${winpty} docker-compose -f ${base_path}/docker-compose.yml down > /dev/null 2>&1
         else

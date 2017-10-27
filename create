@@ -74,33 +74,33 @@ fi
 #check winpty
 function dlaravelconfig {
     if [ ${hosts_file} == '/etc/hosts' ]; then
-
-#檢測hosts檔是否已新增 
-sudo cat ${hosts_file}|tr -s " "|grep "127.0.0.1 ${1}.dev"
-#找不到時，就新增至Hosts
-if [ $? -eq 1 ]; then
-    echo "127.0.0.1 ${1}.dev" |sudo tee -a ${hosts_file}
-fi
-
-sudo cat ${hosts_file}|tr -s " "|grep "127.0.0.1 www.${1}.dev"
-if [ $? -eq 1 ]; then
-    echo "127.0.0.1 www.${1}.dev" |sudo tee -a ${hosts_file}
-fi
-
-#docker-compose exec php /root/.composer/vendor/bin/laravel new ${1}
-#調整資料庫連線到db的container
-${winpty} docker-compose exec php sudo -u dlaravel sed -i "s/DB_HOST=127.0.0.1/DB_HOST=db/" /var/www/html/${1}/.env
-${winpty} docker-compose exec php sudo -u dlaravel sed -i "s/DB_DATABASE=homestead/DB_DATABASE=${1}/" /var/www/html/${1}/.env
+        #檢測hosts檔是否已新增 
+        sudo cat ${hosts_file}|tr -s " "|grep "127.0.0.1 ${@}.dev"
+        #找不到時，就新增至Hosts
+        if [ $? -eq 1 ]; then
+            echo "127.0.0.1 ${@}.dev" |sudo tee -a ${hosts_file}
+        fi
+        
+        sudo cat ${hosts_file}|tr -s " "|grep "127.0.0.1 www.${@}.dev"
+        if [ $? -eq 1 ]; then
+            echo "127.0.0.1 www.${@}.dev" |sudo tee -a ${hosts_file}
+        fi
+        ${winpty} docker-compose exec -u dlaravel php sed -i "s/DB_HOST=127.0.0.1/DB_HOST=db/" /var/www/html/${@}/.env
+        ${winpty} docker-compose exec -u dlaravel php sed -i "s/DB_DATABASE=homestead/DB_DATABASE=${@}/" /var/www/html/${@}/.env
+        
+        #docker-compose exec php /root/.composer/vendor/bin/laravel new ${1}
+        #調整資料庫連線到db的container
 
     else
+        echo "Win"
       #for windows 10
-      cat /c/Windows/System32/drivers/etc/hosts|grep "127.0.0.1 ${1}.dev"
+      cat /c/Windows/System32/drivers/etc/hosts|grep "127.0.0.1 ${@}.dev"
       if [ $? -eq 1 ]; then
-       echo 127.0.0.1 ${1}.dev >> /c/Windows/System32/drivers/etc/hosts  
+       echo 127.0.0.1 ${@}.dev >> /c/Windows/System32/drivers/etc/hosts  
       fi
 
-      sed -i "s/DB_HOST=127.0.0.1/DB_HOST=db/" sites/${1}/.env
-      sed -i "s/DB_DATABASE=homestead/DB_DATABASE=${1}/" sites/${1}/.env
+      sed -i "s/DB_HOST=127.0.0.1/DB_HOST=db/" sites/${@}/.env
+      sed -i "s/DB_DATABASE=homestead/DB_DATABASE=${@}/" sites/${@}/.env
 
     fi
 
@@ -368,24 +368,8 @@ fi
 
 
 #檢測是否執行
-docker-compose  -f docker-compose.yml ps |grep ${containerName}_web_1|grep -q Up
-if [ $? -eq 1 ]; then
-    echo "${containerName}_php_1 is not running."
-    echo "Would you like to create the project and run docker-compose up (y/n):"
-    read  ans
-    if [ ${ans} = 'n' ]; then
-       exit
-    else 
-       docker-compose up -d
-        if [ ${?} -ne 0 ]; then
-            #啟動失敗，停止動作
-            exit;
-        fi
-    fi
-fi
-
+is_running
 #install new laravel project
-
 dlaravel_new ${1}
 
 dlaravelconfig ${1}

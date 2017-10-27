@@ -56,11 +56,18 @@ exit;
 fi
 
 #開發測試中Beta
-if [ "${1}" == "alias" ]; then
+if [ "${1}" == "alias" ] && [ ${#} -eq 1 ]; then
 calias="alias c=${base_path}/console"
 echo ${calias}
 exit;
 fi
+#顯示artisan的別名
+if [ "${1}" == "alias" ] && [ ${#} -gt 1 ]; then
+calias='alias a="docker-compose -f ../../docker-compose.yml exec -u dlaravel php php $(basename ${PWD})/artisan"'
+echo ${calias}
+exit;
+fi
+
 
 #移除停址的container
 if [ "${1}" == "rm" ]; then
@@ -104,8 +111,7 @@ fi
 #變更模式, web:80, db:127.0.0.1:3306
 if [ "${1}" == "normal" ]; then
     #先嚐試停止
-    console_kill
-
+    console_down_silent 
     echo "docker-compose setting file changed."
     echo "HOST DB: listen on 127.0.0.1:3306."
     echo "HOST WEB: listen on port 80."
@@ -117,7 +123,7 @@ fi
 #隨機
 if [ "${1}" == "random" ]; then
     #先嚐試停止
-    console_kill
+    console_down_silent 
 
     echo "docker-compose setting file changed."
     echo "HOST DB: listen on random port."
@@ -131,7 +137,7 @@ fi
 if [ "${1}" == "custom" ]; then
     #檢測docker-compose-custom.yml是否存在
     if [ -e "${base_path}/docker-compose-custom.yml" ]; then
-        console_kill
+        console_down_silent 
         ln -vsf ${base_path}/docker-compose-custom.yml ${base_path}/docker-compose.yml 
         console_up
     else
@@ -141,7 +147,6 @@ if [ "${1}" == "custom" ]; then
         echo "docker-compose-custom.yml is created."
         console_up
     fi 
-    ${base_path}/console info
     exit;
 fi
 
@@ -156,7 +161,8 @@ fi
 if [ "${1}" == "restart" ] && [ ${#} -eq 1 ]; then
     console_down
     console_up
-    fail_exit ${base_path} 
+    #出錯時顯示錯誤
+    #fail_exit ${base_path} 
     echo "DB:"
     ${base_path}/scripts/db-ports
     echo "Web:"
@@ -178,20 +184,36 @@ fi
 
 #停止特定服務
 if [ "${1}" == "up" ] && [ ${#} -gt 1 ]; then
-    #取出服務
-    service=`echo ${@}|sed 's/up//'`
-    #web綁定php-fpm了，所以需重啟php
     if [ "${2}" == "web" ]; then
         console_up_service web
         console_up_service php
        else
-        console_up_service ${service}
+        shift
+        console_up_service ${@}
     fi
     exit;
 fi
 
 if [ "${1}" == "up" ] && [ ${#} -eq 1 ]; then
     console_up
+    exit;
+fi
+
+#docker-compose 的top
+if [ "${1}" == "top" ] && [ ${#} -eq 1 ]; then
+    console_top
+    exit;
+fi
+
+if [ "${1}" == "top" ] && [ ${#} -gt 1 ]; then
+    #web綁定php-fpm了，所以需重啟php
+    if [ "${2}" == "web" ]; then
+        console_top_service web
+        console_top_service php
+       else
+        shift
+        console_top_service ${@}
+    fi
     exit;
 fi
 
@@ -323,8 +345,8 @@ function help {
     echo "  version : 顯示目前的版本."
         else
     echo "  up : Run containers in the background."
-    echo "  down : Stops containers and removes containers, networks, volumes, and images created by up."
-    echo "  restart : docker-compose down and docker-compose up."
+    echo "  down : Stop and remove containers, networks."
+    echo "  restart : Restart services."
     echo "  ps : Lists Contaienrs. (docker-compose -f ${base_path}/docker-compose.yml ps)"
     echo "  alias : Display console's alias setting."
     echo "  logs : service's log, ctrl+c to stop."
