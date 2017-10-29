@@ -1,0 +1,3 @@
+[submodule "dockerfiles/echoserver"]
+	path = dockerfiles/echoserver
+	url = https://github.com/DevinY/echoserver.git
