@@ -1,7 +1,10 @@
+#請勿直接修改此檔案
+#透過cp拷貝您自己的版本，例如: cp echoserver-sample.yml echoserver-myproject.yml
 version: '3'
 services:
  echoserver:
   image: deviny/echoserver
   network_mode: "service:web"
   volumes:
+  #您需指定:左方的laravel-echo-server.json檔在那裡
   - ./sites/myproject/laravel-echo-server.json:/laravel-echo-server.json
