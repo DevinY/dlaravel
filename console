@@ -181,6 +181,12 @@ if [ "${1}" == "restart" ] && [ ${#} -gt 1 ]; then
     fi
     exit;
 fi
+#supervisor簡化指令
+if [ "${1}" == "supervisor" ] && [ ${#} -gt 1 ]; then
+    shift
+    ${winpty} docker-compose -f ${base_path}/docker-compose.yml exec php /etc/init.d/supervisor ${@}
+    exit
+fi
 
 #停止特定服務
 if [ "${1}" == "up" ] && [ ${#} -gt 1 ]; then
