@@ -1,0 +1,7 @@
+version: '3'
+services:
+ echoserver:
+  image: deviny/echoserver
+  network_mode: "service:web"
+  volumes:
+  - ./sites/myproject/laravel-echo-server.json:/laravel-echo-server.json
