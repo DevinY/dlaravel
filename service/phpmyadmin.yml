@@ -1,0 +1,15 @@
+#phpmyadmin官方image
+version: '3'
+services:
+ redis:
+  image: phpmyadmin/phpmyadmin
+  ports:
+      - "8080:80"
+  #volumes:
+   #- ./etc/phpmyadmin/config.user.inc.php:/etc/phpmyadmin/config.user.inc.php
+
+  networks:
+    - dlaravel_net
+
+networks:
+    dlaravel_net:
