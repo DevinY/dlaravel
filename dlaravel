@@ -1,10 +1,10 @@
 #!/bin/bash
 if [ "${1}" == "clear" ]; then
-    echo "移除hosts內所有的*.dev域名嗎?(y/n)"
+    echo "移除hosts內所有的*.cool域名嗎?(y/n)"
     read  ans
         if [ ${ans} = 'y' ]; then
-            #移除hosts下，所有的.dev名稱
-            sudo sed -i.bak '/\.dev$/d' /etc/hosts
+            #移除hosts下，所有的.cool名稱
+            sudo sed -i.bak '/\.cool$/d' /etc/hosts
         fi
     exit; 
 fi
@@ -13,18 +13,18 @@ fi
 if [ "${1}" == "uninstall" ]; then
     echo "Warning!!All your docker images and containers will be removed!!"
     echo "Please make sure you know what you are doing."
-    echo "警告!!將清空所有的docker images及containers及在hosts內的所有*.dev設定(y/n)"
+    echo "警告!!將清空所有的docker images及containers及在hosts內的所有*.cool設定(y/n)"
     read  ans
         if [ ${ans} = 'y' ]; then
         docker-compose -f docker-compose.yml down --remove-orphans > /dev/null 2>&1
-        sudo sed -i.bak '/\.dev$/d' /etc/hosts
+        sudo sed -i.bak '/\.cool$/d' /etc/hosts
         docker rm $(docker ps -a -q) > /dev/null 2>&1
         docker rmi $(docker images -q) > /dev/null 2>&1
         fi
     exit; 
 fi
 
-echo "重整hosts檔，將移除/etc/hosts內所有的*.dev域名及dlaravel的etc/*.conf所有nginx設定檔，使用sites資料夾重建設定嗎?(y/n)"
+echo "重整hosts檔，將移除/etc/hosts內所有的*.cool域名及dlaravel的etc/*.conf所有nginx設定檔，使用sites資料夾重建設定嗎?(y/n)"
 read  ans
 if [ ${ans} = 'n' ]; then
         exit
@@ -34,13 +34,13 @@ if [ ! -d "sites/" ]; then
     echo "sites資料夾未建立"
     exit;
 fi
-#移除hosts下，所有的.dev名稱
-sudo sed -i.bak '/\.dev$/d' /etc/hosts
+#移除hosts下，所有的.cool名稱
+sudo sed -i.bak '/\.cool$/d' /etc/hosts
 #抓出sites資料夾下所有的目錄
-ls -ld sites/*|grep ^d|cut -d '/' -f2| awk '{ printf "127.0.0.1 %s.dev\n", $0}' > ./etc/dlaravel_sites
+ls -ld sites/*|grep ^d|cut -d '/' -f2| awk '{ printf "127.0.0.1 %s.cool\n", $0}' > ./etc/dlaravel_sites
 #暫存目前的hosts檔
 sudo cat /etc/hosts > ./etc/hosts_temp
-#組合產生出來的127.0.0.1 *.dev清單，到暫存的hosts內
+#組合產生出來的127.0.0.1 *.cool清單，到暫存的hosts內
 sudo cat ./etc/dlaravel_sites >> ./etc/hosts_temp
 #確認hosts_temp是存在的，才調整/etc/hosts檔
 if [ $? -eq 0 ]; then
