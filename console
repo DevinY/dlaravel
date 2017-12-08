@@ -63,6 +63,7 @@ exit;
 fi
 #顯示artisan的別名
 if [ "${1}" == "alias" ] && [ ${#} -gt 1 ] && [ ${2} == "a" ]; then
+echo "You should run follow command in sites's project folder or add it to .bashprofile:"
 calias='alias a="docker-compose -f ../../docker-compose.yml exec -u dlaravel php php $(basename ${PWD})/artisan"'
 echo ${calias}
 exit;
