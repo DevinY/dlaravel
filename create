@@ -56,7 +56,7 @@ function help {
     echo ""
     echo "options:"
     echo "  --help : help"
-    echo "  --host [project name]: Adding [project name].cool to /etc/hosts, But don't want to install laravel framework."
+    echo "  --host [project name]: Adding [project name].test to /etc/hosts, But don't want to install laravel framework."
     echo "  --db [project name]: Create a database name and user name that is the same as project name."
 }
 #說明
@@ -75,15 +75,15 @@ fi
 function dlaravelconfig {
     if [ ${hosts_file} == '/etc/hosts' ]; then
         #檢測hosts檔是否已新增 
-        sudo cat ${hosts_file}|tr -s " "|grep "127.0.0.1 ${@}.cool"
+        sudo cat ${hosts_file}|tr -s " "|grep "127.0.0.1 ${@}.test"
         #找不到時，就新增至Hosts
         if [ $? -eq 1 ]; then
-            echo "127.0.0.1 ${@}.cool" |sudo tee -a ${hosts_file}
+            echo "127.0.0.1 ${@}.test" |sudo tee -a ${hosts_file}
         fi
         
-        sudo cat ${hosts_file}|tr -s " "|grep "127.0.0.1 www.${@}.cool"
+        sudo cat ${hosts_file}|tr -s " "|grep "127.0.0.1 www.${@}.test"
         if [ $? -eq 1 ]; then
-            echo "127.0.0.1 www.${@}.cool" |sudo tee -a ${hosts_file}
+            echo "127.0.0.1 www.${@}.test" |sudo tee -a ${hosts_file}
         fi
         ${winpty} docker-compose exec -u dlaravel php sed -i "s/DB_HOST=127.0.0.1/DB_HOST=db/" /var/www/html/${@}/.env
         ${winpty} docker-compose exec -u dlaravel php sed -i "s/DB_DATABASE=homestead/DB_DATABASE=${@}/" /var/www/html/${@}/.env
@@ -94,9 +94,9 @@ function dlaravelconfig {
     else
         echo "Win"
       #for windows 10
-      cat /c/Windows/System32/drivers/etc/hosts|grep "127.0.0.1 ${@}.cool"
+      cat /c/Windows/System32/drivers/etc/hosts|grep "127.0.0.1 ${@}.test"
       if [ $? -eq 1 ]; then
-       echo 127.0.0.1 ${@}.cool >> /c/Windows/System32/drivers/etc/hosts  
+       echo 127.0.0.1 ${@}.test >> /c/Windows/System32/drivers/etc/hosts  
       fi
 
       sed -i "s/DB_HOST=127.0.0.1/DB_HOST=db/" sites/${@}/.env
@@ -132,16 +132,16 @@ function dlaravelconfig {
 
 #變更內容
 #docker-compose exec web sed -i "s/laravel/${1}/g" /etc/nginx/conf.d/${1}.conf
-#docker-compose exec web sed -i "s/localhost/${1}.cool/" /etc/nginx/conf.d/${1}.conf
+#docker-compose exec web sed -i "s/localhost/${1}.test/" /etc/nginx/conf.d/${1}.conf
 
 source ./scripts/nginx-reload
 web_port=`docker inspect --format='{{(index (index .NetworkSettings.Ports "80/tcp") 0).HostPort}}'  ${containerName}_web_1`
-#echo " http://${1}.cool:${web_port}"
+#echo " http://${1}.test:${web_port}"
 
         if [ ${web_port} == 80 ]; then
-        echo -n http://;echo ${1}.cool|cut -d/ -f 2; 
+        echo -n http://;echo ${1}.test|cut -d/ -f 2; 
         else
-        echo -n http://;echo ${1}.cool:${web_port}|cut -d/ -f 2; 
+        echo -n http://;echo ${1}.test:${web_port}|cut -d/ -f 2; 
         fi
 
 }
@@ -215,17 +215,17 @@ if [ "$#" -eq 2 ]; then
     if [ "${1}" = "--host" ]; then
             
             if [ ${hosts_file} == '/etc/hosts' ]; then
-                sudo cat /etc/hosts|tr -s " "|grep "127.0.0.1 ${2}.cool"
+                sudo cat /etc/hosts|tr -s " "|grep "127.0.0.1 ${2}.test"
                 #找不到時，就新增至Hosts
                 if [ $? -eq 1 ]; then
-                echo "127.0.0.1 ${2}.cool" |sudo tee -a /etc/hosts
+                echo "127.0.0.1 ${2}.test" |sudo tee -a /etc/hosts
                 fi
                 else
 
                 #for windows 10
-                cat /c/Windows/System32/drivers/etc/hosts|grep "127.0.0.1 ${2}.cool"
+                cat /c/Windows/System32/drivers/etc/hosts|grep "127.0.0.1 ${2}.test"
                 if [ $? -eq 1 ]; then
-                echo 127.0.0.1 ${2}.cool >> /c/Windows/System32/drivers/etc/hosts  
+                echo 127.0.0.1 ${2}.test >> /c/Windows/System32/drivers/etc/hosts  
                 fi
             fi
 
@@ -247,17 +247,17 @@ if [ "$#" -eq 2 ]; then
     if [ "${1}" = "--conf" ]; then
             
             if [ ${hosts_file} == '/etc/hosts' ]; then
-                sudo cat /etc/hosts|tr -s " "|grep "127.0.0.1 ${2}.cool"
+                sudo cat /etc/hosts|tr -s " "|grep "127.0.0.1 ${2}.test"
                 #找不到時，就新增至Hosts
                 if [ $? -eq 1 ]; then
-                echo "127.0.0.1 ${2}.cool" |sudo tee -a /etc/hosts
+                echo "127.0.0.1 ${2}.test" |sudo tee -a /etc/hosts
                 fi
                 else
 
                 #for windows 10
-                cat /c/Windows/System32/drivers/etc/hosts|grep "127.0.0.1 ${2}.cool"
+                cat /c/Windows/System32/drivers/etc/hosts|grep "127.0.0.1 ${2}.test"
                 if [ $? -eq 1 ]; then
-                echo 127.0.0.1 ${2}.cool >> /c/Windows/System32/drivers/etc/hosts  
+                echo 127.0.0.1 ${2}.test >> /c/Windows/System32/drivers/etc/hosts  
                 fi
             fi
 
@@ -295,17 +295,17 @@ if [ "$#" -eq 2 ]; then
     if [ "${1}" = "--host" ]; then
             
             if [ ${hosts_file} == '/etc/hosts' ]; then
-                sudo cat /etc/hosts|tr -s " "|grep "127.0.0.1 ${2}.cool"
+                sudo cat /etc/hosts|tr -s " "|grep "127.0.0.1 ${2}.test"
                 #找不到時，就新增至Hosts
                 if [ $? -eq 1 ]; then
-                echo "127.0.0.1 ${2}.cool" |sudo tee -a /etc/hosts
+                echo "127.0.0.1 ${2}.test" |sudo tee -a /etc/hosts
                 fi
                 else
 
                 #for windows 10
-                cat /c/Windows/System32/drivers/etc/hosts|grep "127.0.0.1 ${2}.cool"
+                cat /c/Windows/System32/drivers/etc/hosts|grep "127.0.0.1 ${2}.test"
                 if [ $? -eq 1 ]; then
-                echo 127.0.0.1 ${2}.cool >> /c/Windows/System32/drivers/etc/hosts  
+                echo 127.0.0.1 ${2}.test >> /c/Windows/System32/drivers/etc/hosts  
                 fi
             fi
 
@@ -327,17 +327,17 @@ if [ "$#" -eq 2 ]; then
     if [ "${1}" = "--conf" ]; then
             
             if [ ${hosts_file} == '/etc/hosts' ]; then
-                sudo cat /etc/hosts|tr -s " "|grep "127.0.0.1 ${2}.cool"
+                sudo cat /etc/hosts|tr -s " "|grep "127.0.0.1 ${2}.test"
                 #找不到時，就新增至Hosts
                 if [ $? -eq 1 ]; then
-                echo "127.0.0.1 ${2}.cool" |sudo tee -a /etc/hosts
+                echo "127.0.0.1 ${2}.test" |sudo tee -a /etc/hosts
                 fi
                 else
 
                 #for windows 10
-                cat /c/Windows/System32/drivers/etc/hosts|grep "127.0.0.1 ${2}.cool"
+                cat /c/Windows/System32/drivers/etc/hosts|grep "127.0.0.1 ${2}.test"
                 if [ $? -eq 1 ]; then
-                echo 127.0.0.1 ${2}.cool >> /c/Windows/System32/drivers/etc/hosts  
+                echo 127.0.0.1 ${2}.test >> /c/Windows/System32/drivers/etc/hosts  
                 fi
             fi
 

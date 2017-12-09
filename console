@@ -272,11 +272,8 @@ if [ ${projectNum} -eq 0 ]; then
     echo "mkdir -p sites/default/public;touch sites/default/public/index.php"
     exit;
 fi
-
-#檢測是否有nginx的ssl設定檔了
-if [ ! -f "${base_path}/etc/default-ssl.conf" ]; then
-   cp ${base_path}/etc/default-ssl.sample ${base_path}/etc/default-ssl.conf
-fi
+#一律使用sample蓋掉預設的設定檔
+#cp ${base_path}/etc/default-ssl.sample ${base_path}/etc/default-ssl.conf
 
 
 #檢測project是否有ssl的資料夾
@@ -288,13 +285,13 @@ fi
 cp ${base_path}/etc/v3.sample ${base_path}/etc/v3.ext
 for server_name in $(ls -d ${base_path}/sites/*|rev|cut -d/ -f1|rev); do 
     dns_index=$(($dns_index+1))
-    echo "DNS.${dns_index}=www.${server_name}.cool" >> ${base_path}/etc/v3.ext
+    echo "DNS.${dns_index}=www.${server_name}.test" >> ${base_path}/etc/v3.ext
     dns_index=$(($dns_index+1))
-    echo "DNS.${dns_index}=${server_name}.cool" >> ${base_path}/etc/v3.ext
+    echo "DNS.${dns_index}=${server_name}.test" >> ${base_path}/etc/v3.ext
 done
 
 #移除所有已存在的
-security find-certificate -c "dlaravel.cool" -a -Z | \
+security find-certificate -c "dlaravel.test" -a -Z | \
   sudo awk '/SHA-1/{system("security delete-certificate -Z "$NF)}'
 
 openssl req \
@@ -303,7 +300,7 @@ openssl req \
 -config ${base_path}/etc/v3.ext -extensions 'v3_req'
 
 #不管有沒有先刪一次
-#sudo security delete-certificate -c "${2}.cool" -t /Library/Keychains/System.keychain
+#sudo security delete-certificate -c "${2}.test" -t /Library/Keychains/System.keychain
 
 sudo security add-trusted-cert -d -r trustRoot -k "/Library/Keychains/System.keychain" ${base_path}/etc/ssl/cert.crt
 

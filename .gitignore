@@ -5,6 +5,7 @@ etc/*
 !etc/cache
 !etc/php-fpm.d
 !etc/default.conf
+!etc/default-ssl.conf
 !etc/networks/default.conf
 !etc/default-ssl.sample
 !etc/supervisor
