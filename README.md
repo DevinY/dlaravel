@@ -39,7 +39,7 @@ D-laravel停止時，不會佔用80埠，拜docker-compose之賜，極易調整L
 用docker聽起來，好像比較潮。:p
 <pre>
 ./console help (幫助，console參數用法。)
-./create test1  (建立test1.dev)
+./create test1  (建立test1.test)
 ./console down或./console up (啟用及停用container)
 ./console restart    (./console down再./console up)
 `./console alias`  
@@ -89,7 +89,7 @@ cd dlaravel
 例如: (第一次執行會自動下載所需的Image，需較長的時間)
 ./create test1
 
-那麼就會建立出 http://test1.dev 網站(本機測試用的外部無法存取)。
+那麼就會建立出 http://test1.test 網站(本機測試用的外部無法存取)。
 可以建立多個project站台
 
 由於create的bash需有系統權修改/etc/hosts檔，./create的過程中會需要詢問您的系統密碼:
@@ -150,7 +150,7 @@ alias phpunit='docker-compose -f ../../docker-compose.yml exec -u dlaravel php $
 ./create [project名稱] 會建立及下載laravel，搞定一切設定，包含資料庫，
 但如果是一個已存在的Project，只需有nginx的設定，應該怎麼做呢?
 
-使用--host 即可修改系統的/etc/hosts檔，加入project的域名，如: project1.dev。
+使用--host 即可修改系統的/etc/hosts檔，加入project的域名，如: project1.test。
 ./create --host [project名稱] 例如:./create --host project1
 
 可以將已存在的Laravel專案移到sites資料夾內。
@@ -212,7 +212,7 @@ Docker指令及DevinY/dlaravel提供的./console的bash指令
 | docker-compose exec web nginx -s reload   |./console reload  |重載nginx設定   |
 | docker-compose logs -f [SERVICE]   |./console logs  |看nginx的log，Ctrl+C停止 |
 |   |./create [ProjectName]|建立一個project，並完成所有基本的環境設定   |
-|   |例如: ./create test1  |例如: 這樣會建立一個http://test1.dev的網站   |
+|   |例如: ./create test1  |例如: 這樣會建立一個http://test1.test的網站   |
 |   |./console restart  |重啟container   |
 |   |./console info  |查看目前可用的sites資料(這裡是查單的查詢sites資料夾)   |
 |模式切換:|
@@ -265,7 +265,7 @@ Using Dockerhub to remark official image to build basic Laravel environment.
 It seems fashion if use docker. :P
 <pre>
 ./console help (help, console parameter)
-./create test1  (build test1.dev)
+./create test1  (build test1.test)
 ./console down or ./console up (stop or start container)
 ./console restart    (first ./console down and then ./console up)
 `./console alias`  
@@ -322,7 +322,7 @@ The first time to download needed images from dockhub will take longer time. Be 
 <pre>
 ex.
 ./create test1
-It will build http://test1.dev website (can't be accessed from outside)
+It will build http://test1.test website (can't be accessed from outside)
 So you can use this command to build many different projects.
 
 You need to provide privilege to modify /etc/hosts file, so D-Laravel will ask for your systme password during executing "./create project". (Mac OS using only)
@@ -378,7 +378,7 @@ Join this alias can do simple phpunit.
 ./create [project name] will create and build laravel, it would set all configures automatically including DB.
 But how do we do if project already exists and only needs nginx setting?
 
-Using "--host" to update /etc/hosts file, for example: "127.0.0.1 project1.dev". 
+Using "--host" to update /etc/hosts file, for example: "127.0.0.1 project1.test". 
 ./create --host [project name] (./create --host project1)
 
 
@@ -444,7 +444,7 @@ please refers to below's link, it will help you to understand how D-Laravel fpm 
 | docker-compose exec web nginx -s reload   |./console reload  |reload nginx setting   |
 | docker-compose logs -f [SERVICE]   |./console logs  |show nginx log，stop it with Ctrl+C |
 |   |./create [ProjectName]|create a project with default settings   |
-|   |Ex. ./create test1  |Ex. create a http://test1.dev website   |
+|   |Ex. ./create test1  |Ex. create a http://test1.test website   |
 |   |./console restart  |restart container   |
 |   |./console info  |show url info   |
 |Switch model:|
