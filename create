@@ -170,6 +170,13 @@ function dlaravel_new {
 
         if [ $? -eq 0 ]; then
               laravel new sites/${1}
+
+              #for windows 10
+              cat /c/Windows/System32/drivers/etc/hosts|grep "127.0.0.1 ${2}.test"
+              if [ $? -eq 1 ]; then
+              echo "127.0.0.1 ${2}.test" >> /c/Windows/System32/drivers/etc/hosts  
+              fi
+
             else
              echo "Please install laravel installer from gitbash on Windows 10"
              echo "or you can manually run laravel installer in the php container and create database by yourself."
@@ -225,7 +232,7 @@ if [ "$#" -eq 2 ]; then
                 #for windows 10
                 cat /c/Windows/System32/drivers/etc/hosts|grep "127.0.0.1 ${2}.test"
                 if [ $? -eq 1 ]; then
-                echo 127.0.0.1 ${2}.test >> /c/Windows/System32/drivers/etc/hosts  
+                echo "127.0.0.1 ${2}.test" >> /c/Windows/System32/drivers/etc/hosts  
                 fi
             fi
 
