@@ -8,7 +8,7 @@ ST = Panchiao
 L = Taipei
 O = Dlaravel
 OU = It
-CN = dlaravel.dev
+CN = dlaravel.test
 [v3_req]
 keyUsage = keyEncipherment, dataEncipherment
 extendedKeyUsage = serverAuth

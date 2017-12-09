@@ -22,13 +22,13 @@ for i in $(ls -d ${base_path}/sites/*|rev|cut -d/ -f1|rev); do
             continue
         fi
         if [ ${web_port} == 80 ]; then
-        echo -n http://;echo ${i}.cool|cut -d/ -f 2; 
+        echo -n http://;echo ${i}.test|cut -d/ -f 2; 
         else
-        echo -n http://;echo ${i}.cool:${web_port}|cut -d/ -f 2; 
+        echo -n http://;echo ${i}.test:${web_port}|cut -d/ -f 2; 
         fi
 done
     else
-        echo "*.cool, port:" ${web_port}
+        echo "*.test, port:" ${web_port}
         ls -l sites/|cut -d ' ' -f 9
    fi 
 fi
