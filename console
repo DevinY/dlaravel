@@ -273,7 +273,7 @@ if [ ${projectNum} -eq 0 ]; then
     exit;
 fi
 #一律使用sample蓋掉預設的設定檔
-#cp ${base_path}/etc/default-ssl.sample ${base_path}/etc/default-ssl.conf
+cp ${base_path}/etc/default-ssl.sample ${base_path}/etc/default-ssl.conf
 
 
 #檢測project是否有ssl的資料夾

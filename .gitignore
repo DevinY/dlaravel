@@ -5,7 +5,7 @@ etc/*
 !etc/cache
 !etc/php-fpm.d
 !etc/default.conf
-!etc/default-ssl.conf
+!etc/default-ssl.sample
 !etc/networks/default.conf
 !etc/default-ssl.sample
 !etc/supervisor
@@ -13,6 +13,7 @@ etc/*
 !etc/mysql/my.cnf.sample
 !etc/public.conf
 etc/php/php.ini
+!etc/ssl/*
 ext/
 run/
 *.swp
