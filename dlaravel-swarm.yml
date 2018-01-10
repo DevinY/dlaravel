@@ -1,48 +1,67 @@
+##進階設定僅供參考用
 version: '3'
 services:
 ### 網頁伺服器的container ##################################
  web:
   image: nginx
   dns: 8.8.8.8
+  deploy:
+    replicas: 6
+    update_config:
+      delay: 60s
+    restart_policy:
+      condition: on-failure
+      delay: 20s
+      max_attempts: 3
+      window: 300s
   ports:
     # 使用隨機的port 80
-    - "80"
-    - "443"
+    - "80:80"
+    - "443:443"
   volumes:
   - ./sites:/var/www/html
   - ./etc:/etc/nginx/conf.d
-  - ./var/log/web:/var/log/nginx
+  - ./var/logs/web:/var/log/nginx
   hostname: web
   networks:
     - dlaravel_net
   
 ### PHP-FPM container ##################################
  php:
-  network_mode: "service:web"
   image: deviny/fpm:7.2.1
-  #image: deviny/fpm:7.1.13
-  #image: deviny/fpm:7.0.27
+  deploy:
+    replicas: 6
+    update_config:
+      delay: 60s
+    restart_policy:
+      condition: on-failure
+      delay: 20s
+      max_attempts: 3
+      window: 300s
+  #image: deviny/fpm:5.6.32
   volumes:
   - ./etc/php:/usr/local/etc/php/conf.d
   - ./sites:/var/www/html
   #建立composer cache
   - ./etc/cache:/home/dlaravel/.composer/cache
-  #- ./log/php:/var/log
+  #- ./logs/php:/var/log
   #- ./etc/supervisor:/etc/supervisor/conf.d
-  #- ./log/supervisor:/var/log/supervisor
+  #- ./logs/supervisor:/var/log/supervisor
   environment:
    - TZ=Asia/Taipei
   #- PHP_IDE_CONFIG=serverName=dlaravel
   #- XDEBUG_CONFIG="remote_host=???? profiler_enable=1"
   #建立bash_aliases在etc下，可用來自訂dlaravel使用者的環境變數
   #- ./etc/bash_aliases:/home/dlaravel/.bash_aliases
+  networks:
+    - dlaravel_net
 
 ### 資料庫 container ##################################
  db:
   image: mysql:5.7.19
   hostname: db
   ports:
-    - "3306"
+    - "127.0.0.1:3306:3306"
   volumes:
     - ./etc/mysql/my.cnf:/etc/mysql/my.cnf
     - ./data:/var/lib/mysql
@@ -50,8 +69,8 @@ services:
    - MYSQL_DATABASE=homestead
    - MYSQL_USER=homestead
    - MYSQL_PASSWORD=secret
-   - MYSQL_ALLOW_EMPTY_PASSWORD= "yes"
-   #- MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD-secret}
+   - MYSQL_ALLOW_EMPTY_PASSWORD="yes"
+   #- MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
    - TZ=Asia/Taipei
   networks:
     - dlaravel_net

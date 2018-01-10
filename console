@@ -36,6 +36,11 @@ cat ${base_path}/etc/dlaravel-release
 exit;
 fi
 
+if [ "${1}" == "build" ]; then
+  docker-compose -f docker-compose-build.yml up --build -d
+exit;
+fi
+
 #調整Container DLaravel使用者ID
 if [ "${1}" == "chowner" ]; then
 
@@ -162,12 +167,6 @@ fi
 if [ "${1}" == "restart" ] && [ ${#} -eq 1 ]; then
     console_down
     console_up
-    #出錯時顯示錯誤
-    #fail_exit ${base_path} 
-    echo "DB:"
-    ${base_path}/scripts/db-ports
-    echo "Web:"
-    ${base_path}/scripts/web-ports
     exit;
 fi
 
