@@ -305,7 +305,7 @@ sudo security add-trusted-cert -d -r trustRoot -k "/Library/Keychains/System.key
 
 docker-compose -f ${base_path}/docker-compose.yml ps|grep -q php-fpm
 if [ $? -eq 0 ]; then
-    source ./scripts/nginx-reload
+    source ${base_path}/scripts/nginx-reload
 fi
 exit
 fi
