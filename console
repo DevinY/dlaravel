@@ -69,7 +69,7 @@ fi
 #顯示artisan的別名
 if [ "${1}" == "alias" ] && [ ${#} -gt 1 ] && [ ${2} == "a" ]; then
 echo "To run artisan command from host, please add following command to .bash_profile or .zshrc:"
-calias='alias a="docker-compose -f ../../docker-compose.yml exec -u dlaravel php php $(basename ${PWD})/artisan"'
+calias='alias a="../../artisan.sh"'
 echo ${calias}
 exit;
 fi
