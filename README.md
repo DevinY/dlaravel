@@ -134,7 +134,7 @@ fi
 使用dlaravel的身份，執行container內的composer，會依您所在的資料夾切換目錄
 
 <pre>
-alias a='docker-compose -f ../../docker-compose.yml exec -u dlaravel php php $(basename ${PWD})/artisan'
+alias a="../../artisan.sh"
 </pre>
 我們可以在自己的電腦加入別名，這樣就可不需進入container內執行php artisan指令了.
 讓artisan的指令更簡潔，這理我直接將別名命名為a。
@@ -364,7 +364,7 @@ fi
 Use dlaravel identity, the implementation of the container composer, according to your folder to switch the directory
 
 <pre>
-alias a = 'docker-compose -f ../../docker-compose.yml exec -u dlaravel php php $ (basename $ {PWD}) / artisan'
+alias a="../../artisan.sh"
 </pre>
 We can add aliases to our computer so that you do not have to go into the container to execute the php artisan directive. Let artisan's instructions be more concise, which I call the alias directly as a. For example: a --version
 
