@@ -58,7 +58,6 @@ ACTUAL_SIGNATURE=$(php -r "echo hash_file('SHA384', 'composer-setup.php');"); \
 php composer-setup.php; \
 php -r "unlink('composer-setup.php');"; \
 mv composer.phar /usr/local/bin/composer; \ 
-
 #加入dlaravel使用者
 sudo -u dlaravel /usr/local/bin/composer global require "laravel/installer"; \
 sudo -u dlaravel /usr/local/bin/composer global require "phpunit/phpunit=5.5.*"; \

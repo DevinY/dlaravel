@@ -5,6 +5,12 @@ MAINTAINER Devin Yang <noreply@ccc.tc>
 RUN apt-get update && apt-get install -y \
 		libfreetype6-dev \
 		libjpeg62-turbo-dev \
+                #====安裝mcrypt====
+                autoconf \
+                libc-dev \
+                pkg-config \
+		libmcrypt-dev \
+                #==================
 		libmcrypt-dev \
 		libpng-dev \
 		ca-certificates \
@@ -33,19 +39,16 @@ RUN apt-get update && apt-get install -y \
                 apt-utils \
                 supervisor \
                 wget \
-	&& docker-php-ext-install -j$(nproc) mcrypt pdo_mysql mysqli pgsql pdo_pgsql ftp \
-        dba exif sockets xml tokenizer zip bz2 gettext pcntl dom \
-	&& docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ --with-jpeg-dir --with-png-dir --with-gif-dir \
-        --enable-opacache-file --enable-exif --enable-sqlite-utf8 --enable-zip --enable-pcntl \
-        --with-fpm-user=dlaravel --with-fpm-group=dlaravel \
-        --with-curl --with-libedit --with-openssl --with-zlib \
-        --with-phpdbg-debug --with-debug \
-        --with-ldap --with-ldap-sasl \
-	&& docker-php-ext-install -j$(nproc) gd
+                && docker-php-ext-install -j$(nproc) pdo_mysql mysqli pgsql pdo_pgsql \
+                && docker-php-ext-install -j$(nproc) exif hash gettext sockets ctype xml zip pcntl \
+                && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/  \
+                && docker-php-ext-install -j$(nproc) gd
 
-RUN  pecl install xdebug-2.5.5 \
-	&& pecl install zip \
-	&& docker-php-ext-enable zip xdebug
+#docker-php-ext-install 可安裝外掛大概如下:
+#bcmath bz2 calendar ctype curl dba dom enchant exif fileinfo filter ftp gd gettext gmp hash iconv imap interbase intl json ldap mbstring mysqli oci8 odbc opcache pcntl pdo pdo_dblib pdo_firebird pdo_mysql pdo_oci pdo_odbc pdo_pgsql pdo_sqlite pgsql phar posix pspell readline recode reflection session shmop simplexml snmp soap sockets sodium spl standard sysvmsg sysvsem sysvshm tidy tokenizer wddx xml xmlreader xmlrpc xmlwriter xsl zend_test zip
+
+RUN  pecl install xdebug \
+	&& docker-php-ext-enable xdebug
 
 #建立Dlaravel的使用者
 RUN adduser --disabled-password --gecos "" dlaravel &&\
@@ -59,7 +62,6 @@ ACTUAL_SIGNATURE=$(php -r "echo hash_file('SHA384', 'composer-setup.php');"); \
 php composer-setup.php; \
 php -r "unlink('composer-setup.php');"; \
 mv composer.phar /usr/local/bin/composer; \ 
-
 #加入dlaravel使用者
 sudo -u dlaravel /usr/local/bin/composer global require "laravel/installer"; \
 sudo -u dlaravel /usr/local/bin/composer global require "phpunit/phpunit=5.5.*"; \
