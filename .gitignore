@@ -11,7 +11,7 @@ etc/*
 !etc/supervisor
 !etc/mysql/my.cnf
 !etc/mysql/my.cnf.sample
-!etc/public.conf
+!etc/public.sample
 etc/php/php.ini
 !etc/ssl/*
 ext/
