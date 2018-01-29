@@ -114,6 +114,12 @@ if [ "${1}" == "pull" ]; then
     exit;
 fi
 
+#列出目前的php可用的extension(beta)
+if [ "${1}" == "ext" ]; then
+docker-compose -f ${base_path}/docker-compose.yml exec php ls `docker-compose exec php php -i|grep extension_dir|head -n 1|cut -d\> -f 2|cut -d= -f1` 
+exit;
+fi
+
 #變更模式, web:80, db:127.0.0.1:3306
 if [ "${1}" == "normal" ]; then
     #先嚐試停止
@@ -342,6 +348,7 @@ function help {
     echo "  custom : 變更docker-compose連結，產生或使用自定的設定檔"
     echo "  exec : 執行php container內的命令，例如: ./console exec php php -v"
     echo "  reload : 重載nginx的設定."
+    echo "  ext: 列出目前fpm可用的php exteinsions，自訂檔名新增.ini檔到etc/php下即可啟用哦。"
     echo "  chowner: D-Laravel的使用者uid及gid在容器內預設為1000，在linux環境中，您可能需要調整dlaravel的uid與gid與您的目前使用者相同"
     echo "  clear : 移除所有docker ps -a 所有停止的Container!!包含您自己過去創建的所有停止的container哦!!"
     echo "  ./console : 進入php container內"
@@ -362,6 +369,7 @@ function help {
     echo "  custom : change docker-compose.yml link link to docker-compose-custom.yml， for custom purpose."
     echo "  exec : exec php container's command， for example: ./console exec php php -v"
     echo "  reload : nginx reload config file."
+    echo "  ext: list php extensions."
     echo "  chowner: D-Laravel users uid and gid are 1000 in container, in the linux environment, you may need to adjust D-Laravel uid and gid with your current user the same."
     echo "  clear : Remove all your containers that listed by docker ps -a !!"
     echo "  ./console : Enter php container."
