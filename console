@@ -48,9 +48,9 @@ if [ "${1}" == "chowner" ]; then
 	    if [ ${plateform} == 'Linux' ]; then
              dlaravel_gid=`whoami|id -g`
              dlaravel_uid=`whoami|id -u`
-             ${winpty} docker-compose -f ${base_path}/docker-compose.yml exec php userdel dlaravel
-             ${winpty} docker-compose -f ${base_path}/docker-compose.yml exec php groupadd -g ${dlaravel_gid} dlaravel
-             ${winpty} docker-compose -f ${base_path}/docker-compose.yml exec php useradd -u ${dlaravel_uid} -g ${dlaravel_gid} dlaravel
+              
+             ${winpty} docker-compose -f ${base_path}/docker-compose.yml exec php usermod -u ${dlaravel_uid} dlaravel
+             ${winpty} docker-compose -f ${base_path}/docker-compose.yml exec php groupmod -g ${dlaravel_gid} dlaravel
              ${winpty} docker-compose -f ${base_path}/docker-compose.yml exec php chown -R ${dlaravel_uid} /home/dlaravel
 
              echo "You have to commit your php fpm image, and restart container."
