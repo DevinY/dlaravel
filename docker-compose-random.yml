@@ -19,9 +19,10 @@ services:
 ### PHP-FPM container ##################################
  php:
   network_mode: "service:web"
-  image: deviny/fpm:7.2.1
-  #image: deviny/fpm:7.1.13
+  image: deviny/fpm:7.2.2
+  #image: deviny/fpm:7.1.14
   #image: deviny/fpm:7.0.27
+  #image: deviny/fpm:5.6.33
   volumes:
   - ./etc/php:/usr/local/etc/php/conf.d
   - ./sites:/var/www/html

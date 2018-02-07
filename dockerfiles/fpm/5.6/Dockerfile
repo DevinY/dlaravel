@@ -1,5 +1,5 @@
 FROM php:5.6.33-fpm
-MAINTAINER Devin Yang <noreply@ccc.tc>
+MAINTAINER Devin Yang <devin@ccc.tc>
 #Docker官方說明文件
 #https://hub.docker.com/_/php/
 RUN apt-get update && apt-get install -y \
