@@ -1,5 +1,5 @@
-FROM php:7.1.13-fpm
-MAINTAINER Devin Yang <noreply@ccc.tc>
+FROM php:7.1.14-fpm
+MAINTAINER Devin Yang <devin@ccc.tc>
 #Docker官方說明文件
 #https://hub.docker.com/_/php/
 RUN apt-get update && apt-get install -y \
