@@ -45,11 +45,11 @@ root $basepath/$projectname/public/;
 client_max_body_size 50m;
 
 # Point index to the Laravel front controller.
-index       index.php;
+index       index.php index.html;
 autoindex on;
 
  location / {
-     try_files   $uri $uri/ /index.php?$query_string;
+     try_files   $uri $uri/ /?$query_string;
   }
 
 # Remove trailing slash to please routing system.
