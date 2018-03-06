@@ -19,19 +19,19 @@ services:
 ### PHP-FPM container ##################################
  php:
   network_mode: "service:web"
-  image: deviny/fpm:7.2.2
-  #image: deviny/fpm:7.1.14
-  #image: deviny/fpm:7.0.27
-  #image: deviny/fpm:5.6.33
+  image: deviny/fpm:7.2.3
+  #image: deviny/fpm:7.1.15
+  #image: deviny/fpm:7.0.28
+  #image: deviny/fpm:5.6.34
   volumes:
   - ./etc/php:/usr/local/etc/php/conf.d
   - ./sites:/var/www/html
+  - ./etc/php-fpm.d/www.conf:/usr/local/etc/php-fpm.d/www.conf
   #建立composer cache
   - ./etc/cache:/home/dlaravel/.composer/cache
-  - ./etc/php-fpm.d/www.conf:/usr/local/etc/php-fpm.d/www.conf
-  #- ./log/php:/var/log
+  #- ./var/log/php:/var/log
   #- ./etc/supervisor:/etc/supervisor/conf.d
-  #- ./log/supervisor:/var/log/supervisor
+  #- ./var/log/supervisor:/var/log/supervisor
   environment:
    - TZ=Asia/Taipei
   #- PHP_IDE_CONFIG=serverName=dlaravel
