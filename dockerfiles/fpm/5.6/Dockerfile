@@ -34,7 +34,7 @@ RUN apt-get update && apt-get install -y \
                 supervisor \
                 wget \
 	&& docker-php-ext-install -j$(nproc) mcrypt pdo_mysql mysqli pgsql pdo_pgsql ftp \
-        dba exif sockets xml tokenizer zip bz2 gettext pcntl dom \
+        dba exif sockets xml tokenizer zip bz2 gettext ctype pcntl dom \
 	&& docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ --with-jpeg-dir --with-png-dir --with-gif-dir \
         --enable-opacache-file --enable-exif --enable-sqlite-utf8 --enable-zip --enable-pcntl \
         --with-fpm-user=dlaravel --with-fpm-group=dlaravel \
