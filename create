@@ -244,41 +244,6 @@ if [ "$#" -eq 2 ]; then
         echo "mkdir -p sites/${2}/public;touch sites/${2}/public/index.php"
         exit
     fi
-
-    echo "./create --conf ['project name']"
-    exit
-fi
-
-#只建立nginx的設定檔
-if [ "$#" -eq 2 ]; then
-    if [ "${1}" = "--conf" ]; then
-            
-            if [ ${hosts_file} == '/etc/hosts' ]; then
-                sudo cat /etc/hosts|tr -s " "|grep "127.0.0.1 ${2}.test"
-                #找不到時，就新增至Hosts
-                if [ $? -eq 1 ]; then
-                echo "127.0.0.1 ${2}.test" |sudo tee -a /etc/hosts
-                fi
-                else
-
-                #for windows 10
-                cat /c/Windows/System32/drivers/etc/hosts|grep "127.0.0.1 ${2}.test"
-                if [ $? -eq 1 ]; then
-                echo 127.0.0.1 ${2}.test >> /c/Windows/System32/drivers/etc/hosts  
-                fi
-            fi
-
-            docker ps |grep -q ${containerName}_php_1
-            if [ $? -eq 0 ]; then
-                source ./scripts/nginx-reload
-            fi
-        echo "To manually create new empty project:"
-        echo "mkdir -p sites/${2}/public;touch sites/${2}/public/index.php"
-        exit
-    fi
-
-    echo "./create --conf ['project name']"
-    exit
 fi
 
 #資料夾不能有 . 
@@ -293,89 +258,17 @@ if [ -e "sites/${1}" ]; then
     exit
 fi
 
-is_running 
-
-#dlaravel_new ${1}
-
-#create --host
+#依版本安裝
 if [ "$#" -eq 2 ]; then
-    if [ "${1}" = "--host" ]; then
-            
-            if [ ${hosts_file} == '/etc/hosts' ]; then
-                sudo cat /etc/hosts|tr -s " "|grep "127.0.0.1 ${2}.test"
-                #找不到時，就新增至Hosts
-                if [ $? -eq 1 ]; then
-                echo "127.0.0.1 ${2}.test" |sudo tee -a /etc/hosts
-                fi
-                else
-
-                #for windows 10
-                cat /c/Windows/System32/drivers/etc/hosts|grep "127.0.0.1 ${2}.test"
-                if [ $? -eq 1 ]; then
-                echo 127.0.0.1 ${2}.test >> /c/Windows/System32/drivers/etc/hosts  
-                fi
-            fi
-
-            docker ps |grep -q ${containerName}_php_1
-            if [ $? -eq 0 ]; then
-                source ./scripts/nginx-reload
-            fi
-        echo "To manually create new empty project:"
-        echo "mkdir -p sites/${2}/public;touch sites/${2}/public/index.php"
-        exit
-    fi
-
-    echo "./create --conf ['project name']"
-    exit
-fi
-
-#只建立nginx的設定檔
-if [ "$#" -eq 2 ]; then
-    if [ "${1}" = "--conf" ]; then
-            
-            if [ ${hosts_file} == '/etc/hosts' ]; then
-                sudo cat /etc/hosts|tr -s " "|grep "127.0.0.1 ${2}.test"
-                #找不到時，就新增至Hosts
-                if [ $? -eq 1 ]; then
-                echo "127.0.0.1 ${2}.test" |sudo tee -a /etc/hosts
-                fi
-                else
-
-                #for windows 10
-                cat /c/Windows/System32/drivers/etc/hosts|grep "127.0.0.1 ${2}.test"
-                if [ $? -eq 1 ]; then
-                echo 127.0.0.1 ${2}.test >> /c/Windows/System32/drivers/etc/hosts  
-                fi
-            fi
-
-            docker ps |grep -q ${containerName}_php_1
-            if [ $? -eq 0 ]; then
-                source ./scripts/nginx-reload
-            fi
-        echo "To manually create new empty project:"
-        echo "mkdir -p sites/${2}/public;touch sites/${2}/public/index.php"
-        exit
-    fi
-
-    echo "./create --conf ['project name']"
-    exit
-fi
-
-#資料夾不能有 . 
-if [[ "${1}" =~ [\.] ]]; then
-    echo "Can't have dot in Project name."
-    exit;
-fi
-
-#檢測目錄是否已存在
-if [ -e "sites/${1}" ]; then
-    echo "The sites/${1} folder exists"
-    exit
+${winpty} docker-compose exec -u dlaravel php /usr/local/bin/composer create-project laravel/laravel=${2} ${1} --prefer-dist
+dlaravelconfig ${1}
+exit;
 fi
 
 
 #檢測是否執行
 is_running
+
 #install new laravel project
 dlaravel_new ${1}
 

@@ -32,6 +32,7 @@ services:
   volumes:
   - ./etc/php:/usr/local/etc/php/conf.d
   - ./sites:/var/www/html
+  - ./etc/php-fpm.d/www.conf:/usr/local/etc/php-fpm.d/www.conf
   #建立composer cache
   - ./etc/cache:/home/dlaravel/.composer/cache
   #- ./var/logs/php:/var/log
