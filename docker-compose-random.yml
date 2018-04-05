@@ -17,12 +17,15 @@ services:
     - dlaravel_net
   
 ### PHP-FPM container ##################################
+#Laravel 5.5 >= 7.0.0
+#Laravel 5.4 >= 5.6.4
+#Laravel 5.3 between 5.6.4&7.1.*
  php:
   network_mode: "service:web"
-  image: deviny/fpm:7.2.3
-  #image: deviny/fpm:7.1.15
-  #image: deviny/fpm:7.0.28
-  #image: deviny/fpm:5.6.34
+  image: deviny/fpm:7.2.4
+  #image: deviny/fpm:7.1.16
+  #image: deviny/fpm:7.0.29
+  #image: deviny/fpm:5.6.35
   volumes:
   - ./etc/php:/usr/local/etc/php/conf.d
   - ./sites:/var/www/html
