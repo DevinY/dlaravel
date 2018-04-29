@@ -237,8 +237,9 @@ fi
 
 #進資料庫
 if [ "${1}" == "mysql" ]; then
-    #echo ${MYSQL_ROOT_PASSWORD}
-    if [ -z "${MYSQL_ROOT_PASSWORD}" ]; then
+
+    ${winpty} docker-compose -f ${base_path}/docker-compose.yml exec db env|grep MYSQL_ROOT_PASSWORD >/dev/null 2>&1
+    if [  $? -gt 0  ]; then
         ${winpty} docker-compose -f ${base_path}/docker-compose.yml exec db mysql
         else
         echo "Your MySQL root password."
