@@ -78,6 +78,19 @@ gitbash環境 (console及create需在gitbash環境執行，並且gitbash需可�
 
 </pre>
 
+請確認您使用新版的docker-compose。
+
+執行docker-compose version
+
+大於等於
+
+docker-compose version 1.19.0
+
+安裝網址
+<pre>
+https://docs.docker.com/compose/install/
+</pre>
+
 #### 二、例如:可用git clone下載這個repo，並進入dlaravel工作目錄。
 <pre>
 git clone https://github.com/DevinY/dlaravel.git
