@@ -18,6 +18,8 @@ etc/php/php.ini
 ext/
 run/
 *.swp
+*.pyc
+scripts/__pycache__/
 data/
 docker-compose.yml
 docker-compose-custom.yml
