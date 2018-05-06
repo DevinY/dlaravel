@@ -7,9 +7,10 @@ import platform
 import locale
 from shutil import copyfile
 system = platform.system()
+major = sys.version_info[0]
 basepath = os.getcwd()
 def e(v):
-    sys.stdout.write(v)
+    print(v)
 
 def get_projects_count():
     count = 0
@@ -66,15 +67,13 @@ def ps():
 def up():
     command=dockerCompose()+["up","-d"]
     proc = subprocess.Popen(command ,shell=False, stdout=subprocess.PIPE)
-    output = proc.stdout.read()
+    output = proc.stdout.read().decode('utf-8')
     e(output)
-    db_ports()
-    web_ports()
 
 def down():
     command=dockerCompose()+["down"]
     proc = subprocess.Popen(command ,shell=False, stdout=subprocess.PIPE)
-    output = proc.stdout.read()
+    output = proc.stdout.read().decode('utf-8')
     e(output)
 
 def restart():
@@ -85,7 +84,7 @@ def get_container_name(service):
     #docker-compose ps db
     command=dockerCompose()+["ps", service]
     proc = subprocess.Popen(command ,shell=False, stdout=subprocess.PIPE)
-    output = proc.stdout.read()
+    output = proc.stdout.read().decode('utf-8')
     result = re.sub("(.+\\n-+\\n)(.+)\\n", "\\2", output)
     result = re.sub("^(.*?)\\s.+", "\\1", result)
     result = re.sub("(.+)\\n?", "\\1", result)
@@ -105,7 +104,7 @@ def db_ports():
 
     command=["docker","inspect","--format='{{(index (index .NetworkSettings.Ports \"3306/tcp\") 0).HostPort}}'", container_name]
     proc = subprocess.Popen(command ,shell=False, stdout=subprocess.PIPE)
-    output = remove_quotes(proc.stdout.read())
+    output = proc.stdout.read().decode('utf-8')
     print("DB:")
     e("host:{}".format(output))
 
@@ -138,11 +137,11 @@ def ext():
     e(run(dockerCompose()+["exec","php","ls",extension_dir.strip()]))
 
 def reload():
-    output = run(dockerCompose()+["exec","web","nginx","-s","reload"])
+    output = run(dockerCompose()+["exec","web","nginx","-s","reload"]).decode('utf-8')
     e(output)
 
 def remove_quotes(v):
-    return re.sub("'", "", v)
+    return re.sub("'", "", v.decode('utf8'))
 
 def normal():
     try:
@@ -205,7 +204,6 @@ To manually create new default project:
 mkdir -p sites/default/public;touch sites/default/public/index.php"""
             print(msg)
             exit()
-
         copyfile("{}/etc/default-ssl.sample".format(basepath), "{}/etc/default-ssl.conf".format(basepath))
         copyfile("{}/etc/v3.sample".format(basepath), "{}/etc/v3.ext".format(basepath))
 
@@ -259,10 +257,13 @@ Example: docker commit 67306ecd0879 deviny/fpm:7.1.9
 
 
 def clear():
-    ans = raw_input("Would You like to stop / remove all Docker containers?(y/n)")
+    if(major==3):
+        ans = input("Would You like to stop / remove all Docker containers?(y/n)")
+    else:
+        ans = raw_input("Would You like to stop / remove all Docker containers?(y/n)")
     if(ans.lower() == 'y'):
         command = ["docker","ps","-qa"]
-        containers = run(command).split('\n')
+        containers = run(command).decode('utf-8').split('\n')
         for container_id in containers:
             if(container_id!=""):
                 command = ["docker","rm","-f",container_id]
