@@ -174,13 +174,13 @@ def execute(args):
 
 def logs(service=[]):
     if(len(service)==0):
-    	command = dockerCompose()+["logs"]
+            command = dockerCompose()+["logs"]
     else:
-    	command = dockerCompose()+["logs"]+service
+            command = dockerCompose()+["logs"]+service
     try:
-    	subprocess.call(command)
+            subprocess.call(command)
     except:
-	pass
+        pass
 
 def mysql():
     command = dockerCompose()+["exec", "db", "env"]
@@ -218,20 +218,20 @@ mkdir -p sites/default/public;touch sites/default/public/index.php"""
                 v3_file.write("DNS.{}={}.test\n".format(count, project_name))
 
         command = ["security","find-certificate","-c","\"dlaravel.test\"",
-	"-a","-Z","|","sudo","|","awk" ,"'/SHA-1/{system(\"security delete-certificate -Z \"$NF)}'"]
+        "-a","-Z","|","sudo","|","awk" ,"'/SHA-1/{system(\"security delete-certificate -Z \"$NF)}'"]
         subprocess.call(command)
 
-	command = ["openssl","req","-new","-newkey","rsa:2048","-sha256",
-		"-days","3650","-nodes","-x509",
-		"-keyout","{}/etc/ssl/cert.key".format(basepath),
-		"-out","{}/etc/ssl/cert.crt".format(basepath),
-		"-config","{}/etc/v3.ext".format(basepath),"-extensions","v3_req"]
+        command = ["openssl","req","-new","-newkey","rsa:2048","-sha256",
+        "-days","3650","-nodes","-x509",
+        "-keyout","{}/etc/ssl/cert.key".format(basepath),
+        "-out","{}/etc/ssl/cert.crt".format(basepath),
+        "-config","{}/etc/v3.ext".format(basepath),"-extensions","v3_req"]
         subprocess.call(command)
 
-	command = ["sudo","security","add-trusted-cert","-d","-r","trustRoot","-k","/Library/Keychains/System.keychain","{}/etc/ssl/cert.crt".format(basepath)]
+        command = ["sudo","security","add-trusted-cert","-d","-r","trustRoot","-k","/Library/Keychains/System.keychain","{}/etc/ssl/cert.crt".format(basepath)]
         subprocess.call(command)
 
-	reload()
+        reload()
 
     else:
         print("This feature for OSX user only.")
@@ -241,36 +241,34 @@ def link():
     e(run(command))
 
 def chowner():
-	if(system=="Linux"):
-            whoami = run(["whoami"]).strip("\n")
+    if(system=="Linux"):
+        whoami = run(["whoami"]).strip("\n")
 
-	    dlaravel_uid = run(["id","-u",whoami])
-	    dlaravel_gid = run(["id","-g",whoami])
-	    
-	    command = dockerCompose()+["exec","php","usermod","-u",dlaravel_uid.strip('\n'),"dlaravel"]
-            subprocess.call(command)
-	    command = dockerCompose()+["exec","php","groupmod","-g",dlaravel_gid.strip('\n'),"dlaravel"]
-            subprocess.call(command)
-	    command = dockerCompose()+["exec","php","chown","-R",dlaravel_uid.strip('\n'),"/home/dlaravel"]
-            subprocess.call(command)
-
-	    msg ="""You have to commit your php fpm image, and restart container.
+        dlaravel_uid = run(["id","-u",whoami])
+        dlaravel_gid = run(["id","-g",whoami])
+        command = dockerCompose()+["exec","php","usermod","-u",dlaravel_uid.strip('\n'),"dlaravel"]
+        subprocess.call(command)
+        command = dockerCompose()+["exec","php","groupmod","-g",dlaravel_gid.strip('\n'),"dlaravel"]
+        subprocess.call(command)
+        command = dockerCompose()+["exec","php","chown","-R",dlaravel_uid.strip('\n'),"/home/dlaravel"]
+        subprocess.call(command)
+        msg ="""You have to commit your php fpm image, and restart container.
 Example: docker commit 67306ecd0879 deviny/fpm:7.1.9
 ./console restart"""
-	    print(msg)
+        print(msg)
 
 
 def clear():
     ans = raw_input("Would You like to stop / remove all Docker containers?(y/n)")
     if(ans.lower() == 'y'):
-	command = ["docker","ps","-qa"]
+        command = ["docker","ps","-qa"]
         containers = run(command).split('\n')
-	for container_id in containers:
-	   if(container_id!=""):	
-		command = ["docker","rm","-f",container_id]
-        	subprocess.call(command)
+        for container_id in containers:
+            if(container_id!=""):
+                command = ["docker","rm","-f",container_id]
+                subprocess.call(command)
     else:
-   	exit() 
+        exit()
 
 def help():
     l=locale.getdefaultlocale()[0]
