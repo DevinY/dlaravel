@@ -350,6 +350,9 @@ def alias():
 
 def dlaravel_new(parameter):
      value=dot_env_install()
+     if(os.path.isdir("{}/sites/{}".format(basepath,parameter))):
+         print("The sites/{} folder exists.".format(parameter))
+         exit()
      if(value=="host"):
          print("Run laravel installer on host: laravel new {}".format(parameter))
          command=["laravel","new","sites/{}".format(parameter)]
@@ -362,19 +365,7 @@ def dlaravel_new(parameter):
          subprocess.call(command)
 
 def dlaravel_config(parameter):
-    fname="/etc/hosts"
-    lines = open(fname, "r").readlines()
-    found = 0
-    for line in lines:
-        if(re.search("^(127.0.0.1)\\s+(www.)?(.+).test$", line, re.I | re.M)):
-            #移除斷行
-            result = re.sub("(^127.0.0.1)\\s+(www.)?(.+).test", "\\3", line.rstrip())
-            #print("[{}]".format(result))
-            if(result == parameter):
-                found = 1
-
-    if(found == 0):
-         create_host(parameter)
+    print("Update the sites/{}/.env file of the project.".format(parameter))
     #更新.env設定連線
     command=dockerCompose()+["exec","-u","dlaravel","php","sed","-i","s/DB_HOST=127.0.0.1/DB_HOST=db/","/var/www/html/{}/.env".format(parameter)]
     proc = subprocess.Popen(command ,shell=False, stdout=subprocess.PIPE)
@@ -390,9 +381,19 @@ def dlaravel_config(parameter):
     output = proc.stdout.read().decode('utf-8')
 
 def create_host(project):
+    fname="/etc/hosts"
+    lines = open(fname, "r").readlines()
+    found = 0
+    for line in lines:
+        if(re.search("^(127.0.0.1)\\s+(www.)?(.+).test$", line, re.I | re.M)):
+            #移除斷行
+            result = re.sub("(^127.0.0.1)\\s+(www.)?(.+).test", "\\3", line.rstrip())
+            #print("[{}]".format(result))
+            if(result == project):
+                found = 1
+    if(found == 0):
          command=["sudo","python","{}/scripts/update_hosts.py".format(basepath), project]
          subprocess.call(command)
-
 
 def create_db(project):
          command=["docker-compose","exec","db","mysql","-e","CREATE DATABASE IF NOT EXISTS `{}`".format(project)]

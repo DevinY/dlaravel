@@ -23,9 +23,15 @@ if(number_of_arguments == 1):
         print(help)
     else:
        project=parameter
-       docker.dlaravel_new(project)
-       docker.dlaravel_config(project)
-       docker.create_db(project)
+       try:
+        docker.dlaravel_new(project)
+        docker.dlaravel_config(project)
+        docker.create_db(project)
+        print("http://{}.test".format(project))
+        docker.create_host(project)
+       except:
+        pass
+
 
 if(number_of_arguments == 2):
 
