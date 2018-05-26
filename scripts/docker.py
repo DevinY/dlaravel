@@ -5,6 +5,7 @@ import subprocess
 import re
 import platform
 import locale
+import fileinput
 from shutil import copyfile
 system = platform.system()
 major = sys.version_info[0]
@@ -30,6 +31,19 @@ def run(command):
     proc = subprocess.Popen(command ,shell=False, stdout=subprocess.PIPE)
     return proc.stdout.read()
 
+#檢測dot_env中使用的installer
+def dot_env_install():
+    fname = "{}/.env".format(basepath)
+    if(os.path.isfile(fname)): 
+        lines = open(fname, "r").readlines()
+        for line in lines:
+            obj = re.search("^LARAVEL_INSTALLER=(.+)", line, re.I | re.M)
+            if(obj):
+                value = remove_quotes(obj.group(1))
+                return value
+    return "container"
+
+#找出.env擋中定義的服務
 def dot_env_services():
     default_compose=["docker-compose","-f","{}/docker-compose.yml".format(basepath)]
     fname = "{}/.env".format(basepath)
@@ -278,7 +292,6 @@ def help():
  options:
      """.format(sys.argv[0])
     print(msg)
-
     if(l=="zh_TW"):
         msg="""   up : 建立並啟動container。
    down : 停止並移除container。
@@ -334,3 +347,63 @@ def version():
 
 def alias():
     print("alias c={}/console".format(basepath))
+
+def dlaravel_new(parameter):
+     value=dot_env_install()
+     if(value=="host"):
+         print("Run laravel installer on host: laravel new {}".format(parameter))
+         command=["laravel","new","sites/{}".format(parameter)]
+         print(command)
+         subprocess.call(command)
+     else:
+         print("Run laravel installer in container: laravel new {}".format(parameter))
+         command=dockerCompose()+["exec","-u","dlaravel","php","/home/dlaravel/.composer/vendor/bin/laravel","new",parameter]
+         print(command)
+         subprocess.call(command)
+
+def dlaravel_config(parameter):
+    fname="/etc/hosts"
+    lines = open(fname, "r").readlines()
+    found = 0
+    for line in lines:
+        if(re.search("^(127.0.0.1)\\s+(www.)?(.+).test$", line, re.I | re.M)):
+            #移除斷行
+            result = re.sub("(^127.0.0.1)\\s+(www.)?(.+).test", "\\3", line.rstrip())
+            #print("[{}]".format(result))
+            if(result == parameter):
+                found = 1
+
+    if(found == 0):
+         create_host(parameter)
+    #更新.env設定連線
+    command=dockerCompose()+["exec","-u","dlaravel","php","sed","-i","s/DB_HOST=127.0.0.1/DB_HOST=db/","/var/www/html/{}/.env".format(parameter)]
+    proc = subprocess.Popen(command ,shell=False, stdout=subprocess.PIPE)
+    output = proc.stdout.read().decode('utf-8')
+    command=dockerCompose()+["exec","-u","dlaravel","php","sed","-i","s/DB_DATABASE=homestead/DB_DATABASE={}/".format(parameter),"/var/www/html/{}/.env".format(parameter)]
+    proc = subprocess.Popen(command ,shell=False, stdout=subprocess.PIPE)
+    output = proc.stdout.read().decode('utf-8')
+    command=dockerCompose()+["exec","-u","dlaravel","php","sed","-i","s/DB_USERNAME=homestead/DB_USERNAME={}/".format(parameter),"/var/www/html/{}/.env".format(parameter)]
+    proc = subprocess.Popen(command ,shell=False, stdout=subprocess.PIPE)
+    output = proc.stdout.read().decode('utf-8')
+    command=dockerCompose()+["exec","-u","dlaravel","php","sed","-i","s/DB_PASSWORD=secret/DB_PASSWORD={}/".format(parameter),"/var/www/html/{}/.env".format(parameter)]
+    proc = subprocess.Popen(command ,shell=False, stdout=subprocess.PIPE)
+    output = proc.stdout.read().decode('utf-8')
+
+def create_host(project):
+         command=["sudo","python","{}/scripts/update_hosts.py".format(basepath), project]
+         subprocess.call(command)
+
+
+def create_db(project):
+         command=["docker-compose","exec","db","mysql","-e","CREATE DATABASE IF NOT EXISTS `{}`".format(project)]
+         subprocess.call(command)
+         command=["docker-compose","exec","db","mysql","-e","CREATE USER IF NOT EXISTS \"{}\"".format(project,project)]
+         subprocess.call(command)
+         command=["docker-compose","exec","db","mysql","-e","SET PASSWORD FOR `{}`=\"{}\"".format(project,project)]
+         subprocess.call(command)
+         command=["docker-compose","exec","db","mysql","-e","GRANT ALL ON `{}`.* TO \"{}\"".format(project,project)]
+         subprocess.call(command)
+         command=["docker-compose","exec","db","mysql","-e","FLUSH PRIVILEGES"]
+         subprocess.call(command)
+
+

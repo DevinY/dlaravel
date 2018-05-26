@@ -468,4 +468,3 @@ please refers to below's link, it will help you to understand how D-Laravel fpm 
 |docker-compose -f docker-compose-normal.yml up -d| |using port 80 and port 3306|
 |docker-compose -f docker-compose-random.yml up -d| |specific yml file with random port|
 
-

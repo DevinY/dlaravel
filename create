@@ -175,7 +175,7 @@ function dlaravel_new {
           echo "Run laravel installer in container: laravel new ${1}"
           docker exec -ti ${containerName}_php_1 sudo -u dlaravel /home/dlaravel/.composer/vendor/bin/laravel new ${1}
         fi
-        #由主機端端的Laravel Installer安裝
+        #由主機端的Laravel Installer安裝
         if [ ${LARAVEL_INSTALLER} == 'host' ]; then
           echo "Run laravel installer on host: laravel new ${1}"
           laravel new sites/${1}
