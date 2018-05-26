@@ -8,7 +8,6 @@ services:
     # 使用隨機的port 80
     - "80:80"
     - "443:443"
-    - "6001:6001"
   volumes:
   - ./sites:/var/www/html
   - ./etc:/etc/nginx/conf.d
@@ -23,10 +22,10 @@ services:
 #Laravel 5.3 between 5.6.4&7.1.*
  php:
   network_mode: "service:web"
-  image: deviny/fpm:7.2.4
-  #image: deviny/fpm:7.1.16
-  #image: deviny/fpm:7.0.29
-  #image: deviny/fpm:5.6.35
+  image: deviny/fpm:7.2.6
+  #image: deviny/fpm:7.1.17
+  #image: deviny/fpm:7.0.30
+  #image: deviny/fpm:5.6.36
   volumes:
   - ./etc/php:/usr/local/etc/php/conf.d
   - ./sites:/var/www/html
