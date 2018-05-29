@@ -76,7 +76,7 @@ fi
 
 #顯示composer的別名
 if [ "${1}" == "alias" ] && [ ${#} -gt 1 ] && [ ${2} == "ce" ]; then
-echo "To run artisan command from host, please add following command to .bash_profile or .zshrc:"
+echo "To run composer command from host, please add following command to .bash_profile or .zshrc:"
 calias='alias ce="../../composer.sh"'
 echo ${calias}
 exit;
