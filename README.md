@@ -136,15 +136,9 @@ alias laravel='docker-compose exec -u dlaravel php /home/dlaravel/.composer/vend
 
 
 <pre>
-function composer() {
-if [ $(basename ${PWD}) = "sites" ]; then
-    docker-compose exec -u dlaravel php composer -d=./ $@
-else
-    docker-compose exec -u dlaravel php composer -d=$(basename ${PWD}) $@
-fi
-}
+alias ce="../../composer.sh"
 </pre>
-使用dlaravel的身份，執行container內的composer，會依您所在的資料夾切換目錄
+在Project內執行composer，例如ce dump
 
 <pre>
 alias a="../../artisan.sh"
@@ -366,15 +360,9 @@ alias laravel = 'docker-compose exec -u dlaravel php / home/dlaravel/.composer/v
 Execute the laravel installer in the container using the identity of dlaravel
 
 <pre>
-function composer () {
-if [$ (basename $ {PWD}) = "sites"];
-     docker-compose exec -u dlaravel php composer -d =. / $ @
-else
-     docker-compose exec -u dlaravel php composer -d = $ (basename $ {PWD}) $ @
-fi
-}
+alias ce="../../composer.sh"
 </pre>
-Use dlaravel identity, the implementation of the container composer, according to your folder to switch the directory
+run composer.sh in project folder, for example: ce dump
 
 <pre>
 alias a="../../artisan.sh"
