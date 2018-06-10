@@ -1,6 +1,6 @@
 [submodule "dockerfiles/echoserver"]
 	path = dockerfiles/echoserver
-	url = https://github.com/DevinY/echoserver.git
+	url = git://github.com/DevinY/echoserver.git
 [submodule "dockerfiles/osshd"]
 	path = dockerfiles/osshd
 	url = https://github.com/DevinY/osshd.git
