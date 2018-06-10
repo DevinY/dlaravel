@@ -1,4 +1,5 @@
 *
 !fpm
 !echoserver
+!osshd
 !.gitignore
