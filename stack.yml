@@ -1,0 +1,100 @@
+#以下僅供參考(docker swarm mode時設定)
+#例如: docker stack deploy -c stack.yaml dlaravel
+#您需自行調整及php權限等，不適用於./console及./create bash
+#nginx設定
+#/etc/nginx/conf.d/default.conf
+#PHP FPM設定
+#/usr/local/etc/php-fpm.d/www.conf
+#PHP設定(session 存放路徑)
+#/usr/local/etc/php/conf.d
+#/var/lib/php/sesson (需確認權限是否為fpm可以寫入的)
+version: '3.6'
+services:
+### 網頁伺服器的container ##################################
+ web:
+  image: nginx
+  dns: 8.8.8.8
+  volumes:
+   - conf:/etc/nginx/conf.d
+   - sites:/var/www/html
+  ports:
+    # 使用隨機的port 80
+    - "127.0.0.1:8081:80"
+  networks:
+    - net
+
+  
+### PHP-FPM container ##################################
+ php:
+  image: deviny/fpm:7.2.4
+  deploy:
+   mode: replicated
+   replicas: 4
+   endpoint_mode: vip
+   update_config:
+     delay: 2s
+  volumes:
+   - sites:/var/www/html
+   - php_session:/var/lib/php/session
+   - fpm:/usr/local/etc/php-fpm.d
+   - php:/usr/local/etc/php/conf.d
+   - cache:/home/dlaravel/.composer/cache
+   - conf:/etc/nginx/conf.d
+  ports:
+    # 使用隨機的port 80
+    - "9000"
+  environment:
+   - TZ=Asia/Taipei
+  networks:
+    - net
+
+### 資料庫 container ##################################
+ db:
+  image: mysql:5.7.19
+  #image: mysql:8.0.11 
+  hostname: db
+  ports:
+    - "3306"
+  volumes:
+    - data:/var/lib/mysql
+    - mysql:/etc/mysql
+  environment:
+    - MYSQL_ALLOW_EMPTY_PASSWORD= "no"
+    - TZ=Asia/Taipei
+  networks:
+    - net
+#######################################################
+# https://github.com/DevinY/osshd
+# 例如整合gogs的docker版本，透過webhook進行工作目錄更新
+### osshd container ###################################
+# source:
+#  image: osshd
+#  dns: 8.8.8.8
+#  volumes:
+#   - sites:/var/www/html
+#   - source:/source
+#  ports:
+#    # 使用隨機的port 80
+#    - "10.0.0.20:1022:22"
+#  networks:
+#    - net
+
+######top-level netowks key#######
+volumes:
+  cache:
+  conf:
+  php:
+  fpm:
+  data:
+  sites:
+  mysql:
+  source:
+  php_session:
+
+networks:
+  net:
+   driver: overlay
+   ipam:
+     driver: default
+     config:
+     - subnet: 172.16.0.0/16
