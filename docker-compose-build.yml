@@ -5,7 +5,7 @@
 # 如果image已存在時，需加上--build
 # docker-compose -f docker-compose-build.yml up --build -d
 ###################################################3
-version: '3'
+version: '3.6'
 services:
 ### 網頁伺服器的container ##################################
  web:
@@ -33,7 +33,7 @@ services:
   - ./etc/php:/usr/local/etc/php/conf.d
   - ./sites:/var/www/html
   - ./etc/php-fpm.d/www.conf:/usr/local/etc/php-fpm.d/www.conf
-  #建立composer cache
+  ###建立composer cache###
   - ./etc/cache:/home/dlaravel/.composer/cache
   #- ./var/logs/php:/var/log
   #- ./etc/supervisor:/etc/supervisor/conf.d
@@ -55,11 +55,11 @@ services:
     - ./etc/mysql/my.cnf:/etc/mysql/my.cnf
     - ./data:/var/lib/mysql
   environment:
-   - MYSQL_DATABASE=homestead
-   - MYSQL_USER=homestead
-   - MYSQL_PASSWORD=secret
-   - MYSQL_ALLOW_EMPTY_PASSWORD= "yes"
+   #- MYSQL_DATABASE=homestead
+   #- MYSQL_USER=homestead
+   #- MYSQL_PASSWORD=secret
    #- MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD-secret}
+   - MYSQL_ALLOW_EMPTY_PASSWORD= "yes"
    - TZ=Asia/Taipei
   networks:
     - dlaravel_net

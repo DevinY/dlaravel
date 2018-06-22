@@ -1,4 +1,4 @@
-version: '3'
+version: '3.6'
 services:
 ### 網頁伺服器的container ##################################
  web:
@@ -17,9 +17,9 @@ services:
     - dlaravel_net
   
 ### PHP-FPM container ##################################
-#Laravel 5.5 >= 7.0.0
-#Laravel 5.4 >= 5.6.4
-#Laravel 5.3 between 5.6.4&7.1.*
+### Laravel 5.5 >= 7.0.0
+### Laravel 5.4 >= 5.6.4
+### Laravel 5.3 between 5.6.4&7.1.*
  php:
   network_mode: "service:web"
   image: deviny/fpm:7.2.6
@@ -30,7 +30,7 @@ services:
   - ./etc/php:/usr/local/etc/php/conf.d
   - ./sites:/var/www/html
   - ./etc/php-fpm.d/www.conf:/usr/local/etc/php-fpm.d/www.conf
-  #建立composer cache
+  ###建立composer cache###
   - ./etc/cache:/home/dlaravel/.composer/cache
   #- ./var/log/php:/var/log
   #- ./etc/supervisor:/etc/supervisor/conf.d
@@ -52,9 +52,9 @@ services:
     - ./etc/mysql/my.cnf:/etc/mysql/my.cnf
     - ./data:/var/lib/mysql
   environment:
-   - MYSQL_DATABASE=homestead
-   - MYSQL_USER=homestead
-   - MYSQL_PASSWORD=secret
+   #- MYSQL_DATABASE=homestead
+   #- MYSQL_USER=homestead
+   #- MYSQL_PASSWORD=secret
    #- MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD-secret}
    - MYSQL_ALLOW_EMPTY_PASSWORD= "yes"
    - TZ=Asia/Taipei

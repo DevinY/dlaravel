@@ -56,7 +56,7 @@
           rewrite     ^/(.+)/$ /$1 permanent;
       }   
 
-    ssl                  on; 
+    #ssl                  on; 
     location ~ \.php$ {
         try_files $uri =404;
         fastcgi_split_path_info ^(.+\.php)(/.+)$;

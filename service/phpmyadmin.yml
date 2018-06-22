@@ -1,5 +1,5 @@
 #phpmyadmin官方image
-version: '3'
+version: '3.6'
 services:
  phpmyadmin:
   image: phpmyadmin/phpmyadmin

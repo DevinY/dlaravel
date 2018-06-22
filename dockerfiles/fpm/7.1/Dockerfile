@@ -1,4 +1,4 @@
-FROM php:7.1.17-fpm
+FROM php:7.1.18-fpm
 MAINTAINER Devin Yang <devin@ccc.tc>
 #Docker官方說明文件
 #https://hub.docker.com/_/php/
@@ -11,7 +11,6 @@ RUN apt-get update && apt-get install -y \
                 pkg-config \
 		libmcrypt-dev \
                 #==================
-		libmcrypt-dev \
 		libpng-dev \
 		ca-certificates \
 		curl \
@@ -20,6 +19,7 @@ RUN apt-get update && apt-get install -y \
                 cron \
                 git \
                 wget \
+                libldb-dev \
                 libldap2-dev \
                 libsasl2-dev \
                 python \
@@ -27,12 +27,11 @@ RUN apt-get update && apt-get install -y \
                 unzip \
                 mysql-client \
                 zip \
+                libgeoip-dev \
                 libpq-dev \
                 libzip-dev \
                 libbz2-dev \
                 libgd2-dev \
-                libpng12-0 \
-                libpng12-dev \
                 libjpeg-dev \
                 libgif-dev \
                 libxml2-dev \
@@ -48,7 +47,8 @@ RUN apt-get update && apt-get install -y \
 #bcmath bz2 calendar ctype curl dba dom enchant exif fileinfo filter ftp gd gettext gmp hash iconv imap interbase intl json ldap mbstring mysqli oci8 odbc opcache pcntl pdo pdo_dblib pdo_firebird pdo_mysql pdo_oci pdo_odbc pdo_pgsql pdo_sqlite pgsql phar posix pspell readline recode reflection session shmop simplexml snmp soap sockets sodium spl standard sysvmsg sysvsem sysvshm tidy tokenizer wddx xml xmlreader xmlrpc xmlwriter xsl zend_test zip
 
 RUN  pecl install xdebug \
-	&& docker-php-ext-enable xdebug
+     pecl install redis \
+     && docker-php-ext-enable xdebug
 
 #建立Dlaravel的使用者
 RUN adduser --disabled-password --gecos "" dlaravel &&\

@@ -121,7 +121,8 @@ function dlaravelconfig {
         #建立使用者
         ${winpty} docker-compose exec db mysql -e "CREATE USER IF NOT EXISTS \"${1}\""
         #設定使用者帳密同Project名稱
-        ${winpty} docker-compose exec db mysql -e "SET PASSWORD FOR \`${1}\`=\"${1}\""
+        #${winpty} docker-compose exec db mysql -e "SET PASSWORD FOR \`${1}\`=\"${1}\""
+        ${winpty} docker-compose -f ${base_path}/docker-compose.yml exec db mysql -e "ALTER USER \"${1}\" IDENTIFIED WITH mysql_native_password BY \"${1}\""
         #授權使用者
         ${winpty} docker-compose exec db mysql -e "GRANT ALL ON \`${1}\`.* TO \"${1}\""
         #更新container權限
@@ -132,7 +133,9 @@ function dlaravelconfig {
         #建立使用者
         ${winpty} docker-compose -f ${base_path}/docker-compose.yml exec db sh -c 'mysql -e "CREATE USER IF NOT EXISTS \"'${1}'\"" -uroot -p"$MYSQL_ROOT_PASSWORD"' >/dev/null 2>&1
         #設定使用者帳密同Project名稱
-        ${winpty} docker-compose -f ${base_path}/docker-compose.yml exec db sh -c 'mysql -e "SET PASSWORD FOR \`'${1}'\`=\"'${1}'\"" -uroot -p"$MYSQL_ROOT_PASSWORD"' >/dev/null 2>&1  
+        #${winpty} docker-compose -f ${base_path}/docker-compose.yml exec db sh -c 'mysql -e "SET PASSWORD FOR \`'${1}'\`=\"'${1}'\"" -uroot -p"$MYSQL_ROOT_PASSWORD"' >/dev/null 2>&1  
+        #${winpty} docker-compose -f ${base_path}/docker-compose.yml exec db mysql -uroot -p${MYSQL_ROOT_PASSWORD} -e "ALTER USER \"${1}\" IDENTIFIED WITH mysql_native_password BY \"${1}\""
+        ${winpty} docker-compose -f ${base_path}/docker-compose.yml exec db sh -c 'mysql -uroot -p${MYSQL_ROOT_PASSWORD} -e "ALTER USER \"'${1}'\" IDENTIFIED WITH mysql_native_password BY \"'${1}'\""'
         #授權使用者
         ${winpty} docker-compose -f ${base_path}/docker-compose.yml exec db sh -c 'mysql -e "GRANT ALL ON \`'${1}'\`.* TO \"'${1}'\"" -uroot -p"$MYSQL_ROOT_PASSWORD"' >/dev/null 2>&1
         #更新container權限
@@ -215,7 +218,8 @@ if [ "$#" -eq 2 ]; then
             #建立使用者
             ${winpty} docker-compose -f docker-compose.yml exec db mysql -e "CREATE USER IF NOT EXISTS \"${2}\""
             #建立密碼，同使用者名稱
-            ${winpty} docker-compose -f docker-compose.yml exec db mysql -e "SET PASSWORD FOR \`${2}\`=\"${2}\""
+            #${winpty} docker-compose -f docker-compose.yml exec db mysql -e "SET PASSWORD FOR \`${2}\`=\"${2}\""
+            ${winpty} docker-compose -f docker-compose.yml exec db mysql -e "ALTER USER \"${2}\" IDENTIFIED WITH mysql_native_password BY \"${2}\""
             #授權
             ${winpty} docker-compose -f docker-compose.yml exec db mysql -e "GRANT ALL ON \`${2}\`.* TO \"${2}\""
             #更新container權限
@@ -226,7 +230,8 @@ if [ "$#" -eq 2 ]; then
             #建立使用者
             ${winpty} docker-compose -f ${base_path}/docker-compose.yml exec db sh -c 'mysql -e "CREATE USER IF NOT EXISTS \"'${2}'\""  -uroot -p"$MYSQL_ROOT_PASSWORD"' > /dev/null 2>&1
             #設定使用者帳密同Project名稱
-            ${winpty} docker-compose -f ${base_path}/docker-compose.yml exec db sh -c 'mysql -e "SET PASSWORD FOR \`'${2}'\`=\"'${2}'\""  -uroot -p"$MYSQL_ROOT_PASSWORD"' > /dev/null 2>&1
+            #${winpty} docker-compose -f ${base_path}/docker-compose.yml exec db sh -c 'mysql -e "SET PASSWORD FOR \`'${2}'\`=\"'${2}'\""  -uroot -p"$MYSQL_ROOT_PASSWORD"' > /dev/null 2>&1
+            ${winpty} docker-compose -f ${base_path}/docker-compose.yml exec db sh -c 'mysql -e "ALTER USER \"'${2}'\" IDENTIFIED WITH mysql_native_password BY \"'${2}'\""  -uroot -p"$MYSQL_ROOT_PASSWORD"' > /dev/null 2>&1
             #授權使用者
             ${winpty} docker-compose -f ${base_path}/docker-compose.yml exec db sh -c 'mysql -e "GRANT ALL ON \`'${2}'\`.* TO \"'${2}'\""  -uroot -p"$MYSQL_ROOT_PASSWORD"' > /dev/null 2>&1
             #更新container權限

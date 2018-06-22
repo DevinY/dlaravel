@@ -3,7 +3,7 @@
 
 ### 非官方的版本，不過星星數最高的，我測過有作用
 ### beanstalk container ##################################
-version: '3'
+version: '3.6'
 services:
  beanstalk:
    image: bevand10/alpine-beanstalk
