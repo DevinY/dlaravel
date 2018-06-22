@@ -52,15 +52,33 @@ sudo chgrp wheel /etc/hosts
 #重建 *.conf
 #移除nginx下的所有*.conf的設定檔
 mv ./etc/default.conf ./etc/default.temp
+
+if [ -f "./etc/public.conf" ]; then
 mv ./etc/public.conf ./etc/public.temp
+fi
+
+if [ -f "./etc/php-fpm.d/www.conf" ]; then
+mv ./etc/php-fpm.d/www.conf ./etc/php-fpm.d/www.temp
+fi
+
 #檢測是否有ssl.conf
 if [ -f "./etc/default-ssl.conf" ]; then
     mv ./etc/default-ssl.conf ./etc/default-ssl.temp
 fi
 find ./etc -name "*.conf" -exec rm {} \; 
+
 #還原
+if [ -f "./etc/default.temp" ]; then
 mv ./etc/default.temp ./etc/default.conf
+fi
+
+if [ -f "./etc/public.temp" ]; then
 mv ./etc/public.temp ./etc/public.conf
+fi
+
+if [ -f "./etc/php-fpm.d/www.temp" ]; then
+mv ./etc/php-fpm.d/www.temp ./etc/php-fpm.d/www.conf
+fi
 
 if [ -f "./etc/default-ssl.temp" ]; then
 mv ./etc/default-ssl.temp ./etc/default-ssl.conf
