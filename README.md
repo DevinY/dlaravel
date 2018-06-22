@@ -65,6 +65,8 @@ docker-compose.yml (一個softlink，連結到不同的設定檔，例如:./cons
 </pre>
 
 #### 一、請先安裝docker
+## 請使用最新版本的docker，至少應為18.02.0以上。
+
 <pre>
 Mac OS系統:
 https://docs.docker.com/docker-for-mac/
@@ -78,7 +80,7 @@ gitbash環境 (console及create需在gitbash環境執行，並且gitbash需可�
 
 </pre>
 
-請確認您使用新版的docker-compose。
+## 請確認您使用新版的docker-compose。
 
 執行docker-compose version
 
