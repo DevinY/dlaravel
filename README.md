@@ -55,6 +55,7 @@ D-laravel停止時，不會佔用80埠，拜docker-compose之賜，極易調整L
 <pre>
 etc/   (nginx、php.ini及mysql的相關設定檔)
 data/  (mysql的資料檔案，./console up 自動生成)
+dockerfiles/ (放置一些dockerfile，必要時自己可以重build image使用)
 logs/  (用來掛載及放置container的logs)
 service/ (放置擴充用的yml檔)
 sites/ (專案的資夾，./create test1時，會建立在這個此目錄下)
@@ -199,13 +200,12 @@ db:
 </pre>
 
 #### 進階
-如果您想學習或重build自己php的fpm image版本，例如擴展php的功能，
-那麼可到下方連結參考，就可了解dlaravel的fpm image怎麼來的，及如何用docker重build一個自己的phpfpm image。
-https://github.com/DevinY/fpm/blob/master/README.md
-
-YouTube上操作如何重build fpm image的過程。
-
-https://www.youtube.com/watch?v=vzCcWpWstP4
+如果您想重build自己php的fpm image版本。
+例如下方建立了一個自己的fpm的image。
+<pre>
+cd dockerfiles/fpm/7.2
+docker build -t myfpm .
+</pre>
 
 Docker指令及DevinY/dlaravel提供的./console的bash指令
 
