@@ -27,7 +27,7 @@ services:
  php:
   image: mydlaravelfpm
   build:
-   context: ./dockerfiles/fpm/7.2
+     context: ./dockerfiles/fpm/${FPM_VERSION:-7.2}
   network_mode: "service:web"
   volumes:
   - ./etc/php:/usr/local/etc/php/conf.d

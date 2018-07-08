@@ -37,7 +37,8 @@ exit;
 fi
 
 if [ "${1}" == "build" ]; then
-  docker-compose -f docker-compose-build.yml up --build -d
+  echo "${winpty} docker-compose -f ${base_path}/docker-compose-build.yml up --build -d"
+  ${winpty} docker-compose -f ${base_path}/docker-compose-build.yml up --build -d
 exit;
 fi
 
@@ -110,7 +111,7 @@ fi
 
 #顯示docker-compose的設定檔連結
 if [ "${1}" == "link" ]; then
-    ls -l ${base_path}/docker-compose.yml
+    console_link
     exit;
 fi
 
@@ -333,6 +334,7 @@ fi
 
 #重新載入nginx設定
 if [ "${1}" == "reload" ]; then
+    echo "${winpty} docker-compose -f ${base_path}/docker-compose.yml exec web nginx -s reload"
     ${winpty} docker-compose -f ${base_path}/docker-compose.yml exec web nginx -s reload
 exit
 fi
@@ -423,9 +425,11 @@ if [ "${1}" == "" ]; then
 
         #${winpty} docker-compose -f ${base_path}/docker-compose.yml exec php sudo -u dlaravel bash 
         if [ -z "${DOCKER_SERVICES}" ]; then
+            echo "${winpty} docker-compose  -f ${base_path}/docker-compose.yml exec -u dlaravel php bash"
             ${winpty} docker-compose  -f ${base_path}/docker-compose.yml exec -u dlaravel php bash  
         else
             array_service
+            echo "${winpty} docker-compose  -p $(basename ${base_path}) ${CONSOLE_CMD} exec -u dlaravel php bash"
             ${winpty} docker-compose  -p $(basename ${base_path}) ${CONSOLE_CMD} exec -u dlaravel php bash
         fi
 

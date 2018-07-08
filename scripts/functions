@@ -27,9 +27,11 @@ function array_service {
 function console_logs {
     chk_docker_compose_file_is_readable 
     if [ -z "${DOCKER_SERVICES}" ]; then
+     echo "${winpty} docker-compose -f ${base_path}/docker-compose.yml ${@}"
      ${winpty} docker-compose -f ${base_path}/docker-compose.yml ${@}
     else
      array_service
+     echo "${winpty} docker-compose -p $(basename ${base_path}) ${CONSOLE_CMD} ${@}"
      ${winpty} docker-compose -p $(basename ${base_path}) ${CONSOLE_CMD} ${@}
     fi
 }
@@ -56,10 +58,21 @@ function console_restart {
 function console_up_service {
     chk_docker_compose_file_is_readable 
     if [ -z "${DOCKER_SERVICES}" ]; then
+     echo "${winpty} docker-compose -f ${base_path}/docker-compose.yml up -d ${@}"
      ${winpty} docker-compose -f ${base_path}/docker-compose.yml up -d ${@}
     else
      array_service
+     echo "${winpty} docker-compose -p $(basename ${base_path}) ${CONSOLE_CMD} up -d ${@}"
      ${winpty} docker-compose -p $(basename ${base_path}) ${CONSOLE_CMD} up -d ${@}
+    fi
+}
+
+#display soft link
+function console_link {
+    link=$(ls -l ${base_path}/docker-compose.yml)
+    target_link=$(echo ${link}|cut -d" " -f 11)
+    if [ ! -z ${target_link} ]; then
+      echo "Currently docker-compose.yml is soft link to ${target_link}"
     fi
 }
 
@@ -67,9 +80,11 @@ function console_up_service {
 function console_exec {
     chk_docker_compose_file_is_readable 
     if [ -z "${DOCKER_SERVICES}" ]; then
+     echo "${winpty} docker-compose -f ${base_path}/docker-compose.yml ${@}"
      ${winpty} docker-compose -f ${base_path}/docker-compose.yml ${@}
     else
      array_service
+     echo "${winpty} docker-compose -p $(basename ${base_path}) ${CONSOLE_CMD} ${@}"
      ${winpty} docker-compose -p $(basename ${base_path}) ${CONSOLE_CMD} ${@}
     fi
 }
@@ -81,11 +96,13 @@ function console_up {
         #檔案不存在，進行預設的soft link
         ln -s ${base_path}/docker-compose-random.yml ${base_path}/docker-compose.yml
     fi
-
+    console_link
     if [ -z "${DOCKER_SERVICES}" ]; then
-        docker-compose -f ${base_path}/docker-compose.yml up -d --remove-orphans
+        echo "${winpty} docker-compose -f ${base_path}/docker-compose.yml up -d --remove-orphans"
+        ${winpty} docker-compose -f ${base_path}/docker-compose.yml up -d --remove-orphans
         else
         array_service
+        echo "${winpty} docker-compose -p $(basename ${base_path}) ${CONSOLE_CMD} up -d --remove-orphans"
         ${winpty} docker-compose -p $(basename ${base_path}) ${CONSOLE_CMD} up -d --remove-orphans
     fi
         #暫時保留
@@ -102,12 +119,15 @@ function console_down {
     chk_docker_compose_file_is_readable 
     if [ -z "${DOCKER_SERVICES}" ]; then
         if [ -e ${base_path}/docker-compose.yml ]; then
-            docker-compose -f ${base_path}/docker-compose.yml down --remove-orphans  
+            echo "${winpty} docker-compose -f ${base_path}/docker-compose.yml down --remove-orphans"
+            ${winpty} docker-compose -f ${base_path}/docker-compose.yml down --remove-orphans  
             else
-            docker-compose -f ${base_path}/docker-compose-random.yml down --remove-orphans  
+            echo "${winpty} docker-compose -f ${base_path}/docker-compose-random.yml down --remove-orphans"
+            ${winpty} docker-compose -f ${base_path}/docker-compose-random.yml down --remove-orphans  
         fi
         else
         array_service
+        echo "docker-compose -p $(basename ${base_path}) ${CONSOLE_CMD} down --remove-orphans"
         docker-compose -p $(basename ${base_path}) ${CONSOLE_CMD} down --remove-orphans 
     fi
 }
@@ -116,12 +136,15 @@ function console_down_silent {
     chk_docker_compose_file_is_readable 
     if [ -z "${DOCKER_SERVICES}" ]; then
         if [ -e ${base_path}/docker-compose.yml ]; then
+            echo "docker-compose -f ${base_path}/docker-compose.yml down --remove-orphans"
             docker-compose -f ${base_path}/docker-compose.yml down --remove-orphans  > /dev/null 2>&1
             else
+            echo "docker-compose -f ${base_path}/docker-compose-random.yml down --remove-orphans"
             docker-compose -f ${base_path}/docker-compose-random.yml down --remove-orphans  > /dev/null 2>&1
         fi
         else
         array_service
+        echo "docker-compose -p $(basename ${base_path}) ${CONSOLE_CMD} down --remove-orphans" 
         docker-compose -p $(basename ${base_path}) ${CONSOLE_CMD} down --remove-orphans > /dev/null 2>&1
     fi
 }
@@ -133,10 +156,12 @@ function console_ps {
     fi
 
     if [ -z "${DOCKER_SERVICES}" ]; then
+          echo "${winpty} docker-compose -f ${base_path}/docker-compose.yml ps"
           ${winpty} docker-compose -f ${base_path}/docker-compose.yml ps
         else
         array_service
-        ${winpty} docker-compose -p $(basename ${base_path}) ${CONSOLE_CMD} ps
+          echo "${winpty} docker-compose -p $(basename ${base_path}) ${CONSOLE_CMD} ps"
+          ${winpty} docker-compose -p $(basename ${base_path}) ${CONSOLE_CMD} ps
     fi
 
 }
@@ -148,10 +173,12 @@ function console_top {
     fi
 
     if [ -z "${DOCKER_SERVICES}" ]; then
+          echo "${winpty} docker-compose -f ${base_path}/docker-compose.yml top"
           ${winpty} docker-compose -f ${base_path}/docker-compose.yml top
         else
         array_service
-        ${winpty} docker-compose -p $(basename ${base_path}) ${CONSOLE_CMD} top
+          echo "${winpty} docker-compose -p $(basename ${base_path}) ${CONSOLE_CMD} top"
+          ${winpty} docker-compose -p $(basename ${base_path}) ${CONSOLE_CMD} top
     fi
 
 }
@@ -160,20 +187,24 @@ function console_top {
 function console_top_service {
     chk_docker_compose_file_is_readable 
     if [ -z "${DOCKER_SERVICES}" ]; then
-     ${winpty} docker-compose -f ${base_path}/docker-compose.yml top ${@}
+        echo "${winpty} docker-compose -f ${base_path}/docker-compose.yml top ${@}"
+        ${winpty} docker-compose -f ${base_path}/docker-compose.yml top ${@}
     else
      array_service
-     ${winpty} docker-compose -p $(basename ${base_path}) ${CONSOLE_CMD} top ${@}
+        echo "${winpty} docker-compose -p $(basename ${base_path}) ${CONSOLE_CMD} top ${@}"
+        ${winpty} docker-compose -p $(basename ${base_path}) ${CONSOLE_CMD} top ${@}
     fi
 }
 
 #dlaravel console kill
 function console_kill {
     if [ -z "${DOCKER_SERVICES}" ]; then
+            echo "${winpty} docker-compose -f ${base_path}/docker-compose.yml down"
             ${winpty} docker-compose -f ${base_path}/docker-compose.yml down > /dev/null 2>&1
         else
         array_service
-        ${winpty} docker-compose kill $(${winpty} docker-compose -p $(basename ${base_path}) ${CONSOLE_CMD} ps -q) > /dev/null 2>&1
+            echo "${winpty} docker-compose kill $(${winpty} docker-compose -p $(basename ${base_path}) ${CONSOLE_CMD} ps -q)"
+             ${winpty} docker-compose kill $(${winpty} docker-compose -p $(basename ${base_path}) ${CONSOLE_CMD} ps -q) > /dev/null 2>&1
     fi
 
 }
