@@ -20,6 +20,12 @@ def get_projects_count():
             count+=1
     return count
 
+def pull():
+    command=dockerCompose()+["pull"]
+    proc = subprocess.Popen(command ,shell=False, stdout=subprocess.PIPE)
+    output = proc.stdout.read()
+    e(output)
+
 def get_sites():
     sites=[]
     for file_or_dir in os.listdir("{}/sites".format(basepath)):

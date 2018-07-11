@@ -24,6 +24,9 @@ if(number_of_arguments == 1):
     if(parameter=="down"):
         docker.down()
 
+    if(parameter=="pull"):
+        docker.pull()
+
     if(parameter=="restart"):
         docker.restart()
 

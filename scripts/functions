@@ -114,6 +114,24 @@ function console_up {
         echo "Web:"
         ${base_path}/scripts/web-ports
 }
+#dlarave console pull
+function console_pull {
+    if [ ! -f "${base_path}/docker-compose.yml" ]; then
+        echo ${base_path}
+        #檔案不存在，進行預設的soft link
+        ln -s ${base_path}/docker-compose-random.yml ${base_path}/docker-compose.yml
+    fi
+    console_link
+    if [ -z "${DOCKER_SERVICES}" ]; then
+        echo "${winpty} docker-compose -f ${base_path}/docker-compose.yml pull"
+        ${winpty} docker-compose -f ${base_path}/docker-compose.yml pull
+        else
+        array_service
+        echo "${winpty} docker-compose -p $(basename ${base_path}) ${CONSOLE_CMD} pull"
+        ${winpty} docker-compose -p $(basename ${base_path}) ${CONSOLE_CMD} pull
+    fi
+}
+
 #dlaravel console down
 function console_down {
     chk_docker_compose_file_is_readable 
