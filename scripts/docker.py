@@ -77,14 +77,21 @@ def ps():
     output = proc.stdout.read()
     e(output)
 
+def check_link_or_create():
+    if os.path.isfile(basepath+"/docker-compose.yml") == False:
+        src=basepath+"/docker-compose-normal.yml";
+        dst=basepath+"/docker-compose.yml";
+        os.symlink(src, dst)
 
 def up():
+    check_link_or_create()
     command=dockerCompose()+["up","-d"]
     proc = subprocess.Popen(command ,shell=False, stdout=subprocess.PIPE)
     output = proc.stdout.read().decode('utf-8')
     e(output)
 
 def down():
+    check_link_or_create()
     command=dockerCompose()+["down"]
     proc = subprocess.Popen(command ,shell=False, stdout=subprocess.PIPE)
     output = proc.stdout.read().decode('utf-8')

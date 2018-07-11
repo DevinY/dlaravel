@@ -70,7 +70,7 @@ if(number_of_arguments == 1):
         docker.chowner()
 
     if(parameter=="test"):
-        docker.help()
+        docker.check_link()
 
 if(number_of_arguments > 1):
     if(parameter=="exec"):

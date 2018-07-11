@@ -4,6 +4,7 @@ if [ ${uid} -eq 0 ]; then
     echo "Don't run D-Laravel as root!"
     exit;
 fi
+plateform=`uname -s`
 winpty=""
 
 #取得scripts的執行路徑
@@ -45,7 +46,6 @@ fi
 #調整Container DLaravel使用者ID
 if [ "${1}" == "chowner" ]; then
 
-	    plateform=`uname -s`
 	    if [ ${plateform} == 'Linux' ]; then
              dlaravel_gid=`whoami|id -g`
              dlaravel_uid=`whoami|id -u`
@@ -305,9 +305,11 @@ for server_name in $(ls -d ${base_path}/sites/*|rev|cut -d/ -f1|rev); do
     echo "DNS.${dns_index}=${server_name}.test" >> ${base_path}/etc/v3.ext
 done
 
-#移除所有已存在的
+#MacOS時，移除所有已存在的
+if [ ${plateform} == 'Darwin' ]; then
 security find-certificate -c "dlaravel.test" -a -Z | \
   sudo awk '/SHA-1/{system("security delete-certificate -Z "$NF)}'
+fi
 
 openssl req \
 -new -newkey rsa:2048 -sha256 \
@@ -317,7 +319,9 @@ openssl req \
 #不管有沒有先刪一次
 #sudo security delete-certificate -c "${2}.test" -t /Library/Keychains/System.keychain
 
+if [ ${plateform} == 'Darwin' ]; then
 sudo security add-trusted-cert -d -r trustRoot -k "/Library/Keychains/System.keychain" ${base_path}/etc/ssl/cert.crt
+fi
 
 docker-compose -f ${base_path}/docker-compose.yml ps|grep -q php-fpm
 if [ $? -eq 0 ]; then

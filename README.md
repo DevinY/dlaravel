@@ -47,7 +47,7 @@ D-laravel停止時，不會佔用80埠，拜docker-compose之賜，極易調整L
 ./console alias    (印出console的別名範本，自行加到.bashrc或.zshrc永久生效)
 ./console version  (顯示D-Laravel的版本)
 
-產生自我簽署憑證給目前所有的Project. (此功能只支援MacOS系統)。
+產生自我簽署憑證給目前所有的Project. (MacOS or Linux)。
 ./console secure
 </pre>
 
@@ -283,7 +283,7 @@ It seems fashion if use docker. :P
 ./console alias (print console alias samples, it can be added to .bashrc or .zshrc)   
 ./console version
 
-Generate self-signed certificate for all current projects. (this feature only supports MacOS system)
+Generate self-signed certificate for all current projects. (MacOS and Linux)
 ./console secure
 </pre>
 
