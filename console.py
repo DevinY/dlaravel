@@ -15,6 +15,9 @@ if(number_of_arguments == 1):
     if(parameter=="help"):
         docker.help()
 
+    if(parameter=="node"):
+        docker.node()
+
     if(parameter=="ps"):
         docker.ps()
 

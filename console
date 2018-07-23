@@ -37,6 +37,11 @@ cat ${base_path}/etc/dlaravel-release
 exit;
 fi
 
+if [ "${1}" == "node" ]; then
+    ${winpty} docker run --rm -v ${base_path}/sites:/sites -ti node bash
+exit;
+fi
+
 if [ "${1}" == "build" ]; then
   echo "${winpty} docker-compose -f ${base_path}/docker-compose-build.yml up --build -d"
   ${winpty} docker-compose -f ${base_path}/docker-compose-build.yml up --build -d
@@ -361,6 +366,7 @@ function help {
     echo "  custom : 變更docker-compose連結，產生或使用自定的設定檔"
     echo "  exec : 執行php container內的命令，例如: ./console exec php php -v"
     echo "  reload : 重載nginx的設定."
+    echo "  node: 會執行node容器，並且掛載/sites資料夾。"
     echo "  ext: 列出目前fpm可用的php exteinsions，自訂檔名新增.ini檔到etc/php下即可啟用哦。"
     echo "  chowner: D-Laravel的使用者uid及gid在容器內預設為1000，在linux環境中，您可能需要調整dlaravel的uid與gid與您的目前使用者相同"
     echo "  clear : 移除所有docker ps -a 所有停止的Container!!包含您自己過去創建的所有停止的container哦!!"
@@ -382,6 +388,7 @@ function help {
     echo "  custom : change docker-compose.yml link link to docker-compose-custom.yml， for custom purpose."
     echo "  exec : exec php container's command， for example: ./console exec php php -v"
     echo "  reload : nginx reload config file."
+    echo "  node : run node container, and mount /sites folder."
     echo "  ext: list php extensions."
     echo "  chowner: D-Laravel users uid and gid are 1000 in container, in the linux environment, you may need to adjust D-Laravel uid and gid with your current user the same."
     echo "  clear : Remove all your containers that listed by docker ps -a !!"
