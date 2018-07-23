@@ -27,7 +27,7 @@ def pull():
     e(output)
 
 def node():
-    command="docker run --rm -v {}/sites:/sites -ti node bash".format(basepath).split();
+    command="docker run --rm -v {}/sites:/sites -w /sites -ti node bash".format(basepath).split();
     subprocess.call(command)
 
 def get_sites():

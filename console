@@ -38,7 +38,7 @@ exit;
 fi
 
 if [ "${1}" == "node" ]; then
-    ${winpty} docker run --rm -v ${base_path}/sites:/sites -ti node bash
+    ${winpty} docker run --rm -v ${base_path}/sites:/sites -w /sites -ti node bash
 exit;
 fi
 
