@@ -254,6 +254,8 @@ You can deploy the environment by self-defined docker-compose-custom.yml file.
 
 It provides simple Bash to execute docker-compose that helps you to create laravel project quickly.
 
+The sublime3 package of D-Laravel alias can be installed, and the artisan and composer commands in the container (MacOS and Linux environment) are executed via sublime.
+
 You can execute the latest PHP version in Mac OS.
 
 It helps you to generate self-signed certification and completes HTTPS setting.
