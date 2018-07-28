@@ -1,4 +1,4 @@
-FROM php:7.0.30-fpm
+FROM php:7.0.31-fpm
 MAINTAINER Devin Yang <noreply@ccc.tc>
 #Docker官方說明文件
 #https://hub.docker.com/_/php/
@@ -19,6 +19,7 @@ RUN apt-get update && apt-get install -y \
                 cron \
                 git \
                 wget \
+                libldb-dev \
                 libldap2-dev \
                 libsasl2-dev \
                 python \
@@ -26,12 +27,11 @@ RUN apt-get update && apt-get install -y \
                 unzip \
                 mysql-client \
                 zip \
+                libgeoip-dev \
                 libpq-dev \
                 libzip-dev \
                 libbz2-dev \
                 libgd2-dev \
-                libpng12-0 \
-                libpng12-dev \
                 libjpeg-dev \
                 libgif-dev \
                 libxml2-dev \
