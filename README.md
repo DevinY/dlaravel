@@ -18,6 +18,8 @@ D-Laravel採用了docker-compose的微服務架構，
 
 提供簡易的Bash執行docker-compose指令，快速生成laravel專案環境。
 
+可安裝sublime3外掛D-Laravel alias，經由sublime執行容器內的artisan及composer命令(MacOS及Linux環境)。
+
 可用最新的PHP在Mac OS、Linux、Widnows 10的gitbash環境執行。
 
 快速產生self-signed自我簽署的憑證，並完成HTTPS設定。
@@ -251,6 +253,8 @@ You can deploy the environment by self-defined docker-compose-custom.yml file.
 
 
 It provides simple Bash to execute docker-compose that helps you to create laravel project quickly.
+
+The sublime3 package of D-Laravel alias can be installed, and the artisan and composer commands in the container (MacOS and Linux environment) are executed via sublime.
 
 You can execute the latest PHP version in Mac OS.
 
