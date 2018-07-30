@@ -4,19 +4,20 @@ If you want English manual, please refers to below link.  
 [D-Laravel English manual](#d-laravel-english-manual)
 
 
-# D-Laravel
+# D-Laravel (開發&學習)
 
-D-Laravel採用了docker-compose的微服務架構，
+想要有 Docker + Laravel 建立PHP開發環境嗎，D-Laravel使用了docker-compose，
 
-經由超簡易的console及create指令，幫您快速建立出基本的Laravel開發環境，
+他讓我們可透過自訂docker-compose-custom.yml輕易的擴充更多的服務，打造自己的微服務架構。
 
-使用D-Laravel，代表了，我們的Mac系統，不再需要安裝mysql，nginx及php-fpm。
+經由超簡易的console及create指令，讓您更簡單的建立出Laravel或PHP開發或學習環境。
 
-可自訂docker-compose-custom.yml快速創建出自己的開發環境。
+D-Laravel，代表了，我們的Mac系統，不再需要安裝mysql、nginx、php-fpm或者NodeJs。
+
 
 ### 為什麼用D-Laravel
 
-提供簡易的Bash執行docker-compose指令，快速生成laravel專案環境。
+提供簡易的bash執行docker-compose指令，快速生成laravel專案環境。
 
 可安裝sublime3外掛D-Laravel alias，經由sublime執行容器內的artisan及composer命令(MacOS及Linux環境)。
 
@@ -53,14 +54,14 @@ D-laravel停止時，不會佔用80埠，拜docker-compose之賜，極易調整L
 ./console secure
 </pre>
 
-#### 主要目錄結構
+#### D-Laravel易懂目錄結構
 <pre>
 etc/   (nginx、php.ini及mysql的相關設定檔)
 data/  (mysql的資料檔案，./console up 自動生成)
-dockerfiles/ (放置一些dockerfile，必要時自己可以重build image使用)
-logs/  (用來掛載及放置container的logs)
+dockerfiles/ (放置一些dockerfile，需要時重build自已的image使用)
+logs/  (用來掛載及放置服務的紀錄)
 service/ (放置擴充用的yml檔)
-sites/ (專案的資夾，./create test1時，會建立在這個此目錄下)
+sites/ (專案的資夾，例如./create blog時，會建立在這個此目錄下)
 samples/ (一些設定範本，例如: php.ini及一些額外的docker-compose yaml檔設定)
 create (簡化的bash，用來快速的建立laravel的專案)
 console(簡化的bash，用來快速使用各種docker-compose的命令。例如:./console mysql即可進入mysql)
