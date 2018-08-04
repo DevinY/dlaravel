@@ -285,16 +285,15 @@ if [ -e "sites/${1}" ]; then
     exit
 fi
 
+#檢測是否執行
+is_running
+
 #依版本安裝
 if [ "$#" -eq 2 ]; then
 ${winpty} docker-compose exec -u dlaravel php /usr/local/bin/composer create-project laravel/laravel=${2} ${1} --prefer-dist
 dlaravelconfig ${1}
 exit;
 fi
-
-
-#檢測是否執行
-is_running
 
 #install new laravel project
 dlaravel_new ${1}
