@@ -35,8 +35,6 @@ D-laravel停止時，不會佔用80埠，拜docker-compose之賜，極易調整L
 
 可同時開啟多個不同的測試站台。
 
-簡易的docker-compose v2設定檔。
-
 使用Dockerhub標註offical的image，建立Laravel基本執行環境。
 
 用docker聽起來，好像比較潮。:p
@@ -67,10 +65,38 @@ create (簡化的bash，用來快速的建立laravel的專案)
 console(簡化的bash，用來快速使用各種docker-compose的命令。例如:./console mysql即可進入mysql)
 docker-compose.yml (一個softlink，連結到不同的設定檔，例如:./console custom，即何將連結連到docker-compose-custom.yml)
 </pre>
+#### docker及docker-compose 版本要求
+
+docker >= 18.02.0
+
+docker-compose >= 1.19.0
 
 #### 一、請先安裝docker
 ## 請使用最新版本的docker，至少應為18.02.0以上。
 
+執行docker version確認docker的版本。
+<pre>
+$docker version
+Client:
+ Version:           18.06.0-ce
+ API version:       1.38
+ Go version:        go1.10.3
+ Git commit:        0ffa825
+ Built:             Wed Jul 18 19:05:26 2018
+ OS/Arch:           darwin/amd64
+ Experimental:      false
+
+Server:
+ Engine:
+  Version:          18.06.0-ce
+  API version:      1.38 (minimum version 1.12)
+  Go version:       go1.10.3
+  Git commit:       0ffa825
+  Built:            Wed Jul 18 19:13:46 2018
+  OS/Arch:          linux/amd64
+  Experimental:     true
+</pre>
+## 安裝docker的網址:
 <pre>
 Mac OS系統:
 https://docs.docker.com/docker-for-mac/
@@ -92,7 +118,7 @@ gitbash環境 (console及create需在gitbash環境執行，並且gitbash需可�
 
 docker-compose version 1.19.0
 
-安裝網址
+## 安裝docker-compose網址
 <pre>
 https://docs.docker.com/compose/install/
 </pre>
