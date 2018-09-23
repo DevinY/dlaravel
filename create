@@ -87,7 +87,11 @@ function dlaravelconfig {
         if [ $? -eq 1 ]; then
             echo "127.0.0.1 www.${@}.test" |sudo tee -a ${hosts_file}
         fi
-        ${winpty} docker-compose exec -u dlaravel php sed -i "s/DB_HOST=127.0.0.1/DB_HOST=db/" /var/www/html/${@}/.env
+        ${winpty} docker-compose exec -u dlaravel php sed -i "s/DB_HOST=127.0.0.1/DB_HOST=db/" /var/www/html/${@}/.env >/dev/null 2>&1
+        if [ $? -eq 2 ]; then
+            echo "Unable to update sites/${@}/.env file."
+            exit;
+        fi
         ${winpty} docker-compose exec -u dlaravel php sed -i "s/DB_DATABASE=homestead/DB_DATABASE=${@}/" /var/www/html/${@}/.env
         ${winpty} docker-compose exec -u dlaravel php sed -i "s/DB_USERNAME=homestead/DB_USERNAME=${@}/" /var/www/html/${@}/.env
         ${winpty} docker-compose exec -u dlaravel php sed -i "s/DB_PASSWORD=secret/DB_PASSWORD=${@}/" /var/www/html/${@}/.env

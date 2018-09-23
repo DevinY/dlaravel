@@ -384,11 +384,22 @@ def dlaravel_new(parameter):
          subprocess.call(command)
 
 def dlaravel_config(parameter):
-    print("Update the sites/{}/.env file of the project.".format(parameter))
     #更新.env設定連線
     command=dockerCompose()+["exec","-u","dlaravel","php","sed","-i","s/DB_HOST=127.0.0.1/DB_HOST=db/","/var/www/html/{}/.env".format(parameter)]
-    proc = subprocess.Popen(command ,shell=False, stdout=subprocess.PIPE)
-    output = proc.stdout.read().decode('utf-8')
+    proc = subprocess.Popen(command ,shell=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+    output,error = proc.communicate()
+    proc.wait()
+    exit_code=proc.poll()
+    
+    if(exit_code==0):
+        print("Update the sites/{}/.env file of the project.".format(parameter))
+        output = proc.stdout.read().decode('utf-8')
+    else:
+        print("Unable to update the sites/{}/.env file of the project.".format(parameter))
+        exit()
+
+
     command=dockerCompose()+["exec","-u","dlaravel","php","sed","-i","s/DB_DATABASE=homestead/DB_DATABASE={}/".format(parameter),"/var/www/html/{}/.env".format(parameter)]
     proc = subprocess.Popen(command ,shell=False, stdout=subprocess.PIPE)
     output = proc.stdout.read().decode('utf-8')
