@@ -259,7 +259,15 @@ if [ "${1}" == "mysql" ]; then
     fi
 exit;
 fi
-
+#使用預設的設定檔
+if [ "${1}" == "public" ]; then
+    echo "cp samples/nginx/public-default.conf etc/"
+    cp ${base_path}/samples/nginx/public-default.conf ${base_path}/etc/ 
+    if [ $? -eq 0 ]; then
+        echo "has been issued.";
+    fi
+    exit;
+fi
 #啟動時檢測網頁資訊
 if [ "${1}" == "info" ]; then
     readlink -n ${base_path}/docker-compose.yml

@@ -139,6 +139,10 @@ def db_ports():
     print("DB:")
     e("host:{}".format(output))
 
+def public():
+    copyfile("{}/samples/nginx/public-default.conf".format(basepath), "{}/etc/public-defualt.conf".format(basepath))
+    print("cp samples/nginx/public-default.conf etc/ \n has been issued.")
+
 def web_ports():
     container_name = get_container_name("web")
     if(container_name == "" ):
@@ -149,12 +153,22 @@ def web_ports():
     proc = subprocess.Popen(command ,shell=False, stdout=subprocess.PIPE)
     http_port = int(remove_quotes(proc.stdout.read()))
     print("WEB:")
+    is_enable_defualt=0
     for file_or_dir in os.listdir("{}/sites".format(basepath)):
         if(os.path.isdir("sites/{}".format(file_or_dir))):
             if(http_port==80):
-               print("http://{}.test".format(file_or_dir))
+                if(file_or_dir!="default"):
+                    print("http://{}.test".format(file_or_dir))
+                else:
+                    is_enable_default=1
             else:
-               print("http://{}.test:{}".format(file_or_dir, http_port))
+                if(file_or_dir!="default"):
+                    print("http://{}.test:{}".format(file_or_dir, http_port))
+                else:
+                    is_enable_default=1
+    if(is_enable_default==1):
+        print("\nDefault folder exist")
+        print("http://localhost or http://your_ip_address")
 
 def info():
       db_ports()

@@ -16,17 +16,30 @@ projectNum=`ls ${base_path}/sites/|wc -l`
 #印出sites資料夾目錄，轉換為Web
 if [ ${projectNum} -gt 0 ]; then
     #for Mac
+
+is_enable_default=0
     if [ ${hosts_file} == '/etc/hosts' ]; then
 for i in $(ls -d ${base_path}/sites/*|rev|cut -d/ -f1|rev); do 
         if [ ${i} == 'xdebug.log' ]; then
             continue
         fi
         if [ ${web_port} == 80 ]; then
-        echo -n http://;echo ${i}.test|cut -d/ -f 2; 
+            if [ ${i} != "default" ]; then
+                echo -n http://;echo ${i}.test|cut -d/ -f 2; 
+            else
+                is_enable_default=1
+            fi
         else
-        echo -n http://;echo ${i}.test:${web_port}|cut -d/ -f 2; 
+            if [ ${i} != "default" ]; then
+                echo -n http://;echo ${i}.test:${web_port}|cut -d/ -f 2; 
+            else
+                is_enable_default=1
+            fi
         fi
 done
+    if [ ${is_enable_default} -eq 1 ]; then
+        echo -e "\nDefault folder exist.\nhttp://localhost or http://your_ip_address"
+    fi
     else
         echo "*.test, port:" ${web_port}
         ls -l sites/|cut -d ' ' -f 9

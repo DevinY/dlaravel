@@ -60,6 +60,9 @@ if(number_of_arguments == 1):
     if(parameter=="reload"):
         docker.reload()
 
+    if(parameter=="public"):
+        docker.public()
+
     if(parameter=="secure"):
         docker.secure()
 
