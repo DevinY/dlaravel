@@ -140,7 +140,7 @@ def db_ports():
     e("host:{}".format(output))
 
 def public():
-    copyfile("{}/samples/nginx/public-default.conf".format(basepath), "{}/etc/public-defualt.conf".format(basepath))
+    copyfile("{}/samples/nginx/public-default.conf".format(basepath), "{}/etc/public-default.conf".format(basepath))
     print("cp samples/nginx/public-default.conf etc/ \n has been issued.")
 
 def web_ports():
@@ -341,6 +341,7 @@ def help():
    reload : 重載nginx的設定.
    node: 會執行node容器，並且掛載/sites資料夾。
    ext: 列出目前fpm可用的php exteinsions，自訂檔名新增.ini檔到etc/php下即可啟用哦。
+   public: 使用預設目錄 sites/default/public。
    chowner: D-Laravel的使用者uid及gid在容器內預設為1000，在linux環境中，您可能需要調整dlaravel的uid與gid與您的目前使用者相同
    clear : 移除所有docker ps -a 所有停止的Container!!包含您自己過去創建的所有停止的container哦!!
    ./console : 進入php container內
@@ -365,6 +366,7 @@ def help():
    reload : nginx reload config file.
    node: run nodejs container, and mount /sites folder.
    ext: list php extensions.
+   public: using default folder. sites/default/public.
    chowner: D-Laravel users uid and gid are 1000 in container, in the linux environment, you may need to adjust D-Laravel uid and gid with your current user the same.
    clear : Remove all your containers that listed by docker ps -a !!
    ./console : Enter php container.
