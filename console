@@ -264,7 +264,7 @@ if [ "${1}" == "public" ]; then
     echo "cp samples/nginx/public-default.conf etc/"
     cp ${base_path}/samples/nginx/public-default.conf ${base_path}/etc/ 
     if [ $? -eq 0 ]; then
-        echo "has been issued.";
+        echo "command has been issued.";
     fi
     exit;
 fi

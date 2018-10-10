@@ -141,7 +141,7 @@ def db_ports():
 
 def public():
     copyfile("{}/samples/nginx/public-default.conf".format(basepath), "{}/etc/public-default.conf".format(basepath))
-    print("cp samples/nginx/public-default.conf etc/ \n has been issued.")
+    print("cp samples/nginx/public-default.conf etc/ \n command has been issued.")
 
 def web_ports():
     container_name = get_container_name("web")
