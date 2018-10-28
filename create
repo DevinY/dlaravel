@@ -55,6 +55,7 @@ function help {
     echo ""
     echo "Example"
     echo "./create [project name]: Create a new laravel proejct into sites folder."
+    echo "./create [project name] \"5.4.*\": You can specify the version you want to install."
     echo ""
     echo "options:"
     echo "  --help : help"
@@ -63,6 +64,11 @@ function help {
 }
 #說明
 if [ "${1}" == "--help" ]; then
+    help
+    exit;
+fi
+
+if [ "${1}" == "help" ]; then
     help
     exit;
 fi

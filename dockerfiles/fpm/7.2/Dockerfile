@@ -1,4 +1,4 @@
-FROM php:7.2.10-fpm
+FROM php:7.2.11-fpm
 MAINTAINER Devin Yang <devin@ccc.tc>
 #Docker官方說明文件
 #https://hub.docker.com/_/php/

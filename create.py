@@ -12,10 +12,11 @@ if(number_of_arguments > 0):
 
 if(number_of_arguments == 1):
 
-    if(parameter=="--help"):
+    if(parameter=="--help" or parameter=="help"):
         print("usage: {} [<option>] [Project name]".format(sys.argv[0]))
         print("Example")
         print("{} [project name]: Create a new laravel proejct into sites folder.".format(sys.argv[0]))
+        print("{} [project name] \"5.4.*\": You can specify the version you want to install.".format(sys.argv[0]))
         print("options:")
         help="""  --help : help
   --host [project name]: Adding [project name].test to /etc/hosts, But don't want to install laravel framework.
