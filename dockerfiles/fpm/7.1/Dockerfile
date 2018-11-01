@@ -18,6 +18,7 @@ RUN apt-get update && apt-get install -y \
                 cron \
                 git \
                 wget \
+                libmagickwand-dev \
                 libldb-dev \
                 libldap2-dev \
                 libsasl2-dev \
@@ -47,6 +48,7 @@ RUN apt-get update && apt-get install -y \
 
 RUN  pecl install xdebug \
      pecl install redis \
+     pecl install imagick \
      && docker-php-ext-enable xdebug
 
 #建立Dlaravel的使用者
