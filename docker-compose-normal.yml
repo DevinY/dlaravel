@@ -23,7 +23,7 @@ services:
 ### Laravel 5.3 between 5.6.4 & 7.1.*
  php:
   network_mode: "service:web"
-  image: deviny/fpm:7.2.11
+  image: deviny/fpm:7.2.12
   #image: deviny/fpm:7.1.23
   #image: deviny/fpm:7.0.32
   #image: deviny/fpm:5.6.38
