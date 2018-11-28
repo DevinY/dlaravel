@@ -1,5 +1,4 @@
 FROM php:7.0.32-fpm
-MAINTAINER Devin Yang <noreply@ccc.tc>
 #Docker官方說明文件
 #https://hub.docker.com/_/php/
 RUN apt-get update && apt-get install -y \
