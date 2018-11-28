@@ -33,9 +33,13 @@ source ./scripts/functions
 
 function is_running {
 #檢測是否執行
-docker-compose  -f docker-compose.yml ps |grep ${containerName}_web_1|grep -q Up
+
+web=`docker-compose ps|grep Up|grep ${containerName}_web_1|cut -d ' ' -f 1`
+docker-compose  -f docker-compose.yml ps |grep ${web}|grep -q Up
+
+php=`docker-compose ps|grep Up|grep ${containerName}_php_1|cut -d ' ' -f 1`
 if [ $? -eq 1 ]; then
-    echo "${containerName}_php_1 is not running."
+    echo "${php} is not running."
     echo "Would you like to create the project and run docker-compose up (y/n):"
     read  ans
     if [ ${ans} = 'n' ]; then
@@ -186,7 +190,7 @@ function dlaravel_new {
         #由container進行Laravel安裝
         if [ ${LARAVEL_INSTALLER} == 'container' ]; then
           echo "Run laravel installer in container: laravel new ${1}"
-          docker exec -ti ${containerName}_php_1 sudo -u dlaravel /home/dlaravel/.composer/vendor/bin/laravel new ${1}
+          docker exec -ti ${php} sudo -u dlaravel /home/dlaravel/.composer/vendor/bin/laravel new ${1}
         fi
         #由主機端的Laravel Installer安裝
         if [ ${LARAVEL_INSTALLER} == 'host' ]; then
@@ -273,7 +277,7 @@ if [ "$#" -eq 2 ]; then
                 fi
             fi
 
-            docker ps |grep -q ${containerName}_php_1
+            docker ps |grep -q ${php}
             if [ $? -eq 0 ]; then
                 source ./scripts/nginx-reload
             fi
