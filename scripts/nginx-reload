@@ -3,7 +3,8 @@
 base_path="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source ${base_path}/checker
 
-echo "Reload web service: ${containerName}_web_1"
+web=`docker-compose ps|grep Up|grep ${containerName}_web_1|cut -d ' ' -f 1`
+echo "Reload web service: ${web}"
 
 ${winpty} docker-compose -f ${base_path}/docker-compose.yml exec web nginx -s reload
 

@@ -33,7 +33,6 @@ source ./scripts/functions
 
 function is_running {
 #檢測是否執行
-web=`docker-compose ps|grep Up|grep ${containerName}_web_1|cut -d ' ' -f 1`
 docker-compose -f ${base_path}/docker-compose.yml ps |grep ${web}|grep -q Up
 
 if [ $? -eq 1 ]; then
@@ -277,7 +276,7 @@ if [ "$#" -eq 2 ]; then
                 fi
             fi
 
-            docker ps |grep -q ${php}
+            ${winpty} docker-compose -f ${base_path}/docker-compose.yml ps web 
             if [ $? -eq 0 ]; then
                 source ./scripts/nginx-reload
             fi

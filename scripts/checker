@@ -43,4 +43,6 @@ if [ $? -eq 0 ]; then
     hosts_file='/c/Windows/system32/drivers/etc/hosts'
 fi
     
-
+web=`docker-compose -f ${base_path}/docker-compose.yml ps|grep ${containerName}_web_1|cut -d ' ' -f 1`
+php=`docker-compose -f ${base_path}/docker-compose.yml ps|grep ${containerName}_php_1|cut -d ' ' -f 1`
+db=`docker-compose -f ${base_path}/docker-compose.yml ps|grep ${containerName}_db_1|cut -d ' ' -f 1`

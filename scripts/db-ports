@@ -9,7 +9,6 @@ exit
 fi
 
 
-db=`docker-compose ps|grep Up|grep _db_1|cut -d ' ' -f 1`
 #docker inspect --format='{{range $p, $conf := .NetworkSettings.Ports}} {{$p}} -> {{(index $conf 0).HostPort}} {{end}}' ${containerName}_web_1
 db_port=`docker inspect --format='{{(index (index .NetworkSettings.Ports "3306/tcp") 0).HostPort}}'  ${db}`
 
