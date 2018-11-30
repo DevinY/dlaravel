@@ -4,5 +4,6 @@ base_path="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source ${base_path}/checker
 
 echo "Reload web service: ${containerName}_web_1"
-${winpty} docker exec -ti ${containerName}_web_1 nginx -s reload
+
+${winpty} docker-compose -f ${base_path}/docker-compose.yml exec web nginx -s reload
 
