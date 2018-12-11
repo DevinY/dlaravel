@@ -1,4 +1,4 @@
-FROM php:7.1.25-fpm
+FROM php:7.3.0-fpm
 #Docker官方說明文件
 #https://hub.docker.com/_/php/
 RUN apt-get update && apt-get install -y \
@@ -39,17 +39,20 @@ RUN apt-get update && apt-get install -y \
                 supervisor \
                 wget \
                 && docker-php-ext-install -j$(nproc) pdo_mysql mysqli pgsql pdo_pgsql \
-                && docker-php-ext-install -j$(nproc) exif hash gettext sockets ctype xml zip pcntl bcmath \
+                && docker-php-ext-install -j$(nproc) exif hash gettext sockets ctype xml zip pcntl bcmath\
                 && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/  \
                 && docker-php-ext-install -j$(nproc) gd
 
 #docker-php-ext-install 可安裝外掛大概如下:
 #bcmath bz2 calendar ctype curl dba dom enchant exif fileinfo filter ftp gd gettext gmp hash iconv imap interbase intl json ldap mbstring mysqli oci8 odbc opcache pcntl pdo pdo_dblib pdo_firebird pdo_mysql pdo_oci pdo_odbc pdo_pgsql pdo_sqlite pgsql phar posix pspell readline recode reflection session shmop simplexml snmp soap sockets sodium spl standard sysvmsg sysvsem sysvshm tidy tokenizer wddx xml xmlreader xmlrpc xmlwriter xsl zend_test zip
 
-RUN  pecl install xdebug \
-     pecl install redis \
-     pecl install imagick \
-     && docker-php-ext-enable xdebug
+#RUN  pecl install xdebug \
+#     pecl install redis \
+#     pecl install imagick \
+#     && docker-php-ext-enable xdebug
+
+RUN  pecl install redis \
+     pecl install imagick 
 
 #建立Dlaravel的使用者
 RUN adduser --disabled-password --gecos "" dlaravel &&\
