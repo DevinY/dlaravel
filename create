@@ -189,7 +189,8 @@ function dlaravel_new {
         #由container進行Laravel安裝
         if [ ${LARAVEL_INSTALLER} == 'container' ]; then
           echo "Run laravel installer in container: laravel new ${1}"
-          docker exec -ti ${php} sudo -u dlaravel /home/dlaravel/.composer/vendor/bin/laravel new ${1}
+          #docker exec -ti ${php} sudo -u dlaravel /home/dlaravel/.composer/vendor/bin/laravel new ${1}
+          ${winpty} docker-compose -f docker-compose.yml exec -u dlaravel php /home/dlaravel/.composer/vendor/bin/laravel new ${1}
         fi
         #由主機端的Laravel Installer安裝
         if [ ${LARAVEL_INSTALLER} == 'host' ]; then
