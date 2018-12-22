@@ -10,6 +10,11 @@ RUN apt-get update && apt-get install -y \
                 pkg-config \
 		libmcrypt-dev \
                 #==================
+                libsnmp-dev \
+                libsmi2-common \
+                libsmi2-dev \
+                libperl-dev \
+                snmp \
 		libpng-dev \
 		ca-certificates \
 		curl \
@@ -38,7 +43,7 @@ RUN apt-get update && apt-get install -y \
                 apt-utils \
                 supervisor \
                 wget \
-                && docker-php-ext-install -j$(nproc) pdo_mysql mysqli pgsql pdo_pgsql \
+                && docker-php-ext-install -j$(nproc) pdo_mysql mysqli pgsql pdo_pgsql snmp\
                 && docker-php-ext-install -j$(nproc) exif hash gettext sockets ctype xml zip pcntl bcmath\
                 && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/  \
                 && docker-php-ext-install -j$(nproc) gd

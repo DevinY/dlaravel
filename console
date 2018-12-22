@@ -128,7 +128,7 @@ fi
 
 #列出目前的php可用的extension(beta)
 if [ "${1}" == "ext" ]; then
-docker-compose -f ${base_path}/docker-compose.yml exec php ls `docker-compose exec php php -i|grep extension_dir|head -n 1|cut -d\> -f 2|cut -d= -f1` 
+docker-compose -f ${base_path}/docker-compose.yml exec php ls `docker-compose -f ${base_path}/docker-compose.yml exec php php -i|grep extension_dir|head -n 1|cut -d\> -f 2|cut -d= -f1` 
 exit;
 fi
 

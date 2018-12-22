@@ -10,6 +10,11 @@ RUN apt-get update && apt-get install -y \
                 pkg-config \
 		libmcrypt-dev \
                 #==================
+                libsnmp-dev \
+                libsmi2-common \
+                libsmi2-dev \
+                libperl-dev \
+                snmp \
 		libpng-dev \
 		ca-certificates \
 		curl \
