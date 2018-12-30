@@ -1,0 +1,10 @@
+version: '3.6'
+services:
+ swagger-editor:
+  image: swaggerapi/swagger-editor
+  ports:
+    - "127.0.0.1:8082:8080"
+  networks:
+    - dlaravel_net
+networks:
+    dlaravel_net:

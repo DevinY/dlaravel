@@ -4,4 +4,6 @@
 !beanstalkd.yml
 !redis.yml
 !jenkins.yml
+!swagger-editor.yml
+!swagger-ui.yml
 !.gitignore

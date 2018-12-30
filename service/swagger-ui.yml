@@ -1,0 +1,13 @@
+version: '3.6'
+services:
+ swagger-ui:
+  image: swaggerapi/swagger-ui
+  ports:
+    - "127.0.0.1:8083:8080"
+  environment:
+    - API_URL=https://raw.githubusercontent.com/DevinY/openapi/master/openapi-jwt.yaml
+  networks:
+    - dlaravel_net
+
+networks:
+    dlaravel_net:
