@@ -32,11 +32,13 @@ function array_service {
 source ./scripts/functions
 
 function is_running {
-#檢測是否執行
-docker-compose -f ${base_path}/docker-compose.yml ps |grep ${web}|grep -q Up
+    if [ "${web}" == "" ]; then
+        web=${containerName}_web_1
+    fi
+
+    docker-compose -f ${base_path}/docker-compose.yml ps |grep ${web}|grep -q Up
 
 if [ $? -eq 1 ]; then
-    echo "${web} is not running."
     echo "Would you like to create the project and run docker-compose up (y/n):"
     read  ans
     if [ ${ans} = 'n' ]; then
@@ -190,6 +192,10 @@ function dlaravel_new {
         if [ ${LARAVEL_INSTALLER} == 'container' ]; then
           echo "Run laravel installer in container: laravel new ${1}"
           ${winpty} docker-compose -f docker-compose.yml exec -u dlaravel php /home/dlaravel/.composer/vendor/bin/laravel new ${1}
+          if [ $? -eq 1 ]; then
+              ${winpty} docker-compose -f docker-compose.yml ps
+              exit
+          fi
         fi
         #由主機端的Laravel Installer安裝
         if [ ${LARAVEL_INSTALLER} == 'host' ]; then
