@@ -81,7 +81,6 @@ USER ${OSSH_USER}
 RUN mkdir -p /home/${OSSH_USER}/.ssh&&chmod 700 /home/${OSSH_USER}/.ssh
 RUN echo "${KEY}" > /home/${OSSH_USER}/.ssh/authorized_keys
 RUN chmod 600 /home/${OSSH_USER}/.ssh/authorized_keys
-COPY config /home/${OSSH_USER}/.ssh/
 
 USER root
 
