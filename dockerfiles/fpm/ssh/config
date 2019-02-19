@@ -1,0 +1,7 @@
+Host web
+Hostname web
+User dlaravel
+StrictHostKeyChecking no
+KeepAlive yes
+ServerAliveInterval 30
+IdentityFile=~/.ssh/id_rsa
