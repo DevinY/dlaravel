@@ -78,4 +78,5 @@ echo 'export TERM=xterm-256color' >> /root/.bashrc; \
 echo 'export PATH=/root/.composer/vendor/bin:$PATH' >> /root/.bashrc;  
 
 EXPOSE 9000
+USER dlaravel
 CMD ["php-fpm"]

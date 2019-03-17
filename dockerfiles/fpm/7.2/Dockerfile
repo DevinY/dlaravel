@@ -1,4 +1,4 @@
-FROM php:7.2.15-fpm
+FROM php:7.2.16-fpm
 #Docker官方說明文件
 #https://hub.docker.com/_/php/
 RUN apt-get update && apt-get install -y \
@@ -78,4 +78,5 @@ echo 'export TERM=xterm-256color' >> /root/.bashrc; \
 echo 'export PATH=/root/.composer/vendor/bin:$PATH' >> /root/.bashrc;  
 
 EXPOSE 9000
+USER dlaravel
 CMD ["php-fpm"]
