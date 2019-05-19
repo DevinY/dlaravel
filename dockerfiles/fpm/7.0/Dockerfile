@@ -21,6 +21,7 @@ RUN apt-get update && apt-get install -y \
 		xz-utils \
                 sudo \
                 cron \
+                inotify-tools \
                 git \
                 wget \
                 libmagickwand-dev \
@@ -54,7 +55,8 @@ RUN apt-get update && apt-get install -y \
 RUN pecl install xdebug \
     pecl install redis \
     pecl install imagick \
-	&& docker-php-ext-enable xdebug
+    pecl install swoole \
+    && docker-php-ext-enable xdebug
 
 #建立Dlaravel的使用者
 RUN adduser --disabled-password --gecos "" dlaravel &&\

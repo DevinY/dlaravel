@@ -16,6 +16,7 @@ RUN apt-get update && apt-get install -y \
 		xz-utils \
                 sudo \
                 cron \
+                inotify-tools \
                 git \
                 wget \
                 libldb-dev \
