@@ -35,7 +35,6 @@ function is_running {
     if [ "${web}" == "" ]; then
         web=${containerName}_web_1
     fi
-    chk_default_conf_exist
 
     docker-compose -f ${base_path}/docker-compose.yml ps |grep ${web}|grep -q Up
 
@@ -315,6 +314,8 @@ dlaravelconfig ${1}
 exit;
 fi
 
+chk_default_conf_exist
+    
 #install new laravel project
 dlaravel_new ${1}
 
