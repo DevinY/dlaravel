@@ -5,7 +5,7 @@ services:
   image: nginx
   dns: 8.8.8.8
   ports:
-    # 使用隨機的port 80
+    # 使用固定的port 80，左邊為主機開啟的關接埠，右邊為容器的連接埠
     - "80:80"
     - "443:443"
   volumes:
