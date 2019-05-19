@@ -98,13 +98,16 @@ function check_swoole {
         exit;
     fi
 }
-
-#dlarave console up
-function console_up {
+function chk_default_conf_exist {
     #檢測預設的設定檔是否存在
     if [ ! -f "${base_path}/etc/default.conf" ]; then
         cp ${base_path}/etc/default.sample ${base_path}/etc/default.conf
     fi
+}
+
+#dlarave console up
+function console_up {
+    chk_default_conf_exist
     if [ ! -f "${base_path}/docker-compose.yml" ]; then
         echo ${base_path}
         #檔案不存在，進行預設的soft link
