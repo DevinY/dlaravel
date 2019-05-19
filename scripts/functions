@@ -56,6 +56,10 @@ function console_restart {
 
 #specify service up
 function console_up_service {
+    #檢測預設的設定檔是否存在
+    if [ ! -f "${base_path}/etc/default.conf" ]; then
+        cp ${base_path}/etc/default.sample ${base_path}/etc/default.conf
+    fi
     chk_docker_compose_file_is_readable 
     if [ -z "${DOCKER_SERVICES}" ]; then
      echo "${winpty} docker-compose -f ${base_path}/docker-compose.yml up -d ${@}"
