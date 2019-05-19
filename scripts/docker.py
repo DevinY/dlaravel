@@ -196,9 +196,17 @@ def normal():
         os.symlink("{}/docker-compose-normal.yml".format(basepath),"{}/docker-compose.yml".format(basepath))
     restart();
 
+def swoole():
+    try:
+        os.symlink("{}/docker-compose-swoole.yml".format(basepath),"{}/docker-compose.yml".format(basepath))
+    except:
+        os.remove("{}/docker-compose.yml".format(basepath))
+        os.symlink("{}/docker-compose-swoole.yml".format(basepath),"{}/docker-compose.yml".format(basepath))
+    restart();
+
 def random():
     try:
-        os.symlink("{}/docker-compose-normal.yml".format(basepath),"{}/docker-compose.yml".format(basepath))
+        os.symlink("{}/docker-compose-random.yml".format(basepath),"{}/docker-compose.yml".format(basepath))
     except:
         os.remove("{}/docker-compose.yml".format(basepath))
         os.symlink("{}/docker-compose-random.yml".format(basepath),"{}/docker-compose.yml".format(basepath))
@@ -209,7 +217,7 @@ def custom():
         os.symlink("{}/docker-compose-custom.yml".format(basepath),"{}/docker-compose.yml".format(basepath))
     except:
         os.remove("{}/docker-compose.yml".format(basepath))
-        os.symlink("{}/docker-compose-custom.yml".format(basepath),"{}/docker-compose.yml".format(basepath))
+        os.symlink("{}/docker-compose-normal.yml".format(basepath),"{}/docker-compose.yml".format(basepath))
     restart();
 
 def execute(args):

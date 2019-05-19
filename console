@@ -134,6 +134,7 @@ fi
 
 #變更模式, web:80, db:127.0.0.1:3306
 if [ "${1}" == "normal" ]; then
+    cp ${base_path}/etc/default.sample ${base_path}/etc/default.conf
     #先嚐試停止
     console_down_silent 
     echo "docker-compose setting file changed."
@@ -144,11 +145,41 @@ if [ "${1}" == "normal" ]; then
     exit;
 fi
 
-#隨機
-if [ "${1}" == "random" ]; then
+#swoole模式
+if [ "${1}" == "swoole" ]; then
+    if [ ! -d ${base_path}/sites/default ]; then
+        echo "The default project not found"
+        exit;
+    fi
+    if [ ! -f ${base_path}/sites/default/bin/laravels ]; then
+        echo "Laravel-S not found"
+        echo "To install laravel-s, You can do something like this below:"
+        echo "In D-laravel folder:"
+        echo "step 1: go to the default folder."
+        echo " cd sites/default"
+        echo "step 2: install laravel-s package by alias command."
+        echo " ce require "hhxsv5/laravel-s:~3.5.0" -vvv"
+        echo "setp 3: laravels publish by alias command."
+        echo " a laravels publish"
+        exit;
+    fi
+    cp ${base_path}/samples/php/swoole.ini ${base_path}/etc/php
+    cp ${base_path}/etc/swoole.sample ${base_path}/etc/default.conf
     #先嚐試停止
     console_down_silent 
+    echo "docker-compose setting file changed."
+    echo "HOST DB: listen on 127.0.0.1:3306."
+    echo "HOST WEB: listen on port 80."
+    ln -vsf ${base_path}/docker-compose-swoole.yml ${base_path}/docker-compose.yml
+    console_up
+    exit;
+fi
 
+#隨機
+if [ "${1}" == "random" ]; then
+    cp ${base_path}/etc/default.sample ${base_path}/etc/default.conf
+    #先嚐試停止
+    console_down_silent 
     echo "docker-compose setting file changed."
     echo "HOST DB: listen on random port."
     echo "HOST WEB: listen on random port."
@@ -270,6 +301,7 @@ if [ "${1}" == "public" ]; then
 fi
 #啟動時檢測網頁資訊
 if [ "${1}" == "info" ]; then
+    check_swoole
     readlink -n ${base_path}/docker-compose.yml
     echo ""
     echo "DB:"

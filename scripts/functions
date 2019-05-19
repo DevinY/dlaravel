@@ -88,6 +88,16 @@ function console_exec {
      ${winpty} docker-compose -p $(basename ${base_path}) ${CONSOLE_CMD} ${@}
     fi
 }
+function check_swoole {
+    cat ${base_path}/etc/default.conf|grep -q 5200
+    #發現laravels
+    if [ ${?} -eq 0 ]; then
+        echo -e "\nSwoole is enabled."
+        echo "Default folder exist. (sites/default)"
+        echo "http://localhost or http://your_ip_address"
+        exit;
+    fi
+}
 
 #dlarave console up
 function console_up {
@@ -107,6 +117,7 @@ function console_up {
     fi
         #暫時保留
         #${winpty} docker-compose exec web /bin/bash -c 'cd /etc/;ln -sf /usr/share/zoneinfo/Asia/Taipei localtime;dpkg-reconfigure -f noninteractive tzdata'
+        check_swoole
         fail_exit ${base_path} 
     echo "DB:"
         #設定DB的時區到Asia/Taipei

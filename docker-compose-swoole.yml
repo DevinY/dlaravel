@@ -42,7 +42,7 @@ services:
   #- XDEBUG_CONFIG="remote_host=???? profiler_enable=1"
   #建立bash_aliases在etc下，可用來自訂dlaravel使用者的環境變數
   #- ./etc/bash_aliases:/home/dlaravel/.bash_aliases
-  #command: bash -c "php-fpm -D&&php /var/www/html/default/bin/laravels start"
+  command: bash -c "php /var/www/html/default/bin/laravels -d start&&php-fpm"
 
 #=== 資料庫 container ===========================
  db:

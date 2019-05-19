@@ -42,8 +42,11 @@ if(number_of_arguments == 1):
     if(parameter=="normal"):
         docker.normal()
 
+    if(parameter=="swoole"):
+        docker.swoole()
+
     if(parameter=="custom"):
-        docker.normal()
+        docker.custom()
 
     if(parameter=="mysql"):
         docker.mysql()

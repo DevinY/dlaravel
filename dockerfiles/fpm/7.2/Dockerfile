@@ -1,4 +1,4 @@
-FROM php:7.2.17-fpm
+FROM php:7.2.18-fpm
 #Docker官方說明文件
 #https://hub.docker.com/_/php/
 RUN apt-get update && apt-get install -y \
@@ -54,6 +54,7 @@ RUN apt-get update && apt-get install -y \
 RUN  pecl install xdebug \
      pecl install redis \
      pecl install imagick \
+     pecl install swoole \
      && docker-php-ext-enable xdebug
 
 #建立Dlaravel的使用者

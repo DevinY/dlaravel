@@ -6,6 +6,8 @@ etc/*
 !etc/php-fpm.d
 !etc/default.conf
 !etc/default-ssl.sample
+!etc/default.sample
+!etc/swoole.sample
 !etc/networks/default.conf
 !etc/default-ssl.sample
 !etc/supervisor
