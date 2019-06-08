@@ -163,6 +163,10 @@ if [ "${1}" == "swoole" ]; then
         echo " a laravels publish"
         exit;
     fi
+    if [ -f ${base_path}/etc/public-default.conf ]; then
+        echo "You should remove etc/public-default.conf to enable swoole mode."
+        exit;
+    fi
     cp ${base_path}/samples/php/swoole.ini ${base_path}/etc/php
     cp ${base_path}/etc/swoole.sample ${base_path}/etc/default.conf
     #先嚐試停止
@@ -292,6 +296,14 @@ exit;
 fi
 #使用預設的設定檔
 if [ "${1}" == "public" ]; then
+    #is swoole mode
+    cat ${base_path}/etc/default.conf|grep -q laravels
+    if [ ${?} -eq 0 ]; then
+        echo "Currently you are configured in swoole mode."
+        echo "You should go back to normal mode to enable public default folder."
+        exit;
+    fi
+
     echo "cp samples/nginx/public-default.conf etc/"
     cp ${base_path}/samples/nginx/public-default.conf ${base_path}/etc/ 
     if [ $? -eq 0 ]; then

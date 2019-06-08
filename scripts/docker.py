@@ -93,7 +93,15 @@ def check_link_or_create():
         dst=basepath+"/docker-compose.yml";
         os.symlink(src, dst)
 
+def check_default_conf():
+    if os.path.isfile(basepath+"/etc/default.conf") == False:
+        src=basepath+"/etc/default.sample";
+        dst=basepath+"/etc/default.conf";
+        copyfile(src, dst)
+
+
 def up():
+    check_default_conf()
     check_link_or_create()
     command=dockerCompose()+["up","-d"]
     proc = subprocess.Popen(command ,shell=False, stdout=subprocess.PIPE)
@@ -140,6 +148,10 @@ def db_ports():
     e("host:{}".format(output))
 
 def public():
+    if is_swoole_enable():
+        print("Currently you are configured in swoole mode.")
+        print("You should go back to normal mode to enable public default folder.")
+        exit();
     copyfile("{}/samples/nginx/public-default.conf".format(basepath), "{}/etc/public-default.conf".format(basepath))
     print("cp samples/nginx/public-default.conf etc/ \n command has been issued.")
 
@@ -195,13 +207,47 @@ def normal():
         os.remove("{}/docker-compose.yml".format(basepath))
         os.symlink("{}/docker-compose-normal.yml".format(basepath),"{}/docker-compose.yml".format(basepath))
     restart();
+def is_swoole_enable():
+    f = "{}/etc/default.conf".format(basepath) 
+    for line in open(f).readlines():
+        if re.match(".+laravels.+", line):
+            return True
+    return False
 
 def swoole():
+    if os.path.isdir("{}/sites/default".format(basepath)) == False:
+        print("The default project not found")
+        exit()
+
+    if os.path.isfile("{}/sites/default/bin/laravels".format(basepath)) == False:
+        msg=""" Laravel-S not found
+ To install laravel-s, You can do something like this below:
+ In D-laravel folder:
+ step 1: go to the default folder.
+  cd sites/default
+ step 2: install laravel-s package by alias command.
+  ce require "hhxsv5/laravel-s:~3.5.0" -vvv
+ setp 3: laravels publish by alias command.
+  a laravels publish"""
+        print(msg)
+        exit()
+
+    if is_swoole_enable() and os.path.isfile("{}/etc/public-default.conf".format(basepath)):
+        print("You should remove etc/public-default.conf to enable swoole mode.")
+        exit()
+
     try:
         os.symlink("{}/docker-compose-swoole.yml".format(basepath),"{}/docker-compose.yml".format(basepath))
     except:
+        print("execpt")
         os.remove("{}/docker-compose.yml".format(basepath))
         os.symlink("{}/docker-compose-swoole.yml".format(basepath),"{}/docker-compose.yml".format(basepath))
+    src=basepath+"/samples/php/swoole.ini";
+    dst=basepath+"/etc/php/swoole.ini";
+    copyfile(src, dst)
+    src=basepath+"/etc/swoole.sample";
+    dst=basepath+"/etc/default.conf";
+    copyfile(src, dst)
     restart();
 
 def random():

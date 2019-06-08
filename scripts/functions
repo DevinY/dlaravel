@@ -89,7 +89,7 @@ function console_exec {
     fi
 }
 function check_swoole {
-    cat ${base_path}/etc/default.conf|grep -q 5200
+    cat ${base_path}/etc/default.conf|grep -q laravels
     #發現laravels
     if [ ${?} -eq 0 ]; then
         echo -e "\nSwoole is enabled."
