@@ -126,20 +126,28 @@ You can git pull latest version and setting in D-Laravel folder.
 
 #### 6. alias and function (without entering the container can be implemented within the container composer or artisan instructions)
 
+Get the console alias in your system.
 <pre>
-alias laravel = 'docker-compose exec -u dlaravel php / home/dlaravel/.composer/vendor/bin/laravel'
+ ./console alias
 </pre>
-Execute the laravel installer in the container using the identity of dlaravel
+And then add the output to your ~/.bash_profile, or ~/.zshrc if you are using Z shell.
+The OS X won't create .bash_profile for you. 
+Type 'touch ~/.bash_profile' to create your new one.
 
+Execute the laravel installer in the container using the identity of dlaravel
+<pre>
+alias laravel='docker-compose exec -u dlaravel php /home/dlaravel/.composer/vendor/bin/laravel'
+</pre>
+
+run composer.sh in project folder, for example: ce dump
 <pre>
 alias ce="../../composer.sh"
 </pre>
-run composer.sh in project folder, for example: ce dump
 
+We can add aliases to our computer so that you do not have to go into the container to execute the php artisan directive. Let artisan's instructions be more concise, which I call the alias directly as a. For example: a --version
 <pre>
 alias a="../../artisan.sh"
 </pre>
-We can add aliases to our computer so that you do not have to go into the container to execute the php artisan directive. Let artisan's instructions be more concise, which I call the alias directly as a. For example: a --version
 
 <pre>
 alias phpunit = 'docker-compose -f ../../docker-compose.yml exec -u dlaravel php $ (basename $ {PWD}) / vendor / bin / phpunit -c $ (basename $ {PWD}) / phpunit.xml '
@@ -170,10 +178,10 @@ Ex. Create project manually by using lumen
 #### Adjust images in setting
 PHP: [Official repository rebuilds php to fit Laravel environment](https://hub.docker.com/r/deviny/fpm/tags/)
 <pre>
- image: deviny/fpm:7.2.7
- image: deviny/fpm:7.1.19
- image: deviny/fpm:7.0.30
- image: deviny/fpm:5.6.36
+ image: deviny/fpm:7.3.5
+ image: deviny/fpm:7.2.18
+ image: deviny/fpm:7.1.29
+ image: deviny/fpm:5.6.39
 </pre>
 
 Nginx: [OFFICIAL REPOSITORY](https://hub.docker.com/r/library/nginx/)
@@ -197,10 +205,18 @@ db:
 
 #### Advandace
 
-If you wish to rebuild your own php fpm image version.
+If you would like to rebuild your own php-fpm image.
+You can do as below:
 <pre>
-cd dockerfiles/fpm/7.2
+cd dockerfiles/fpm/7.3
 docker build -t myfpm .
+</pre>
+
+And then edit Your docker-compose.yml file.
+<pre>
+ php:
+  network_mode: "service:web"
+  image: myfpm
 </pre>
 
 

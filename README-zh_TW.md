@@ -155,26 +155,31 @@ git pull
 
 #### 六、別名及功能(不需進入container即可執行container內的composer或artisan指令)
 
-非必要項，自己有需要可新增或調整名稱。
+取得console別名
+<pre>
+ ./console alias
+</pre>
+把輸出結果，新增到~/.bash_profile，或是如果您用Z shell，新增到~/.zshrc檔案內。
+在MacOs的系統預設不會有.bash_profile在家目錄中，你可以在終端機自己touch一個。
+輸入: touch ~/.bash_profile
 
+非必要項，自己有需要可新增或調整名稱。
 <pre>
 alias laravel='docker-compose exec -u dlaravel php /home/dlaravel/.composer/vendor/bin/laravel'
 </pre>
 使用dlaravel的身份執行container內的laravel installer
 
-
-
+在Project內執行composer，例如ce dump
 <pre>
 alias ce="../../composer.sh"
 </pre>
-在Project內執行composer，例如ce dump
 
-<pre>
-alias a="../../artisan.sh"
-</pre>
 我們可以在自己的電腦加入別名，這樣就可不需進入container內執行php artisan指令了.
 讓artisan的指令更簡潔，這理我直接將別名命名為a。
 例如: a --version
+<pre>
+alias a="../../artisan.sh"
+</pre>
 
 
 <pre>
@@ -201,10 +206,10 @@ alias phpunit='docker-compose -f ../../docker-compose.yml exec -u dlaravel php $
 PHP: (OFFICIAL REPOSITORY重build符合Laravel環境)
 https://hub.docker.com/r/deviny/fpm/tags/
 <pre>
- image: deviny/fpm:7.2.7
- image: deviny/fpm:7.1.19
- image: deviny/fpm:7.0.30
- image: deviny/fpm:5.6.36
+ mage: deviny/fpm:7.3.5
+ image: deviny/fpm:7.2.18
+ image: deviny/fpm:7.1.29
+ image: deviny/fpm:5.6.39
 </pre>
 
 Nginx: (OFFICIAL REPOSITORY)
@@ -228,10 +233,18 @@ db:
 
 #### 進階
 如果您想重build自己php的fpm image版本。
-例如下方建立了一個自己的fpm的image。
+例如下方建立了一個名為myfpm的image。
 <pre>
 cd dockerfiles/fpm/7.2
 docker build -t myfpm .
+</pre>
+
+And then edit Your docker-compose.yml file.
+然後，編輯docker-compose.yml檔，如下:
+<pre>
+ php:
+  network_mode: "service:web"
+  image: myfpm
 </pre>
 
 Docker指令及DevinY/dlaravel提供的./console的bash指令
