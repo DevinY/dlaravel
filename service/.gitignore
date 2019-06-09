@@ -1,6 +1,6 @@
 *
+!echoserver.yml
 !phpmyadmin.yml
-!echoserver-sample.yml
 !beanstalkd.yml
 !redis.yml
 !jenkins.yml
