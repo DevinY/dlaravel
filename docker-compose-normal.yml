@@ -8,8 +8,8 @@ services:
     # 使用隨機的port 80
     - "80:80"
     - "443:443"
-  extra_hosts: 
-    - "test1.test:127.0.0.1"
+    #使用echo-server
+    #- "6001:6001"
   volumes:
   - ./sites:/var/www/html
   - ./etc:/etc/nginx/conf.d
