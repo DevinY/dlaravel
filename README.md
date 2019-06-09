@@ -15,8 +15,7 @@ You can deploy the environment by self-defined docker-compose-custom.yml file.
 
 ### Why use D-Laravel
 
-
-It provides simple Bash to execute docker-compose that helps you to create laravel project quickly.
+It Provides easy way to execute the docker-compose command, quickly generate a laravel project environment, and automatically build a database and adjust Laravel's .env database settings for you.
 
 The sublime3 package of D-Laravel alias can be installed, and the artisan and composer commands in the container (MacOS and Linux environment) are executed via sublime.
 
@@ -35,7 +34,7 @@ It can simulate different DB environment.
 It also could open kinds of testing hosts.
 
 
-Easy docker-compose v2 setting.
+Easy docker-compose v3.6 setting.
 
 Using Dockerhub to remark official image to build basic Laravel environment.
 

@@ -14,7 +14,7 @@ D-Laravel，代表了，我們的Mac系統，不再需要安裝mysql、nginx、p
 
 ### 為什麼用D-Laravel
 
-提供簡易的bash執行docker-compose指令，快速生成laravel專案環境。
+提供簡易方式執行docker-compose指令，快速生成laravel專案環境，而且還自動替您建立資料庫及調整Laravel的.env資料庫設定。
 
 可安裝sublime3外掛D-Laravel alias，經由sublime執行容器內的artisan及composer命令(MacOS及Linux環境)。
 

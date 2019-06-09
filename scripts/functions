@@ -1,10 +1,10 @@
 #!/bin/bash
 #set -e
-#取得scripts的執行路徑
+#get the scripts path
 scripts_path="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 base_path=`echo ${scripts_path}|sed 's#/scripts##'`
 
-#檢測softlink是否可讀
+#check docker-compose file is readable
 function chk_docker_compose_file_is_readable {
     if [ ! -r "${base_path}/docker-compose.yml" ]; then
         echo "Soft link Error"
@@ -110,7 +110,7 @@ function console_up {
     chk_default_conf_exist
     if [ ! -f "${base_path}/docker-compose.yml" ]; then
         echo ${base_path}
-        #檔案不存在，進行預設的soft link
+        #create soft link if no exists.
         ln -s ${base_path}/docker-compose-random.yml ${base_path}/docker-compose.yml
     fi
     console_link

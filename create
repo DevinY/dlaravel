@@ -28,7 +28,7 @@ function array_service {
         done
 }
 
-#共用功能
+#common functions
 source ./scripts/functions
 
 function is_running {
@@ -46,7 +46,7 @@ if [ $? -eq 1 ]; then
     else 
         console_up
         if [ ${?} -ne 0 ]; then
-            #啟動失敗，停止動作
+            #failed to start up
             exit;
         fi
     fi
@@ -101,6 +101,11 @@ function dlaravelconfig {
             echo "Unable to update sites/${@}/.env file."
             exit;
         fi
+        #new
+        ${winpty} docker-compose exec -u dlaravel php sed -i "s/DB_DATABASE=laravel/DB_DATABASE=${@}/" /var/www/html/${@}/.env
+        ${winpty} docker-compose exec -u dlaravel php sed -i "s/DB_USERNAME=root/DB_USERNAME=${@}/" /var/www/html/${@}/.env
+        ${winpty} docker-compose exec -u dlaravel php sed -i "s/DB_PASSWORD=$/DB_PASSWORD=${@}/" /var/www/html/${@}/.env
+        #old
         ${winpty} docker-compose exec -u dlaravel php sed -i "s/DB_DATABASE=homestead/DB_DATABASE=${@}/" /var/www/html/${@}/.env
         ${winpty} docker-compose exec -u dlaravel php sed -i "s/DB_USERNAME=homestead/DB_USERNAME=${@}/" /var/www/html/${@}/.env
         ${winpty} docker-compose exec -u dlaravel php sed -i "s/DB_PASSWORD=secret/DB_PASSWORD=${@}/" /var/www/html/${@}/.env
@@ -304,10 +309,10 @@ if [ -e "sites/${1}" ]; then
     exit
 fi
 
-#檢測是否執行
+#check dlaravel is running
 is_running
 
-#依版本安裝
+#install laravel by version
 if [ "$#" -eq 2 ]; then
 ${winpty} docker-compose exec -u dlaravel php /usr/local/bin/composer create-project laravel/laravel=${2} ${1} --prefer-dist
 dlaravelconfig ${1}

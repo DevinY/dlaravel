@@ -7,4 +7,5 @@ services:
   network_mode: "service:web"
   volumes:
   #您需指定:左方的laravel-echo-server.json檔在那裡
+  #cp samples/laravel-echo-server.json sites/myproject/
   - ./sites/myproject/laravel-echo-server.json:/laravel-echo-server.json
