@@ -238,7 +238,7 @@ And then edit Your docker-compose.yml file.
 |   |./console info  |show url info   |
 |Switch model:|
 |   |./console random  |using random port when initiate container|
-|   |./console normal  |using local port 80及127.0.0.1:3306|
+|   |./console normal  |using local port 80 and 127.0.0.1:3306|
 |   |./console custom  |using self-defined docker-compose-custom.yml|
 |command below: -f: specific docker-compose.yml path。 up -d:start container in background|
 |docker-compose -f docker-compose-normal.yml up -d| |using port 80 and port 3306|
