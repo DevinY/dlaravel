@@ -6,4 +6,3 @@ services:
   volumes:
   #您需指定:左方的laravel-echo-server.json檔在那裡
   - ./samples/laravel-echo-server.json:/laravel-echo-server.json
-  command: ["laravel-echo-server","start"]
