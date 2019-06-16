@@ -169,7 +169,7 @@ Or manually executes "composer create-project" (not default version etc.)
 Ex. Create project manually by using lumen
 ./console exec  //It can execute php command in container.
 
-./console exec composer create-project --prefer-dist laravel/lumen project1
+./console exec php composer create-project --prefer-dist laravel/lumen project1
 </pre>
 
 

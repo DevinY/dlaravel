@@ -200,7 +200,7 @@ alias phpunit='docker-compose -f ../../docker-compose.yml exec -u dlaravel php $
 例如使用手動指令手動建立Project，這裡用lumen示範。
 ./console exec，可用於執行php contaiener內的命令
 
-./console exec composer create-project --prefer-dist laravel/lumen project1
+./console exec php composer create-project --prefer-dist laravel/lumen project1
 </pre>
 #### 調整設定檔的image切換
 PHP: (OFFICIAL REPOSITORY重build符合Laravel環境)
