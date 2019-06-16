@@ -2,6 +2,7 @@
 !echoserver.yml
 !phpmyadmin.yml
 !beanstalkd.yml
+!code-server.yml
 !redis.yml
 !jenkins.yml
 !swagger-editor.yml

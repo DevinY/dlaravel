@@ -1,0 +1,18 @@
+version: '3.6'
+services:
+ code-server:
+  image: codercom/code-server
+  user: "1000:1000"
+  ports:
+    - "8443:8443"
+  volumes:
+    #You can expose your defualt project name on your host.
+    # export DLARAVEL_WORKSPACE=test1
+    - "./sites/${DLARAVEL_WORKSPACE-default}:/home/coder/project"
+    - ./etc/cache:/etc/cache
+  command: ["--allow-http", "--password=secret","-e","/etc/cache"]
+  networks:
+    - dlaravel_net
+
+networks:
+    dlaravel_net:

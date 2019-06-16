@@ -16,11 +16,11 @@ function chk_docker_compose_file_is_readable {
 #array_service
 function array_service {
         array_service=(${DOCKER_SERVICES})
-        CONSOLE_CMD=""
+        CONSOLE_CMD="-f ${base_path}/docker-compose.yml "
         for i in "${array_service[@]}"
         do
          : 
-        CONSOLE_CMD+="-f ${base_path}/${i} "
+        CONSOLE_CMD+="-f ${base_path}/service/${i}.yml "
         done
 }
 #dlaravel console log

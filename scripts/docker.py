@@ -62,7 +62,7 @@ def dot_env_services():
     else:
         return default_compose
 
-    env_command = []
+    env_command = ["-f","docker-compose.yml"]
     for line in lines:
         obj = re.search("^DOCKER_SERVICES=(.+)", line, re.I | re.M)
         if(obj):
@@ -70,7 +70,7 @@ def dot_env_services():
             services = re.sub("(\\s+)", " ", services)
             services = services.split(' ')
             for service in services:
-                env_command += ["-f"]+["{}/{}".format(basepath,service)]
+                env_command += ["-f"]+["{}/service/{}.yml".format(basepath,service)]
     
     if(len(env_command) > 0):
         return ["docker-compose"]+env_command
