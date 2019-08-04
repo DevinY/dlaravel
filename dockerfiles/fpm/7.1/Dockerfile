@@ -1,4 +1,4 @@
-FROM php:7.1.30-fpm
+FROM php:7.1.31-fpm
 #Docker官方說明文件
 #https://hub.docker.com/_/php/
 RUN apt-get update && apt-get install -y \
@@ -31,13 +31,13 @@ RUN apt-get update && apt-get install -y \
                 python \
                 vim \
                 unzip \
-                mysql-client \
+                mariadb-client \
                 zip \
                 libgeoip-dev \
                 libpq-dev \
                 libzip-dev \
                 libbz2-dev \
-                libgd2-dev \
+                libgd-dev \
                 libjpeg-dev \
                 libgif-dev \
                 libxml2-dev \
