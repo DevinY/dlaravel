@@ -38,7 +38,11 @@ for i in $(ls -d ${base_path}/sites/*|rev|cut -d/ -f1|rev); do
         fi
 done
     if [ ${is_enable_default} -eq 1 ]; then
-        echo -e "\nDefault folder exist.\nhttp://localhost or http://your_ip_address"
+        if [ ${web_port} -eq "80" ]; then
+            echo -e "\nDefault folder exist.\nhttp://localhost or http://your_ip_address"
+        else
+            echo -e "\nDefault folder exist.\nhttp://localhost:${web_port} or http://your_ip_address:${web_port}"
+        fi
     fi
     else
         echo "*.test, port:" ${web_port}
