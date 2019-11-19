@@ -25,9 +25,9 @@ services:
 ### Laravel 5.3 between 5.6.4 & 7.1.*
  php:
   network_mode: "service:web"
-  image: deviny/fpm:7.3.10
-  #image: deviny/fpm:7.2.23
-  #image: deviny/fpm:7.1.31
+  image: deviny/fpm:7.3.11
+  #image: deviny/fpm:7.2.24
+  #image: deviny/fpm:7.1.33
   #image: deviny/fpm:5.6.39
   volumes:
   - ./etc/php:/usr/local/etc/php/conf.d
