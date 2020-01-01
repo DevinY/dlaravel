@@ -1,5 +1,5 @@
 #讓Dlaravel-支援SSH環境Sample。
-FROM php:7.4.0-fpm
+FROM php:7.4.1-fpm
 
 ARG user
 
