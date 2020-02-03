@@ -1,14 +1,14 @@
 version: '3.6'
 services:
-#=== 網頁伺服器的container ======================
+#=== web container ======================
  web:
   image: nginx
   dns: 8.8.8.8
   ports:
-    # 使用隨機的port 80
+    # random port
     - "80"
     - "443"
-    #使用echo-server
+    # for echo-server
     #- "6001:6001"
   volumes:
   - ./sites:/var/www/html:cached
@@ -18,24 +18,17 @@ services:
   networks:
     - dlaravel_net
   
-#=== PHP-FPM container ==========================
-### Laravel 6.x >= 7.2.0
-### Laravel 5.6/5.8 >= 7.1.3
-### Laravel 5.5 >= 7.0.0
-### Laravel 5.4 >= 5.6.4
-### Laravel 5.3 between 5.6.4 & 7.1.*
+#=== php service ==========================
  php:
   network_mode: "service:web"
-  image: deviny/fpm:7.4.1
-  #image: deviny/fpm:7.3.13
-  #image: deviny/fpm:7.2.26
-  #image: deviny/fpm:7.1.33
-  #image: deviny/fpm:5.6.39
+  image: deviny/fpm:7.4.2
+  #image: deviny/fpm:7.3.14
+  #image: deviny/fpm:7.2.27
   volumes:
   - ./etc/php:/usr/local/etc/php/conf.d
   - ./sites:/var/www/html:cached
   - ./etc/php-fpm.d/www.conf:/usr/local/etc/php-fpm.d/www.conf
-  ###建立composer cache###
+  ###create composer cache###
   - ./etc/cache:/home/dlaravel/.composer/cache
   #- ./var/log/php:/var/log
   #- ./etc/supervisor:/etc/supervisor/conf.d
@@ -44,10 +37,9 @@ services:
    - TZ=Asia/Taipei
   #- PHP_IDE_CONFIG=serverName=dlaravel
   #- XDEBUG_CONFIG="remote_host=???? profiler_enable=1"
-  #建立bash_aliases在etc下，可用來自訂dlaravel使用者的環境變數
   #- ./etc/bash_aliases:/home/dlaravel/.bash_aliases
 
-#=== 資料庫 container ===========================
+#=== db service ===========================
  db:
   image: mysql:8.0.18
   command: --default-authentication-plugin=mysql_native_password
