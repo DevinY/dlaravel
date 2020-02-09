@@ -26,11 +26,13 @@ else
             echo "Building php ${tmp} using Dockerfile_php_${version}.x file"
             if [ ${1} == "ssh" ]; then
                 command="docker build -t deviny/fpm:${tmp}${ssh} ${2} -f Dockerfile_php_ssh ."
+                echo ${command}
+                docker build -t deviny/fpm:${tmp}${ssh} ${2} -f Dockerfile_php_ssh .
             else
                 command="docker build -t deviny/fpm:${tmp}${ssh} ${2} -f Dockerfile_php_${version}.x ."
+                echo ${command}
+                docker build -t deviny/fpm:${tmp} ${2} -f Dockerfile_php_${version}.x .
             fi
-            echo ${command}
-            docker build -t deviny/fpm:${tmp}${ssh} ${2} -f Dockerfile_php_${version}.x .
            exit 
         fi
     done
