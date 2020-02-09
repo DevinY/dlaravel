@@ -26,7 +26,7 @@ else
             echo "Building php ${tmp} using Dockerfile_php_${version}.x file"
             command="docker build -t devinn/fpm:${tmp}${ssh} -f Dockerfile_php_${version}.x ."
             echo ${command}
-            docker build -t deviny/fpm:${tmp}${ssh} --no-cache -f Dockerfile_php_${version}.x .
+            docker build -t deviny/fpm:${tmp}${ssh} ${2} -f Dockerfile_php_${version}.x .
            exit 
         fi
     done
