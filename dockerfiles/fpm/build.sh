@@ -24,7 +24,11 @@ else
         if [ ${ITER} -eq 2 ]; then
             version="${version%?}"
             echo "Building php ${tmp} using Dockerfile_php_${version}.x file"
-            command="docker build -t devinn/fpm:${tmp}${ssh} -f Dockerfile_php_${version}.x ."
+            if [ ${1} == "ssh" ]; then
+                command="docker build -t deviny/fpm:${tmp}${ssh} ${2} -f Dockerfile_php_ssh ."
+            else
+                command="docker build -t deviny/fpm:${tmp}${ssh} ${2} -f Dockerfile_php_${version}.x ."
+            fi
             echo ${command}
             docker build -t deviny/fpm:${tmp}${ssh} ${2} -f Dockerfile_php_${version}.x .
            exit 
