@@ -39,10 +39,10 @@ fi
 
 if [ "${1}" == "node" ]; then
     if [ -z "${2}" ]; then
-        ${winpty} docker run --rm -v ${base_path}/sites:/sites -w /sites -ti node bash
+        ${winpty} docker run --rm -v ${base_path}/sites:/sites -u node -w /sites -ti node bash
     else
         #Tag
-        ${winpty} docker run --rm -v ${base_path}/sites:/sites -w /sites -ti node:${2} bash
+        ${winpty} docker run --rm -v ${base_path}/sites:/sites -u node -w /sites -ti node:${2} bash
     fi
 
 exit;
