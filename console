@@ -61,9 +61,9 @@ if [ "${1}" == "chowner" ]; then
              dlaravel_gid=`whoami|id -g`
              dlaravel_uid=`whoami|id -u`
               
-             ${winpty} docker-compose -f ${base_path}/docker-compose.yml exec php usermod -u ${dlaravel_uid} dlaravel
-             ${winpty} docker-compose -f ${base_path}/docker-compose.yml exec php groupmod -g ${dlaravel_gid} dlaravel
-             ${winpty} docker-compose -f ${base_path}/docker-compose.yml exec php chown -R ${dlaravel_uid} /home/dlaravel
+             ${winpty} docker-compose -f ${base_path}/docker-compose.yml exec -u root php usermod -u ${dlaravel_uid} dlaravel
+             ${winpty} docker-compose -f ${base_path}/docker-compose.yml exec -u root php groupmod -g ${dlaravel_gid} dlaravel
+             ${winpty} docker-compose -f ${base_path}/docker-compose.yml exec -u root php chown -R ${dlaravel_uid} /home/dlaravel
 
              echo "You have to commit your php fpm image, and restart container."
 	     echo "Example: docker commit 67306ecd0879 deviny/fpm:7.1.9"
