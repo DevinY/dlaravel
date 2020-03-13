@@ -44,7 +44,7 @@ RUN apt-get update && apt-get install -y \
                 apt-utils \
                 supervisor \
                 wget \
-                && docker-php-ext-install -j$(nproc) pdo_mysql mysqli pgsql pdo_pgsql \
+                && docker-php-ext-install -j$(nproc) pdo_mysql mysqli ldap pgsql pdo_pgsql \
                 && docker-php-ext-install -j$(nproc) exif hash gettext sockets ctype xml zip pcntl bcmath intl\
                 && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/  \
                 && docker-php-ext-install -j$(nproc) gd
