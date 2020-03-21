@@ -152,6 +152,8 @@ if [ "${1}" == "normal" ]; then
 fi
 #project mode
 if [ "${1}" == "project" ]; then
+    cp ${base_path}/etc/project.sample ${base_path}/etc/default.conf
+
     DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
     echo ${DIR}
     project_name=$(dirname ${DIR}|/usr/bin/awk -F/ '{print $NF}')
