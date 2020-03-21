@@ -1,13 +1,22 @@
 #!/bin/bash
 script_path="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+base_path=`echo ${scripts_path}|sed 's#/scripts##'`
 source ${script_path}/checker
 
+project_name=$(dirname ${base_path}|/usr/bin/awk -F/ '{print $NF}')
+ls ${base_path}/sites/${project_name}|grep -q ${project_name}
+
+
+if [ ${?} -eq 1 ]; then
 docker-compose  -f ${script_path}/../docker-compose.yml ps |grep ${containerName}_web_1|grep -q Up
+else
+    docker-compose -p ${project_name} -f ${scripts_path}/../docker-compose.yml ps |grep ${project_name}_web_1|grep -q Up
+    db="${project_name}_db_1"
+fi
 if [ $? -eq 1 ]; then
 echo ${containerName}_db_1 is not running
 exit
 fi
-
 
 #docker inspect --format='{{range $p, $conf := .NetworkSettings.Ports}} {{$p}} -> {{(index $conf 0).HostPort}} {{end}}' ${containerName}_web_1
 db_port=`docker inspect --format='{{(index (index .NetworkSettings.Ports "3306/tcp") 0).HostPort}}'  ${db}`

@@ -104,6 +104,11 @@ function chk_default_conf_exist {
         cp ${base_path}/etc/default.sample ${base_path}/etc/default.conf
     fi
 }
+#is_project_mode
+function chk_project_mode {
+    project_name=$(dirname ${base_path}|/usr/bin/awk -F/ '{print $NF}')
+    ls -R ${base_path}/sites/${project_name} 2>/dev/null
+}
 
 #dlarave console up
 function console_up {
@@ -116,9 +121,8 @@ function console_up {
     console_link
     if [ -z "${DOCKER_SERVICES}" ]; then
         echo "${winpty} docker-compose -f ${base_path}/docker-compose.yml up -d --remove-orphans"
-            #檢查sites是否只有一個檔案
-            project_name=$(dirname ${base_path}|/usr/bin/awk -F/ '{print $NF}')
-            ls -R ${base_path}/sites/${project_name} 2>/dev/null
+
+            chk_project_mode
 
             if [ ${?} -eq 1 ]; then
                 ${winpty} docker-compose -f ${base_path}/docker-compose.yml up -d --remove-orphans
@@ -165,9 +169,7 @@ function console_down {
         if [ -e ${base_path}/docker-compose.yml ]; then
              echo "${winpty} docker-compose -f ${base_path}/docker-compose.yml down --remove-orphans"
 
-                #檢查sites是否只有一個檔案
-                project_name=$(dirname ${base_path}|/usr/bin/awk -F/ '{print $NF}')
-                ls -R ${base_path}/sites/${project_name} 2>/dev/null
+                chk_project_mode
 
                 if [ ${?} -eq 1 ]; then
                  ${winpty} docker-compose -f ${base_path}/docker-compose.yml down --remove-orphans  
@@ -212,9 +214,7 @@ function console_ps {
     if [ -z "${DOCKER_SERVICES}" ]; then
           echo "${winpty} docker-compose -f ${base_path}/docker-compose.yml ps"
 
-                #檢查sites是否只有一個檔案
-                project_name=$(dirname ${base_path}|/usr/bin/awk -F/ '{print $NF}')
-                ls -R ${base_path}/sites/${project_name} 2>/dev/null
+                chk_project_mode
 
                 if [ ${?} -eq 1 ]; then
                     ${winpty} docker-compose -f ${base_path}/docker-compose.yml ps
