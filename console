@@ -152,6 +152,7 @@ if [ "${1}" == "normal" ]; then
 fi
 #project mode
 if [ "${1}" == "project" ]; then
+
     cp ${base_path}/etc/project.sample ${base_path}/etc/default.conf
 
     DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
@@ -162,7 +163,6 @@ if [ "${1}" == "project" ]; then
 
     touch ${DIR}/sites/${project_name}
 
-    cp ${base_path}/etc/default.sample ${base_path}/etc/default.conf
     #先嚐試停止
     console_down_silent 
     echo "docker-compose setting file changed."
@@ -456,7 +456,15 @@ fi
 #重新載入nginx設定
 if [ "${1}" == "reload" ]; then
     echo "${winpty} docker-compose -f ${base_path}/docker-compose.yml exec web nginx -s reload"
+
+    chk_project_mode 
+
+    if [ ${?} -eq 1 ]; then
     ${winpty} docker-compose -f ${base_path}/docker-compose.yml exec web nginx -s reload
+    else
+    ${winpty} docker-compose -p ${project_name} -f ${base_path}/docker-compose.yml exec web nginx -s reload
+    fi
+
 exit
 fi
 function help {
@@ -553,7 +561,15 @@ if [ "${1}" == "" ]; then
         #${winpty} docker-compose -f ${base_path}/docker-compose.yml exec php sudo -u dlaravel bash 
         if [ -z "${DOCKER_SERVICES}" ]; then
             echo "${winpty} docker-compose  -f ${base_path}/docker-compose.yml exec -u dlaravel php bash"
-            ${winpty} docker-compose  -f ${base_path}/docker-compose.yml exec -u dlaravel php bash  
+
+            chk_project_mode 
+
+            if [ ${?} -eq 1 ]; then
+                ${winpty} docker-compose  -f ${base_path}/docker-compose.yml exec -u dlaravel php bash  
+            else
+                ${winpty} docker-compose  -p ${project_name} -f ${base_path}/docker-compose.yml exec -u dlaravel php bash  
+            fi
+
         else
             array_service
             echo "${winpty} docker-compose  -p $(basename ${base_path}) ${CONSOLE_CMD} exec -u dlaravel php bash"
