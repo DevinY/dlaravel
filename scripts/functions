@@ -116,7 +116,15 @@ function console_up {
     console_link
     if [ -z "${DOCKER_SERVICES}" ]; then
         echo "${winpty} docker-compose -f ${base_path}/docker-compose.yml up -d --remove-orphans"
-        ${winpty} docker-compose -f ${base_path}/docker-compose.yml up -d --remove-orphans
+            #檢查sites是否只有一個檔案
+            project_name=$(dirname ${base_path}|/usr/bin/awk -F/ '{print $NF}')
+            ls -R ${base_path}/sites/${project_name} 2>/dev/null
+
+            if [ ${?} -eq 1 ]; then
+                ${winpty} docker-compose -f ${base_path}/docker-compose.yml up -d --remove-orphans
+            else
+                ${winpty} docker-compose -p ${project_name} -f ${base_path}/docker-compose.yml up -d --remove-orphans
+            fi
         else
         array_service
         echo "${winpty} docker-compose -p $(basename ${base_path}) ${CONSOLE_CMD} up -d --remove-orphans"
@@ -155,11 +163,21 @@ function console_down {
     chk_docker_compose_file_is_readable 
     if [ -z "${DOCKER_SERVICES}" ]; then
         if [ -e ${base_path}/docker-compose.yml ]; then
-            echo "${winpty} docker-compose -f ${base_path}/docker-compose.yml down --remove-orphans"
-            ${winpty} docker-compose -f ${base_path}/docker-compose.yml down --remove-orphans  
+             echo "${winpty} docker-compose -f ${base_path}/docker-compose.yml down --remove-orphans"
+
+                #檢查sites是否只有一個檔案
+                project_name=$(dirname ${base_path}|/usr/bin/awk -F/ '{print $NF}')
+                ls -R ${base_path}/sites/${project_name} 2>/dev/null
+
+                if [ ${?} -eq 1 ]; then
+                 ${winpty} docker-compose -f ${base_path}/docker-compose.yml down --remove-orphans  
+                else
+                 ${winpty} docker-compose -p ${project_name} -f ${base_path}/docker-compose.yml down --remove-orphans  
+                fi
+
             else
-            echo "${winpty} docker-compose -f ${base_path}/docker-compose-random.yml down --remove-orphans"
-            ${winpty} docker-compose -f ${base_path}/docker-compose-random.yml down --remove-orphans  
+             echo "${winpty} docker-compose -f ${base_path}/docker-compose-random.yml down --remove-orphans"
+             ${winpty} docker-compose -f ${base_path}/docker-compose-random.yml down --remove-orphans  
         fi
         else
         array_service
@@ -193,7 +211,16 @@ function console_ps {
 
     if [ -z "${DOCKER_SERVICES}" ]; then
           echo "${winpty} docker-compose -f ${base_path}/docker-compose.yml ps"
-          ${winpty} docker-compose -f ${base_path}/docker-compose.yml ps
+
+                #檢查sites是否只有一個檔案
+                project_name=$(dirname ${base_path}|/usr/bin/awk -F/ '{print $NF}')
+                ls -R ${base_path}/sites/${project_name} 2>/dev/null
+
+                if [ ${?} -eq 1 ]; then
+                    ${winpty} docker-compose -f ${base_path}/docker-compose.yml ps
+                else
+                    ${winpty} docker-compose -p ${project_name} -f ${base_path}/docker-compose.yml ps
+                fi
         else
         array_service
           echo "${winpty} docker-compose -p $(basename ${base_path}) ${CONSOLE_CMD} ps"
