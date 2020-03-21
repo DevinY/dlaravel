@@ -7,9 +7,6 @@ services:
   ports:
     # normal
     - "80"
-    - "443:443"
-    #for echo-server
-    #- "6001:6001"
   volumes:
   - ./..:/var/www/html:cached
   - ./etc:/etc/nginx/conf.d
