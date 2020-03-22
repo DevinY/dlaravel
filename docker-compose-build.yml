@@ -24,7 +24,7 @@ services:
   - ./etc/php:/usr/local/etc/php/conf.d
   - ./sites:/var/www/html
   - ./etc/php-fpm.d/www.conf:/usr/local/etc/php-fpm.d/www.conf
-  - ./etc/cache:/home/dlaravel/.composer/cache
+  - ~/.dlaravel/cache:/home/dlaravel/.composer/cache
   #- ./var/logs/php:/var/log
   #- ./etc/supervisor:/etc/supervisor/conf.d
   #- ./var/logs/supervisor:/var/log/supervisor

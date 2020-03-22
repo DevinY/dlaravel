@@ -141,12 +141,15 @@ fi
 #變更模式, web:80, db:127.0.0.1:3306
 if [ "${1}" == "normal" ]; then
     cp ${base_path}/etc/default.sample ${base_path}/etc/default.conf
+
     #先嚐試停止
     console_down_silent 
     echo "docker-compose setting file changed."
     echo "HOST DB: listen on 127.0.0.1:3306."
     echo "HOST WEB: listen on port 80."
+
     ln -vsf ${base_path}/docker-compose-normal.yml ${base_path}/docker-compose.yml
+
     console_up
     exit;
 fi
@@ -156,15 +159,15 @@ if [ "${1}" == "project" ]; then
     cp ${base_path}/etc/project.sample ${base_path}/etc/default.conf
 
     DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-    echo ${DIR}
-    project_name=$(dirname ${DIR}|/usr/bin/awk -F/ '{print $NF}')
-
-    echo touch sites/${project_name} as project mode.
-
-    touch ${DIR}/sites/${project_name}
 
     #先嚐試停止
     console_down_silent 
+
+    echo ${DIR}
+    project_name=$(dirname ${DIR}|/usr/bin/awk -F/ '{print $NF}')
+    echo touch sites/${project_name} as project mode.
+    echo 'dlaravel_project_mode' > ${DIR}/sites/${project_name}
+
     echo "docker-compose setting file changed."
     echo "HOST DB: listen on 127.0.0.1:3306."
     echo "HOST WEB: listen on port 80."

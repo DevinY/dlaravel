@@ -31,10 +31,10 @@ function console_logs {
 
             chk_project_mode
 
-            if [ ${?} -eq 1 ]; then
-                ${winpty} docker-compose -f ${base_path}/docker-compose.yml ${@}
-            else
+            if [ ${?} -eq 0 ]; then
                 ${winpty} docker-compose -p ${project_name} -f ${base_path}/docker-compose.yml ${@}
+            else
+                ${winpty} docker-compose -f ${base_path}/docker-compose.yml ${@}
             fi
 
     else
@@ -112,10 +112,12 @@ function chk_default_conf_exist {
         cp ${base_path}/etc/default.sample ${base_path}/etc/default.conf
     fi
 }
+
 #is_project_mode
 function chk_project_mode {
     project_name=$(dirname ${base_path}|/usr/bin/awk -F/ '{print $NF}')
-    ls -R ${base_path}/sites/${project_name} 1> /dev/null 2>/dev/null
+    grep  -q dlaravel_project_mode ${base_path}/sites/${project_name}  >/dev/null 2>&1
+    #ls -R ${base_path}/sites/${project_name} 1> /dev/null 2>/dev/null
 }
 
 #dlarave console up
@@ -131,11 +133,10 @@ function console_up {
         echo "${winpty} docker-compose -f ${base_path}/docker-compose.yml up -d --remove-orphans"
 
             chk_project_mode
-
-            if [ ${?} -eq 1 ]; then
-                ${winpty} docker-compose -f ${base_path}/docker-compose.yml up -d --remove-orphans
-            else
+            if [ ${?} -eq 0 ]; then
                 ${winpty} docker-compose -p ${project_name} -f ${base_path}/docker-compose.yml up -d --remove-orphans
+            else
+                ${winpty} docker-compose -f ${base_path}/docker-compose.yml up -d --remove-orphans
             fi
         else
         array_service
@@ -179,10 +180,10 @@ function console_down {
 
                 chk_project_mode
 
-                if [ ${?} -eq 1 ]; then
-                 ${winpty} docker-compose -f ${base_path}/docker-compose.yml down --remove-orphans  
-                else
+                if [ ${?} -eq 0 ]; then
                  ${winpty} docker-compose -p ${project_name} -f ${base_path}/docker-compose.yml down --remove-orphans  
+                else
+                 ${winpty} docker-compose -f ${base_path}/docker-compose.yml down --remove-orphans  
                 fi
 
             else
@@ -200,11 +201,19 @@ function console_down_silent {
     chk_docker_compose_file_is_readable 
     if [ -z "${DOCKER_SERVICES}" ]; then
         if [ -e ${base_path}/docker-compose.yml ]; then
-            echo "docker-compose -f ${base_path}/docker-compose.yml down --remove-orphans"
-            docker-compose -f ${base_path}/docker-compose.yml down --remove-orphans  > /dev/null 2>&1
+
+                echo "docker-compose -f ${base_path}/docker-compose.yml down --remove-orphans"
+                chk_project_mode       
+                if [ ${?} -eq 0 ]; then
+                    docker-compose -p ${project_name} -f ${base_path}/docker-compose.yml down --remove-orphans  > /dev/null 2>&1
+                    rm ${base_path}/sites/${project_name}
+                else
+                    docker-compose -f ${base_path}/docker-compose.yml down --remove-orphans  > /dev/null 2>&1
+                fi
+
             else
-            echo "docker-compose -f ${base_path}/docker-compose-random.yml down --remove-orphans"
-            docker-compose -f ${base_path}/docker-compose-random.yml down --remove-orphans  > /dev/null 2>&1
+                echo "docker-compose -f ${base_path}/docker-compose-random.yml down --remove-orphans"
+                docker-compose -f ${base_path}/docker-compose-random.yml down --remove-orphans  > /dev/null 2>&1
         fi
         else
         array_service
@@ -214,6 +223,10 @@ function console_down_silent {
 }
 #dlaravel console ps
 function console_ps {
+    chk_project_mode
+    if [ ${?} -eq 0 ]; then
+        echo "Dlaravel is running in project mode."
+    fi
     chk_docker_compose_file_is_readable 
     if [ -f "${base_path}/.docker-compose.yml" ]; then
         echo "Can't find ${base_path}/docker-compose.yml"
@@ -224,10 +237,10 @@ function console_ps {
 
                 chk_project_mode
 
-                if [ ${?} -eq 1 ]; then
-                    ${winpty} docker-compose -f ${base_path}/docker-compose.yml ps
-                else
+                if [ ${?} -eq 0 ]; then
                     ${winpty} docker-compose -p ${project_name} -f ${base_path}/docker-compose.yml ps
+                else
+                    ${winpty} docker-compose -f ${base_path}/docker-compose.yml ps
                 fi
         else
         array_service

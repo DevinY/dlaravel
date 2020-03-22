@@ -24,7 +24,7 @@ services:
   - ./sites:/var/www/html
   - ./etc/php-fpm.d/www.conf:/usr/local/etc/php-fpm.d/www.conf
   ###create composer cache###
-  - ./etc/cache:/home/dlaravel/.composer/cache
+  - ~/.dlaravel/cache:/home/dlaravel/.composer/cache
   - ./scripts/swoole.sh:/swoole.sh
   #- ./var/log/php:/var/log
   #- ./etc/supervisor:/etc/supervisor/conf.d

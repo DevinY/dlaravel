@@ -2,15 +2,16 @@
 scripts_path="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 base_path=`echo ${scripts_path}|sed 's#/scripts##'`
 source ${base_path}/scripts/checker
+source ${base_path}/scripts/functions
 
-project_name=$(dirname ${base_path}|/usr/bin/awk -F/ '{print $NF}')
-ls ${base_path}/sites/${project_name} 1>/dev/null 2>/dev/null
 
-if [ ${?} -eq 1 ]; then
-    docker-compose -f ${scripts_path}/../docker-compose.yml ps |grep ${containerName}_web_1|grep -q Up
-else
+chk_project_mode
+
+if [ ${?} -eq 0 ]; then
     docker-compose -p ${project_name} -f ${scripts_path}/../docker-compose.yml ps |grep ${project_name}_web_1|grep -q Up
     web="${project_name}_web_1"
+else
+    docker-compose -f ${scripts_path}/../docker-compose.yml ps |grep ${containerName}_web_1|grep -q Up
 fi
 
 if [ $? -eq 1 ]; then

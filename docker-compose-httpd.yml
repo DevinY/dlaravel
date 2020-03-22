@@ -22,7 +22,7 @@ services:
   - ./etc/php-fpm.d/www.conf:/usr/local/etc/php-fpm.d/www.conf
   - ~/.ssh:/home/dlaravel/.ssh
   ###create composer cache###
-  - ./etc/cache:/home/dlaravel/.composer/cache
+  - ~/.dlaravel/cache:/home/dlaravel/.composer/cache
   #- ./var/log/php:/var/log
   #- ./etc/supervisor:/etc/supervisor/conf.d
   #- ./var/log/supervisor:/var/log/supervisor
