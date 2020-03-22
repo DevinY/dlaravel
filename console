@@ -378,6 +378,10 @@ if [ "${1}" == "public" ]; then
 fi
 #啟動時檢測網頁資訊
 if [ "${1}" == "info" ]; then
+    chk_project_mode
+    if [ ${?} -eq 0 ]; then
+        echo "D-Laravel is running in project mode."
+    fi
     check_swoole
     readlink -n ${base_path}/docker-compose.yml
     echo ""
