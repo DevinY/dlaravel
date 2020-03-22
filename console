@@ -582,10 +582,10 @@ if [ "${1}" == "" ]; then
 
             chk_project_mode 
 
-            if [ ${?} -eq 1 ]; then
-                ${winpty} docker-compose  -f ${base_path}/docker-compose.yml exec -u dlaravel php bash  
-            else
+            if [ ${?} -eq 0 ]; then
                 ${winpty} docker-compose  -p ${project_name} -f ${base_path}/docker-compose.yml exec -u dlaravel php bash  
+            else
+                ${winpty} docker-compose  -f ${base_path}/docker-compose.yml exec -u dlaravel php bash  
             fi
 
         else
