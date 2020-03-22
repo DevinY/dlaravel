@@ -155,6 +155,13 @@ if [ "${1}" == "normal" ]; then
 fi
 #project mode
 if [ "${1}" == "project" ]; then
+    #chekc is satify for project mode
+    ls ${base_path}/../public >/dev/null 2>&1
+    if [ ! ${?} -eq 0 ]; then
+        parent_folder=$(dirname ${base_path})
+        echo ${parent_folder}/public is required for D-Laravel per project mode.
+        exit 1;
+    fi
 
     cp ${base_path}/etc/project.sample ${base_path}/etc/default.conf
 
@@ -165,7 +172,7 @@ if [ "${1}" == "project" ]; then
 
     echo ${DIR}
     project_name=$(dirname ${DIR}|/usr/bin/awk -F/ '{print $NF}')
-    echo touch sites/${project_name} as project mode.
+    echo touch sites/${project_name} as per project mode.
     echo 'dlaravel_project_mode' > ${DIR}/sites/${project_name}
 
     echo "docker-compose setting file changed."
@@ -493,6 +500,8 @@ function help {
     echo "  normal : 變更docker-compose.yml連結，讓docker使用標準連結埠，80:443:3306"
     echo "  random : 變更docker-compose.yml連結，讓docker啟用隨機的連接埠，可用./console ps查看"
     echo "  custom : 變更docker-compose.yml連結，產生或使用自定的設定檔"
+    echo "  project : 變更docker-compose.yml連結，每專案模式執行"
+    echo "  httpd : 變更docker-compose.yml連結，用Apache當網站伺服器，專家模式"
     echo "  ssh: 變更docker-compose.yml連結，開啟port 2020的ssh服務"
     echo "  exec : 執行php container內的命令，例如: ./console exec php php -v"
     echo "  reload : 重載nginx的設定."
@@ -517,6 +526,8 @@ function help {
     echo "  normal : change docker-compose.yal link to docker-compose-normal.yml, for using ports 80:443:3306"
     echo "  random : change docker-compose.yml link to docker-compose-random.yml，for using random ports，you can check issue ./console ps"
     echo "  custom : change docker-compose.yml link link to docker-compose-custom.yml， for custom purpose."
+    echo "  project : change docker-compose.yml link link to docker-compose-custom.yml， running D-Laravel in per project mode."
+    echo "  httpd : change docker-compose.yml link link to docker-compose-custom.yml， running Aapche Server on D-Laravel. expert mode"
     echo "  ssh : change docker-compose.yml link link to docker-compose-ssh.yml， for using port 2020 as ssh."
     echo "  exec : exec php container's command， for example: ./console exec php php -v"
     echo "  reload : nginx reload config file."

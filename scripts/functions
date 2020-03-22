@@ -225,7 +225,7 @@ function console_down_silent {
 function console_ps {
     chk_project_mode
     if [ ${?} -eq 0 ]; then
-        echo "Dlaravel is running in project mode."
+        echo "Dlaravel is running in per project mode."
     fi
     chk_docker_compose_file_is_readable 
     if [ -f "${base_path}/.docker-compose.yml" ]; then
