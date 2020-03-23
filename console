@@ -357,13 +357,25 @@ fi
 #進資料庫
 if [ "${1}" == "mysql" ]; then
 
-    ${winpty} docker-compose -f ${base_path}/docker-compose.yml exec db env|grep MYSQL_ROOT_PASSWORD >/dev/null 2>&1
-    if [  $? -gt 0  ]; then
-        ${winpty} docker-compose -f ${base_path}/docker-compose.yml exec db mysql
-        else
-        echo "Your MySQL root password."
-        ${winpty} docker-compose -f ${base_path}/docker-compose.yml exec db mysql -uroot -p
+    chk_project_mode
+    if [ ${?} -eq 0 ]; then
+        ${winpty} docker-compose -p ${project_name} -f ${base_path}/docker-compose.yml exec db env|grep MYSQL_ROOT_PASSWORD >/dev/null 2>&1
+        if [  $? -gt 0  ]; then
+            ${winpty} docker-compose -p ${project_name} -f ${base_path}/docker-compose.yml exec db mysql
+            else
+            echo "Your MySQL root password."
+            ${winpty} docker-compose -p ${project_name} -f ${base_path}/docker-compose.yml exec db mysql -uroot -p
+        fi
+    else
+        ${winpty} docker-compose -f ${base_path}/docker-compose.yml exec db env|grep MYSQL_ROOT_PASSWORD >/dev/null 2>&1
+        if [  $? -gt 0  ]; then
+            ${winpty} docker-compose -f ${base_path}/docker-compose.yml exec db mysql
+            else
+            echo "Your MySQL root password."
+            ${winpty} docker-compose -f ${base_path}/docker-compose.yml exec db mysql -uroot -p
+        fi
     fi
+
 exit;
 fi
 #使用預設的設定檔
