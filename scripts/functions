@@ -116,6 +116,7 @@ function chk_default_conf_exist {
 #is_project_mode
 function chk_project_mode {
     project_name=$(dirname ${base_path}|/usr/bin/awk -F/ '{print $NF}')
+    project_name=`echo ${project_name}|awk '{print tolower($0)}'`
     grep  -q dlaravel_project_mode ${base_path}/sites/${project_name}  >/dev/null 2>&1
     #ls -R ${base_path}/sites/${project_name} 1> /dev/null 2>/dev/null
 }

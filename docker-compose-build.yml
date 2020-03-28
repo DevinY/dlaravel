@@ -41,7 +41,6 @@ services:
   ports:
     - "3306"
   volumes:
-    - ./etc/mysql/conf.d:/etc/mysql/mysql.conf.d
     - ./data:/var/lib/mysql
   environment:
    #- MYSQL_DATABASE=homestead

@@ -43,7 +43,6 @@ services:
   ports:
     - "127.0.0.1:3306:3306"
   volumes:
-    - ./etc/mysql/my.cnf:/etc/mysql/my.cnf
     - ./data:/var/lib/mysql
   environment:
    #- MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD-secret}

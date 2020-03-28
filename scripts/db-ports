@@ -8,10 +8,10 @@ source ${script_path}/functions
 chk_project_mode
 
 if [ ${?} -eq 0 ]; then
-    docker-compose -p ${project_name} -f ${scripts_path}/../docker-compose.yml ps |grep ${project_name}_web_1|grep -q Up
+    docker-compose -p ${project_name} -f ${scripts_path}/../docker-compose.yml ps |grep ${project_name}_db_1|grep -q Up
     db="${project_name}_db_1"
 else
-    docker-compose  -f ${script_path}/../docker-compose.yml ps |grep ${containerName}_web_1|grep -q Up
+    docker-compose  -f ${script_path}/../docker-compose.yml ps |grep ${containerName}_db_1|grep -q Up
 fi
 if [ $? -eq 1 ]; then
 echo ${containerName}_db_1 is not running
