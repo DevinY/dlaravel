@@ -9,10 +9,19 @@ chk_project_mode
 
 if [ ${?} -eq 0 ]; then
     docker-compose -p ${project_name} -f ${scripts_path}/../docker-compose.yml ps |grep ${project_name}_db_1|grep -q Up
+    if [ ${?} -eq 1 ]; then
+        echo "No service of db."
+        exit;
+    fi
     db="${project_name}_db_1"
 else
     docker-compose  -f ${script_path}/../docker-compose.yml ps |grep ${containerName}_db_1|grep -q Up
+    if [ ${?} -eq 1 ]; then
+        echo "No service of db."
+        exit;
+    fi
 fi
+
 if [ $? -eq 1 ]; then
 echo ${containerName}_db_1 is not running
 exit
