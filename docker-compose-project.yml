@@ -5,7 +5,6 @@ services:
   image: nginx
   dns: 8.8.8.8
   ports:
-    # normal
     - "80"
   volumes:
   - ./..:/var/www/html:cached
@@ -18,25 +17,16 @@ services:
 #=== php service ==========================
  php:
   network_mode: "service:web"
-  image: deviny/fpm:7.4.3
-  #image: deviny/fpm:7.3.15
-  #image: deviny/fpm:7.2.28
+  image: deviny/fpm:7.4.4
   volumes:
   - ./etc/php:/usr/local/etc/php/conf.d
   - ./..:/var/www/html:cached
   - ./etc/php-fpm.d/www.conf:/usr/local/etc/php-fpm.d/www.conf
   ###create composer cache###
   - ~/.dlaravel/cache:/home/dlaravel/.composer/cache
-  #- ./var/log/php:/var/log
-  #- ./etc/supervisor:/etc/supervisor/conf.d
-  #- ./var/log/supervisor:/var/log/supervisor
   environment:
    - TZ=Asia/Taipei
    - project=${HOST-localhost}
-  #- PHP_IDE_CONFIG=serverName=dlaravel
-  #- XDEBUG_CONFIG="remote_host=???? profiler_enable=1"
-  #- ./etc/bash_aliases:/home/dlaravel/.bash_aliases
-  #command: bash -c "php-fpm -D&&php /var/www/html/default/bin/laravels start"
 
 #=== db service ===========================
  db:
@@ -48,10 +38,6 @@ services:
   volumes:
     - ./data:/var/lib/mysql
   environment:
-   #- MYSQL_DATABASE=homestead
-   #- MYSQL_USER=homestead
-   #- MYSQL_PASSWORD=secret
-   #- MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD-secret}
    - MYSQL_ALLOW_EMPTY_PASSWORD= "yes"
    - TZ=Asia/Taipei
   networks:

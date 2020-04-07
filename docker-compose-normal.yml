@@ -5,11 +5,8 @@ services:
   image: nginx
   dns: 8.8.8.8
   ports:
-    # normal
     - "80:80"
     - "443:443"
-    #for echo-server
-    #- "6001:6001"
   volumes:
   - ./sites:/var/www/html:cached
   - ./etc:/etc/nginx/conf.d
@@ -21,9 +18,7 @@ services:
 #=== php service ==========================
  php:
   network_mode: "service:web"
-  image: deviny/fpm:7.4.3
-  #image: deviny/fpm:7.3.15
-  #image: deviny/fpm:7.2.28
+  image: deviny/fpm:7.4.4
   volumes:
   - ./etc/php:/usr/local/etc/php/conf.d
   - ./sites:/var/www/html:cached

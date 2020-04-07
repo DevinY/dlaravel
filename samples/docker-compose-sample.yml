@@ -5,10 +5,13 @@ services:
   image: nginx
   dns: 8.8.8.8
   ports:
+    # normal
     - "80:80"
     - "443:443"
+    #for echo-server
+    #- "6001:6001"
   volumes:
-  - ./sites:/var/www/html
+  - ./sites:/var/www/html:cached
   - ./etc:/etc/nginx/conf.d
   - ./var/log/web:/var/log/nginx
   hostname: web
@@ -18,27 +21,39 @@ services:
 #=== php service ==========================
  php:
   network_mode: "service:web"
-  image: deviny/fpm:7.4.2
+  image: deviny/fpm:7.4.3
+  #image: deviny/fpm:7.3.15
+  #image: deviny/fpm:7.2.28
   volumes:
   - ./etc/php:/usr/local/etc/php/conf.d
-  - ./sites:/var/www/html
+  - ./sites:/var/www/html:cached
   - ./etc/php-fpm.d/www.conf:/usr/local/etc/php-fpm.d/www.conf
   ###create composer cache###
   - ~/.dlaravel/cache:/home/dlaravel/.composer/cache
-  - ./scripts/swoole.sh:/swoole.sh
+  #- ./var/log/php:/var/log
+  #- ./etc/supervisor:/etc/supervisor/conf.d
+  #- ./var/log/supervisor:/var/log/supervisor
   environment:
    - TZ=Asia/Taipei
-  command: ["/swoole.sh","default"]
+  #- PHP_IDE_CONFIG=serverName=dlaravel
+  #- XDEBUG_CONFIG="remote_host=???? profiler_enable=1"
+  #- ./etc/bash_aliases:/home/dlaravel/.bash_aliases
+  #command: bash -c "php-fpm -D&&php /var/www/html/default/bin/laravels start"
 
 #=== db service ===========================
  db:
-  image: mysql:5.7.19
+  image: mysql:8.0.18
+  command: --default-authentication-plugin=mysql_native_password
   hostname: db
   ports:
     - "127.0.0.1:3306:3306"
   volumes:
     - ./data:/var/lib/mysql
   environment:
+   #- MYSQL_DATABASE=homestead
+   #- MYSQL_USER=homestead
+   #- MYSQL_PASSWORD=secret
+   #- MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD-secret}
    - MYSQL_ALLOW_EMPTY_PASSWORD= "yes"
    - TZ=Asia/Taipei
   networks:

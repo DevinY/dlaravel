@@ -25,15 +25,8 @@ services:
   - ./sites:/var/www/html
   - ./etc/php-fpm.d/www.conf:/usr/local/etc/php-fpm.d/www.conf
   - ~/.dlaravel/cache:/home/dlaravel/.composer/cache
-  #- ./var/logs/php:/var/log
-  #- ./etc/supervisor:/etc/supervisor/conf.d
-  #- ./var/logs/supervisor:/var/log/supervisor
   environment:
    - TZ=Asia/Taipei
-  #- PHP_IDE_CONFIG=serverName=dlaravel
-  #- XDEBUG_CONFIG="remote_host=???? profiler_enable=1"
-  #- ./etc/bash_aliases:/home/dlaravel/.bash_aliases
-
  db:
   image: mysql:8.0.18
   command: --default-authentication-plugin=mysql_native_password
@@ -43,10 +36,6 @@ services:
   volumes:
     - ./data:/var/lib/mysql
   environment:
-   #- MYSQL_DATABASE=homestead
-   #- MYSQL_USER=homestead
-   #- MYSQL_PASSWORD=secret
-   #- MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD-secret}
    - MYSQL_ALLOW_EMPTY_PASSWORD= "yes"
    - TZ=Asia/Taipei
   networks:

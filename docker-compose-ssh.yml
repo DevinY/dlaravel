@@ -30,15 +30,8 @@ services:
   - ~/.ssh:/home/dlaravel/.ssh
   ###create composer cache###
   - ~/.dlaravel/cache:/home/dlaravel/.composer/cache
-  #- ./var/log/php:/var/log
-  #- ./etc/supervisor:/etc/supervisor/conf.d
-  #- ./var/log/supervisor:/var/log/supervisor
   environment:
    - TZ=Asia/Taipei
-  #- PHP_IDE_CONFIG=serverName=dlaravel
-  #- XDEBUG_CONFIG="remote_host=???? profiler_enable=1"
-  #- ./etc/bash_aliases:/home/dlaravel/.bash_aliases
-  #command: bash -c "php-fpm -D&&php /var/www/html/default/bin/laravels start"
 
 #=== db service ===========================
  db:
@@ -50,10 +43,6 @@ services:
   volumes:
     - ./data:/var/lib/mysql
   environment:
-   #- MYSQL_DATABASE=homestead
-   #- MYSQL_USER=homestead
-   #- MYSQL_PASSWORD=secret
-   #- MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD-secret}
    - MYSQL_ALLOW_EMPTY_PASSWORD= "yes"
    - TZ=Asia/Taipei
   networks:
