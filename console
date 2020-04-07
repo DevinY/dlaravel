@@ -38,12 +38,26 @@ exit;
 fi
 
 if [ "${1}" == "node" ]; then
+
+            chk_project_mode 
+            if [ ${?} -eq 0 ]; then
+
     if [ -z "${2}" ]; then
-        ${winpty} docker run --rm -v ${base_path}/sites:/sites -u node -w /sites -ti node bash
+        ${winpty} docker run --rm -v ${base_path}/..:/project -u node -w /project -ti node bash
     else
         #Tag
-        ${winpty} docker run --rm -v ${base_path}/sites:/sites -u node -w /sites -ti node:${2} bash
+        ${winpty} docker run --rm -v ${base_path}/..:/project -u node -w /project -ti node:${2} bash
     fi
+
+            else
+
+    if [ -z "${2}" ]; then
+        ${winpty} docker run --rm -v ${base_path}/..:/project -u node -w /project -ti node bash
+    else
+        #Tag
+        ${winpty} docker run --rm -v ${base_path}/..:/project -u node -w /project -ti node:${2} bash
+    fi
+            fi
 
 exit;
 fi
