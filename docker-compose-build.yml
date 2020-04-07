@@ -9,7 +9,6 @@ services:
   volumes:
   - ./sites:/var/www/html
   - ./etc:/etc/nginx/conf.d
-  - ./var/logs/web:/var/log/nginx
   hostname: web
   networks:
     - dlaravel_net
