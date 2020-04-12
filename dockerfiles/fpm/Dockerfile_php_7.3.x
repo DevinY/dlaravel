@@ -78,7 +78,7 @@ mv composer.phar /usr/local/bin/composer; \
 sudo -u dlaravel /usr/local/bin/composer global require "laravel/installer"; \
 sudo -u dlaravel /usr/local/bin/composer global require "phpunit/phpunit=5.5.*"; \
 sudo -u dlaravel echo 'export TERM=xterm-256color' >> /home/dlaravel/.bashrc; \
-sudo -u dlaravel echo 'export PATH=/home/dlaravel/.composer/vendor/bin:$PATH' >> /home/dlaravel/.bashrc; \
+sudo -u dlaravel echo 'export PATH=vendor/bin:/home/dlaravel/.composer/vendor/bin:$PATH' >> /home/dlaravel/.bashrc; \
 #加入composer環境變數
 echo 'export TERM=xterm-256color' >> /root/.bashrc; \
 echo 'export PATH=/root/.composer/vendor/bin:$PATH' >> /root/.bashrc;  

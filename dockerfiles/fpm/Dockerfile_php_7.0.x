@@ -52,11 +52,9 @@ RUN apt-get update && apt-get install -y \
 #docker-php-ext-install 可安裝外掛大概如下:
 #bcmath bz2 calendar ctype curl dba dom enchant exif fileinfo filter ftp gd gettext gmp hash iconv imap interbase intl json ldap mbstring mysqli oci8 odbc opcache pcntl pdo pdo_dblib pdo_firebird pdo_mysql pdo_oci pdo_odbc pdo_pgsql pdo_sqlite pgsql phar posix pspell readline recode reflection session shmop simplexml snmp soap sockets sodium spl standard sysvmsg sysvsem sysvshm tidy tokenizer wddx xml xmlreader xmlrpc xmlwriter xsl zend_test zip
 
-RUN pecl install xdebug \
-    pecl install redis \
+RUN pecl install redis \
     pecl install imagick \
-    pecl install swoole \
-    && docker-php-ext-enable xdebug
+    pecl install swoole 
 
 #建立Dlaravel的使用者
 RUN adduser --disabled-password --gecos "" dlaravel &&\
@@ -74,7 +72,7 @@ mv composer.phar /usr/local/bin/composer; \
 sudo -u dlaravel /usr/local/bin/composer global require "laravel/installer"; \
 sudo -u dlaravel /usr/local/bin/composer global require "phpunit/phpunit=5.5.*"; \
 sudo -u dlaravel echo 'export TERM=xterm-256color' >> /home/dlaravel/.bashrc; \
-sudo -u dlaravel echo 'export PATH=/home/dlaravel/.composer/vendor/bin:$PATH' >> /home/dlaravel/.bashrc; \
+sudo -u dlaravel echo 'export PATH=vendor/bin:/home/dlaravel/.composer/vendor/bin:$PATH' >> /home/dlaravel/.bashrc; \
 #加入composer環境變數
 echo 'export TERM=xterm-256color' >> /root/.bashrc; \
 echo 'export PATH=/root/.composer/vendor/bin:$PATH' >> /root/.bashrc;  
