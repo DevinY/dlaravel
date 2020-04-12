@@ -500,9 +500,11 @@ if [ "${1}" == "reload" ]; then
     chk_project_mode 
 
     if [ ${?} -eq 1 ]; then
-    ${winpty} docker-compose -f ${base_path}/docker-compose.yml exec web nginx -s reload
+        echo "A"
+        ${winpty} docker-compose -p ${project_name} -f ${base_path}/docker-compose.yml exec web nginx -s reload
     else
-    ${winpty} docker-compose -p ${project_name} -f ${base_path}/docker-compose.yml exec web nginx -s reload
+        echo "B"
+        ${winpty} docker-compose -f ${base_path}/docker-compose.yml exec web nginx -s reload
     fi
 
 exit

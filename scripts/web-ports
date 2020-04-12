@@ -43,13 +43,22 @@ for i in $(ls -d ${base_path}/sites/*|rev|cut -d/ -f1|rev); do
         fi
         if [ ${web_port} == 80 ]; then
             if [ ${i} != "default" ]; then
-                echo -n http://;echo ${i}.test|cut -d/ -f 2; 
+                if [ -f ${base_path}/etc/default-ssl.conf ]; then
+                    echo -n https://;echo ${i}.test|cut -d/ -f 2; 
+                else
+                    echo -n http://;echo ${i}.test|cut -d/ -f 2; 
+                fi
             else
                 is_enable_default=1
             fi
         else
             if [ ${i} != "default" ]; then
-                echo -n http://;echo ${i}.test:${web_port}|cut -d/ -f 2; 
+                if [ -f ${base_path}/etc/default-ssl.conf ]; then
+                    webs_port=`${win_pty} docker inspect --format='{{(index (index .NetworkSettings.Ports "443/tcp") 0).HostPort}}'  ${web}`
+                    echo -n https://;echo ${i}.test:${webs_port}|cut -d/ -f 2; 
+                else
+                    echo -n http://;echo ${i}.test:${web_port}|cut -d/ -f 2; 
+                fi
             else
                 is_enable_default=1
             fi
