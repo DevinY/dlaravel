@@ -1,5 +1,6 @@
 #!/bin/bash
 if [ -z ${1} ]; then
+    echo "Edit dockerfile and build version you want."
     echo "Example ${0} 7.4";
 else 
     ssh=""
