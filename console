@@ -71,17 +71,30 @@ fi
 #調整Container DLaravel使用者ID
 if [ "${1}" == "chowner" ]; then
 
-	    if [ ${plateform} == 'Linux' ]; then
-             dlaravel_gid=`whoami|id -g`
-             dlaravel_uid=`whoami|id -u`
-              
-             ${winpty} docker-compose -f ${base_path}/docker-compose.yml exec -u root php usermod -u ${dlaravel_uid} dlaravel
-             ${winpty} docker-compose -f ${base_path}/docker-compose.yml exec -u root php groupmod -g ${dlaravel_gid} dlaravel
-             ${winpty} docker-compose -f ${base_path}/docker-compose.yml exec -u root php chown -R ${dlaravel_uid} /home/dlaravel
+	    if [ ${plateform} == 'Darwin' ]; then
+            dlaravel_gid=`whoami|id -g`
+            dlaravel_uid=`whoami|id -u`
 
-             echo "You have to commit your php fpm image, and restart container."
-	     echo "Example: docker commit 67306ecd0879 deviny/fpm:7.1.9"
-	     echo "./console restart"
+            ${winpty} docker-compose -f ${base_path}/docker-compose.yml exec -u root php usermod -u ${dlaravel_uid} dlaravel
+            ${winpty} docker-compose -f ${base_path}/docker-compose.yml exec -u root php groupmod -g ${dlaravel_gid} dlaravel
+            ${winpty} docker-compose -f ${base_path}/docker-compose.yml exec -u root php chown -R ${dlaravel_uid} /home/dlaravel
+
+            echo "You have to commit your php fpm image, and restart container."
+            echo "Example: docker commit 67306ecd0879 deviny/fpm:7.1.9"
+            echo "./console restart"
+        fi
+
+	    if [ ${plateform} == 'Linux' ]; then
+            dlaravel_gid=`whoami|id -g`
+            dlaravel_uid=`whoami|id -u`
+
+            ${winpty} docker-compose -f ${base_path}/docker-compose.yml exec -u root php usermod -u ${dlaravel_uid} dlaravel
+            ${winpty} docker-compose -f ${base_path}/docker-compose.yml exec -u root php groupmod -g ${dlaravel_gid} dlaravel
+            ${winpty} docker-compose -f ${base_path}/docker-compose.yml exec -u root php chown -R ${dlaravel_uid} /home/dlaravel
+
+            echo "You have to commit your php fpm image, and restart container."
+            echo "Example: docker commit 67306ecd0879 deviny/fpm:7.1.9"
+            echo "./console restart"
             fi
 exit;
 fi
@@ -168,6 +181,29 @@ if [ "${1}" == "normal" ]; then
     console_up
     exit;
 fi
+
+#變更模式, web:80, db:127.0.0.1:3306
+if [ "${1}" == "nfs" ]; then
+    showmount -e
+    if [ ${?} -eq 1 ]; then
+        echo "no nfs found"
+        exit;
+    fi
+
+    cp ${base_path}/etc/default.sample ${base_path}/etc/default.conf
+
+    #先嚐試停止
+    console_down_silent 
+    echo "docker-compose setting file changed."
+    echo "HOST DB: listen on 127.0.0.1:3306."
+    echo "HOST WEB: listen on port 80."
+
+    ln -vsf ${base_path}/docker-compose-nfs.yml ${base_path}/docker-compose.yml
+
+    console_up
+    exit;
+fi
+
 #project mode
 if [ "${1}" == "project" ]; then
     #chekc is satify for project mode
