@@ -28,7 +28,7 @@ services:
    - TZ=Asia/Taipei
  db:
   image: mysql:8.0.18
-  command: --default-authentication-plugin=mysql_native_password
+  command: --default-authentication-plugin=mysql_native_password  --sql_mode=""
   hostname: db
   ports:
     - "3306"
