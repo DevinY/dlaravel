@@ -6,6 +6,7 @@ services:
   dns: 8.8.8.8
   ports:
     - "80"
+    - "443"
   volumes:
   - ./..:/var/www/html:cached
   - ./etc:/etc/nginx/conf.d

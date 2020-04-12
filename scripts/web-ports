@@ -4,7 +4,6 @@ base_path=`echo ${scripts_path}|sed 's#/scripts##'`
 source ${base_path}/scripts/checker
 source ${base_path}/scripts/functions
 
-
 chk_project_mode
 
 if [ ${?} -eq 0 ]; then

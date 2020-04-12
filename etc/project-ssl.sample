@@ -1,0 +1,60 @@
+ server {
+      listen  *:443 ssl http2;
+
+      server_name localhost *.test;
+
+      set $basepath "/var/www/html";
+
+      error_log  /var/log/nginx/error.log;
+      access_log /var/log/nginx/access.log;
+
+
+      client_max_body_size 50m;
+      ssl_certificate /etc/nginx/conf.d/ssl/cert.crt;
+      ssl_certificate_key /etc/nginx/conf.d/ssl/cert.key;
+      ssl_client_certificate /etc/nginx/conf.d/ssl/cert.crt;
+      ssl_session_cache shared:SSL:10m;
+      ssl_session_timeout 10m;
+      ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+      ssl_ciphers "ECDH+AESGCM:DH+AESGCM:ECDH+AES256:DH+AES256:ECDH+AES128:DH+AES:ECDH+3DES:DH+3DES:RSA+AESGCM:RSA+AES:RSA+3DES:!aNULL:!MD5:!DSS:!AES256";
+      ssl_prefer_server_ciphers on; 
+
+      gzip on; 
+      gzip_disable "msie6";
+      gzip_comp_level 6;
+      gzip_buffers 16 8k; 
+      gzip_types text/plain text/css text/js text/xml text/javascript application/javascript application/x-javascript application/json application/xml application/xml+rss;
+      gzip_vary on; 
+      gzip_proxied any;
+  
+      location ~* \.(?:ico|css|js|gif|jpe?g|png|woff)$ {
+          expires 30d;
+          add_header Pragma public;
+          add_header Cache-Control "public";
+      }   
+  
+      root $basepath/public/;
+      index           index.php index.html;
+      autoindex off; 
+  
+      location / { 
+         try_files $uri $uri/ /index.php?$query_string;
+      }   
+  
+      if (!-d $request_filename) {
+          rewrite     ^/(.+)/$ /$1 permanent;
+      }   
+
+    #ssl                  on; 
+    location ~ \.php$ {
+        try_files $uri =404;
+        fastcgi_split_path_info ^(.+\.php)(/.+)$;
+        fastcgi_pass web:9000;
+        fastcgi_index index.php;
+        include fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        fastcgi_param PATH_INFO $fastcgi_path_info;
+        fastcgi_read_timeout 500;
+    }
+  
+  }

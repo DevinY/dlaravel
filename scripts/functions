@@ -13,6 +13,27 @@ function chk_docker_compose_file_is_readable {
         ln -vsf ${base_path}/docker-compose-normal.yml ${base_path}/docker-compose.yml
     fi
 }
+
+#check_which_one_to_use_when_ssl_is_enabled
+function replace_ssl_conf {
+
+    #檢查是否啟動ssl
+    if [ -f ${base_path}/etc/default-ssl.conf ]; then
+        echo "Found etc/default-ssl.conf using https"
+        chk_project_mode
+        if [ ${?} -eq 0 ]; then
+            cp ${base_path}/etc/project-ssl.sample ${base_path}/etc/default-ssl.conf
+            ${winpty} docker-compose -p ${project_name} -f ${base_path}/docker-compose.yml exec web nginx -s reload
+        else
+            cp ${base_path}/etc/default-ssl.sample ${base_path}/etc/default-ssl.conf
+            ${winpty} docker-compose -f ${base_path}/docker-compose.yml exec web nginx -s reload
+        fi
+    else
+        echo "Do no thing"
+
+    fi
+
+}
 #array_service
 function array_service {
         array_service=(${DOCKER_SERVICES})
@@ -55,10 +76,22 @@ function fail_exit {
 function console_restart {
     chk_docker_compose_file_is_readable 
     if [ -z "${DOCKER_SERVICES}" ]; then
-     ${winpty} docker-compose -f ${base_path}/docker-compose.yml ${@}
+        chk_project_mode
+        if [ $? -eq 0 ]; then
+           ${winpty} docker-compose -p ${project_name} -f ${base_path}/docker-compose.yml ${@}
+        else
+           ${winpty} docker-compose -f ${base_path}/docker-compose.yml ${@}
+        fi
     else
-     array_service
-     ${winpty} docker-compose -p $(basename ${base_path}) ${CONSOLE_CMD} ${@}
+        chk_project_mode
+        if [ $? -eq 0 ]; then
+            array_service
+            ${winpty} docker-compose -p ${project_name} -p $(basename ${base_path}) ${CONSOLE_CMD} ${@}
+        else
+            array_service
+            ${winpty} docker-compose -p $(basename ${base_path}) ${CONSOLE_CMD} ${@}
+        fi
+
     fi
 }
 
@@ -73,6 +106,7 @@ function console_up_service {
      echo "${winpty} docker-compose -p $(basename ${base_path}) ${CONSOLE_CMD} up -d ${@}"
      ${winpty} docker-compose -p $(basename ${base_path}) ${CONSOLE_CMD} up -d ${@}
     fi
+
 }
 
 #display soft link
@@ -144,6 +178,8 @@ function console_up {
         echo "${winpty} docker-compose -p $(basename ${base_path}) ${CONSOLE_CMD} up -d --remove-orphans"
         ${winpty} docker-compose -p $(basename ${base_path}) ${CONSOLE_CMD} up -d --remove-orphans
     fi
+    replace_ssl_conf 
+
         #暫時保留
         #${winpty} docker-compose exec web /bin/bash -c 'cd /etc/;ln -sf /usr/share/zoneinfo/Asia/Taipei localtime;dpkg-reconfigure -f noninteractive tzdata'
         check_swoole

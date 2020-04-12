@@ -154,6 +154,7 @@ fi
 
 #變更模式, web:80, db:127.0.0.1:3306
 if [ "${1}" == "normal" ]; then
+
     cp ${base_path}/etc/default.sample ${base_path}/etc/default.conf
 
     #先嚐試停止
@@ -394,6 +395,25 @@ exit;
 fi
 #使用預設的設定檔
 if [ "${1}" == "public" ]; then
+    chk_project_mode
+    #is per project mode
+    if [ ${?} -eq 0 ]; then
+        echo "Your are in project mode."
+        web="${project_name}_web_1"
+        web_port=`${win_pty} docker inspect --format='{{(index (index .NetworkSettings.Ports "80/tcp") 0).HostPort}}'  ${web}`
+
+        which ifconfig |grep 'ifconfig' -q
+        #如果有ifconfig列出ip
+        if [ ${?} -eq 0 ]; then
+            ips=`ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1'`
+            for ip in $ips
+            do
+                echo http://${ip}:${web_port}
+            done
+        fi
+
+        exit;
+    fi
     #is swoole mode
     cat ${base_path}/etc/default.conf|grep -q laravels
     if [ ${?} -eq 0 ]; then
@@ -433,19 +453,25 @@ fi
 
 #使用self-signed的憑證 
 if [ "${1}" == "secure" ]; then
-#檢測sites內的資料夾數量
-projectNum=`ls ${base_path}/sites/|wc -l`
-if [ ${projectNum} -eq 0 ]; then
-    echo "No Projects are found, you can create one by following command."
-    echo "For example as below:"
-    echo "./create [project name]"
-    echo "or";
-    echo "To manually create new default project:"
-    echo "mkdir -p sites/default/public;touch sites/default/public/index.php"
-    exit;
-fi
-#一律使用sample蓋掉預設的設定檔
-cp ${base_path}/etc/default-ssl.sample ${base_path}/etc/default-ssl.conf
+    #檢測sites內的資料夾數量
+    projectNum=`ls ${base_path}/sites/|wc -l`
+    if [ ${projectNum} -eq 0 ]; then
+        echo "No Projects are found, you can create one by following command."
+        echo "For example as below:"
+        echo "./create [project name]"
+        echo "or";
+        echo "To manually create new default project:"
+        echo "mkdir -p sites/default/public;touch sites/default/public/index.php"
+        exit;
+    fi
+
+    #一律使用sample蓋掉預設的設定檔
+    chk_project_mode
+    if [ ${?} -eq 0 ]; then
+        cp ${base_path}/etc/project-ssl.sample ${base_path}/etc/default-ssl.conf
+    else
+        cp ${base_path}/etc/default-ssl.sample ${base_path}/etc/default-ssl.conf
+    fi
 
 
 #檢測project是否有ssl的資料夾
@@ -496,14 +522,10 @@ fi
 #重新載入nginx設定
 if [ "${1}" == "reload" ]; then
     echo "${winpty} docker-compose -f ${base_path}/docker-compose.yml exec web nginx -s reload"
-
     chk_project_mode 
-
-    if [ ${?} -eq 1 ]; then
-        echo "A"
+    if [ ${?} -eq 0 ]; then
         ${winpty} docker-compose -p ${project_name} -f ${base_path}/docker-compose.yml exec web nginx -s reload
     else
-        echo "B"
         ${winpty} docker-compose -f ${base_path}/docker-compose.yml exec web nginx -s reload
     fi
 
