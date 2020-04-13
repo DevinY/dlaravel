@@ -19,13 +19,13 @@ services:
   network_mode: "service:web"
   image: deviny/fpm:7.4.4
   volumes:
-  - ./etc/php:/usr/local/etc/php/conf.d
-  - sites:/var/www/html
-  - ./etc/php-fpm.d/www.conf:/usr/local/etc/php-fpm.d/www.conf
+    - ./etc/php:/usr/local/etc/php/conf.d
+    - sites:/var/www/html
+    - ./etc/php-fpm.d/www.conf:/usr/local/etc/php-fpm.d/www.conf
   ###create composer cache###
-  - ~/.dlaravel/cache:/home/dlaravel/.composer/cache
+    - ~/.dlaravel/cache:/home/dlaravel/.composer/cache
   environment:
-   - TZ=Asia/Taipei
+    - TZ=Asia/Taipei
 
 #=== db service ===========================
  db:

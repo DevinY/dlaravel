@@ -5,16 +5,14 @@ services:
   image: nginx
   dns: 8.8.8.8
   ports:
-    # normal
     - "80:80"
     - "443:443"
     - "2020:22"
     #for echo-server
     #- "6001:6001"
   volumes:
-  - ./sites:/var/www/html:cached
-  - ./etc:/etc/nginx/conf.d
-  - ./var/log/web:/var/log/nginx
+    - ./sites:/var/www/html:cached
+    - ./etc:/etc/nginx/conf.d
   hostname: web
   networks:
     - dlaravel_net
@@ -24,14 +22,13 @@ services:
   network_mode: "service:web"
   image: deviny/fpm:7.4.3ssh
   volumes:
-  - ./etc/php:/usr/local/etc/php/conf.d
-  - ./sites:/var/www/html:cached
-  - ./etc/php-fpm.d/www.conf:/usr/local/etc/php-fpm.d/www.conf
-  - ~/.ssh:/home/dlaravel/.ssh
-  ###create composer cache###
-  - ~/.dlaravel/cache:/home/dlaravel/.composer/cache
+    - ./etc/php:/usr/local/etc/php/conf.d
+    - ./sites:/var/www/html:cached
+    - ./etc/php-fpm.d/www.conf:/usr/local/etc/php-fpm.d/www.conf
+    - ~/.ssh/id_rsa.pub:/home/dlaravel/.ssh/authorized_keys
+    - ~/.dlaravel/cache:/home/dlaravel/.composer/cache
   environment:
-   - TZ=Asia/Taipei
+    - TZ=Asia/Taipei
 
 #=== db service ===========================
  db:
@@ -43,8 +40,8 @@ services:
   volumes:
     - ./data:/var/lib/mysql
   environment:
-   - MYSQL_ALLOW_EMPTY_PASSWORD= "yes"
-   - TZ=Asia/Taipei
+    - MYSQL_ALLOW_EMPTY_PASSWORD= "yes"
+    - TZ=Asia/Taipei
   networks:
     - dlaravel_net
 

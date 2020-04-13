@@ -7,8 +7,8 @@ services:
     - "80:80"
     - "443:443"
   volumes:
-  - ./sites:/var/www/html
-  - ./etc:/etc/nginx/conf.d
+    - ./sites:/var/www/html
+    - ./etc:/etc/nginx/conf.d
   hostname: web
   networks:
     - dlaravel_net
@@ -20,12 +20,12 @@ services:
      dockerfile: Dockerfile_php_7.4.x
   network_mode: "service:web"
   volumes:
-  - ./etc/php:/usr/local/etc/php/conf.d
-  - ./sites:/var/www/html
-  - ./etc/php-fpm.d/www.conf:/usr/local/etc/php-fpm.d/www.conf
-  - ~/.dlaravel/cache:/home/dlaravel/.composer/cache
+    - ./etc/php:/usr/local/etc/php/conf.d
+    - ./sites:/var/www/html
+    - ./etc/php-fpm.d/www.conf:/usr/local/etc/php-fpm.d/www.conf
+    - ~/.dlaravel/cache:/home/dlaravel/.composer/cache
   environment:
-   - TZ=Asia/Taipei
+    - TZ=Asia/Taipei
  db:
   image: mysql:8.0.18
   command: --default-authentication-plugin=mysql_native_password --lower-case-table-names=0 --sql_mode=""
@@ -35,8 +35,8 @@ services:
   volumes:
     - ./data:/var/lib/mysql
   environment:
-   - MYSQL_ALLOW_EMPTY_PASSWORD= "yes"
-   - TZ=Asia/Taipei
+    - MYSQL_ALLOW_EMPTY_PASSWORD= "yes"
+    - TZ=Asia/Taipei
   networks:
     - dlaravel_net
 

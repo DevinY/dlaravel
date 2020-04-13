@@ -8,8 +8,8 @@ services:
     - "80:80"
     - "443:443"
   volumes:
-  - ./sites:/var/www/html
-  - ./etc:/etc/nginx/conf.d
+    - ./sites:/var/www/html
+    - ./etc:/etc/nginx/conf.d
   hostname: web
   networks:
     - dlaravel_net
@@ -19,14 +19,13 @@ services:
   network_mode: "service:web"
   image: deviny/fpm:7.4.2
   volumes:
-  - ./etc/php:/usr/local/etc/php/conf.d
-  - ./sites:/var/www/html
-  - ./etc/php-fpm.d/www.conf:/usr/local/etc/php-fpm.d/www.conf
-  ###create composer cache###
-  - ~/.dlaravel/cache:/home/dlaravel/.composer/cache
-  - ./scripts/swoole.sh:/swoole.sh
+    - ./etc/php:/usr/local/etc/php/conf.d
+    - ./sites:/var/www/html
+    - ./etc/php-fpm.d/www.conf:/usr/local/etc/php-fpm.d/www.conf
+    - ~/.dlaravel/cache:/home/dlaravel/.composer/cache
+    - ./scripts/swoole.sh:/swoole.sh
   environment:
-   - TZ=Asia/Taipei
+    - TZ=Asia/Taipei
   command: ["/swoole.sh","default"]
 
 #=== db service ===========================
@@ -39,8 +38,8 @@ services:
   volumes:
     - ./data:/var/lib/mysql
   environment:
-   - MYSQL_ALLOW_EMPTY_PASSWORD= "yes"
-   - TZ=Asia/Taipei
+    - MYSQL_ALLOW_EMPTY_PASSWORD= "yes"
+    - TZ=Asia/Taipei
   networks:
     - dlaravel_net
 
