@@ -1,0 +1,56 @@
+version: '3.6'
+services:
+#=== web service ======================
+ web:
+  image: nginx
+  dns: 8.8.8.8
+  ports:
+    - "80:80"
+    - "443:443"
+    - "127.0.0.1:2020:22"
+  volumes:
+  - sites:/var/www/html
+  - ./etc:/etc/nginx/conf.d
+  hostname: web
+  networks:
+    - dlaravel_net
+  
+#=== php service ==========================
+ php:
+  network_mode: "service:web"
+  image: deviny/fpm:7.4.4ssh
+  volumes:
+    - ./etc/php:/usr/local/etc/php/conf.d
+    - sites:/var/www/html
+    - ./etc/php-fpm.d/www.conf:/usr/local/etc/php-fpm.d/www.conf
+    - ~/.ssh/dlaravel_rsa.pub:/home/dlaravel/.ssh/authorized_keys
+    - ~/.dlaravel/cache:/home/dlaravel/.composer/cache
+  environment:
+    - TZ=Asia/Taipei
+
+#=== db service ===========================
+ db:
+  image: mysql:8.0.18
+  command: --default-authentication-plugin=mysql_native_password --lower-case-table-names=0 --sql_mode=""
+  hostname: db
+  ports:
+    - "127.0.0.1:3306:3306"
+  volumes:
+    - ./data:/var/lib/mysql
+  environment:
+   - MYSQL_ALLOW_EMPTY_PASSWORD= "yes"
+   - TZ=Asia/Taipei
+  networks:
+    - dlaravel_net
+
+volumes:
+  sites:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: addr=host.docker.internal,rw,nolock,hard,nointr,nfsvers=3
+      device: ":${PWD}/sites"
+
+#=== top-level netowks key ======================
+networks:
+    dlaravel_net:
