@@ -1,4 +1,4 @@
-FROM php:7.4.8-fpm
+FROM php:7.4.9-fpm
 #Docker官方說明文件
 #https://hub.docker.com/_/php/
 RUN apt-get update && apt-get install -y \
