@@ -1,0 +1,25 @@
+version: '3.6'
+services:
+  php74:
+    image: deviny/fpm:7.4.10
+    build:
+      context: .
+      dockerfile: Dockerfile_php_7.4.x
+
+  phpssh:
+    image: deviny/fpm:7.4.10ssh
+    build:
+      context: .
+      dockerfile: Dockerfile_php_ssh
+
+  php73:
+    image: deviny/fpm:7.3.22
+    build:
+      context: .
+      dockerfile: Dockerfile_php_7.3.x
+
+  php72:
+    image: deviny/fpm:7.2.33
+    build:
+      context: .
+      dockerfile: Dockerfile_php_7.2.x
