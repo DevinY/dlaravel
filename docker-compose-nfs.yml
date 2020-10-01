@@ -29,8 +29,8 @@ services:
 
 #=== db service ===========================
  db:
-  image: mysql:8.0.19
-  command: --default-authentication-plugin=mysql_native_password --sql_mode=""
+  image: mariadb:10.5.5
+  #command: --default-authentication-plugin=mysql_native_password --sql_mode=""
   hostname: db
   ports:
     - "127.0.0.1:3306:3306"
