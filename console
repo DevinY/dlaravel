@@ -212,7 +212,13 @@ if [ "${1}" == "dump" ]; then
         exit 1
     fi
     dumpfile="${2}-$(date +%F).sql"
-    docker-compose -f ${base_path}/docker-compose.yml exec -T db mysqldump -uroot -h db -p${MYSQL_ROOT_PASSWORD} ${2} --default-character-set=utf8 > ${dumpfile}
+
+    if [ ${MYSQL_ROOT_PASSWORD} ]; then
+        docker-compose -f ${base_path}/docker-compose.yml exec -T db mysqldump -uroot -h db -p${MYSQL_ROOT_PASSWORD} ${2} --default-character-set=utf8 > ${dumpfile}
+    else
+        docker-compose -f ${base_path}/docker-compose.yml exec -T db mysqldump -uroot -h db ${2} --default-character-set=utf8 > ${dumpfile}
+    fi
+
     if [ $? -eq 0 ]; then
         echo "Dump success."
         echo "${dumpfile} saved"
@@ -225,8 +231,11 @@ fi
 
 #匯入資料庫
 if [ "${1}" == "import" ]; then
-    MYSQL_ROOT_PASSWORD=haha
-    docker-compose -f ${base_path}/docker-compose.yml exec -T db mysql -uroot -p${MYSQL_ROOT_PASSWORD} --default-character-set=utf8 ${3} < ${2}
+    if [ ${MYSQL_ROOT_PASSWORD} ]; then
+        docker-compose -f ${base_path}/docker-compose.yml exec -T db mysql -uroot -p${MYSQL_ROOT_PASSWORD} --default-character-set=utf8 ${3} < ${2}
+    else
+        docker-compose -f ${base_path}/docker-compose.yml exec -T db mysql -uroot --default-character-set=utf8 ${3} < ${2}
+    fi
     if [ $? -eq 0 ]; then
         echo "import ${2} to ${3} successful"
         exit 0
@@ -234,6 +243,7 @@ if [ "${1}" == "import" ]; then
         echo "import failed"
         exit 1
     fi
+    exit 1
 fi
 
 #project mode
@@ -446,7 +456,7 @@ if [ "${1}" == "mysql" ]; then
         if [  $? -gt 0  ]; then
             ${winpty} docker-compose -p ${project_name} -f ${base_path}/docker-compose.yml exec db mysql -h db
             else
-                if [ ! ${MYSQL_ROOT_PASSWORD} ]; then
+                if [ ${MYSQL_ROOT_PASSWORD} ]; then
                     echo "Your MySQL root password:"
                 fi
                 ${winpty} docker-compose -p ${project_name} -f ${base_path}/docker-compose.yml exec db mysql -uroot -p${MYSQL_ROOT_PASSWORD} -h db
@@ -456,7 +466,7 @@ if [ "${1}" == "mysql" ]; then
         if [  $? -gt 0  ]; then
             ${winpty} docker-compose -f ${base_path}/docker-compose.yml exec db mysql -h db
             else
-                if [ ! ${MYSQL_ROOT_PASSWORD} ]; then
+                if [ ${MYSQL_ROOT_PASSWORD} ]; then
                     echo "Your MySQL root password:"
                 fi
                 ${winpty} docker-compose -f ${base_path}/docker-compose.yml exec db mysql -uroot -p${MYSQL_ROOT_PASSWORD} -h db
