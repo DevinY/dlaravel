@@ -74,6 +74,9 @@ sudo -u dlaravel echo 'export PATH=vendor/bin:/home/dlaravel/.composer/vendor/bi
 echo 'export TERM=xterm-256color' >> /root/.bashrc; \
 echo 'export PATH=/root/.composer/vendor/bin:$PATH' >> /root/.bashrc;  
 
+#修正權限
+RUN mkdir -p /home/dlaravel/.composer/.cache&&chown dlaravel -R /home/dlaravel
+
 EXPOSE 9000
 USER dlaravel
 CMD ["php-fpm"]
