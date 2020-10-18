@@ -4,13 +4,14 @@
     set $basepath "/var/www/html";
     set $domain $host;
 
-    # check one name domain for simple application
+    # using subdomain as project name
     if ($domain ~ "^([^.]+)\.(.+)") {
         set $subdomain $1;
         set $domain $2;
         set $rootpath "${subdomain}";
         set $servername "${subdomain}.${domain}";
     }
+
     server_name $servername;
 
       client_max_body_size 50m;
