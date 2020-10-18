@@ -5,19 +5,12 @@
     set $domain $host;
 
     # check one name domain for simple application
-	if ($domain ~ "^(.[^.]*)\.\w+$") {
-		set $domain $1;
-		set $rootpath "${domain}";
-		set $servername "${domain}.\w+";
-	}
-    # check multi name domain to multi application
-	if ($domain ~ "^(.*)\.(.[^.]*)\.\w+$") {
-		set $subdomain $1;
-		set $domain $2;
-		set $rootpath "${domain}";
-		set $servername "${subdomain}.${domain}.\w+";
-	}
-
+    if ($domain ~ "^([^.]+)\.(.+)") {
+        set $subdomain $1;
+        set $domain $2;
+        set $rootpath "${subdomain}";
+        set $servername "${subdomain}.${domain}";
+    }
     server_name $servername;
 
       client_max_body_size 50m;
@@ -47,10 +40,17 @@
       root $basepath/$rootpath/public/;
       index           index.php index.html;
       autoindex off; 
-  
+
       location / { 
          try_files $uri $uri/ /index.php?$query_string;
       }   
+
+      #所有不存在的檔案都要導向index.php
+      if (!-e $request_filename)
+      {
+          rewrite ^/(.*)$ /index.php?$query_string;
+          break;
+      }
   
       if (!-d $request_filename) {
           rewrite     ^/(.+)/$ /$1 permanent;

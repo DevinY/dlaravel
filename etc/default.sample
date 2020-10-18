@@ -31,6 +31,13 @@ server {
          # return 301 https://$host$request_uri;
       } 
 
+    #所有不存在的檔案都要導向index.php
+    if (!-e $request_filename)
+    {
+        rewrite ^/(.*)$ /index.php?$query_string;
+        break;
+    }
+
     # Remove trailing slash to please routing system.
       if (!-d $request_filename) {
           rewrite     ^/(.+)/$ /$1 permanent;

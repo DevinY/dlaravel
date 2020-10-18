@@ -36,6 +36,13 @@
       root $basepath/public/;
       index           index.php index.html;
       autoindex off; 
+
+      #所有不存在的檔案都要導向index.php
+      if (!-e $request_filename)
+	  {
+		rewrite ^/(.*)$ /index.php?/$1 last;
+		break;
+	  }
   
       location / { 
          try_files $uri $uri/ /index.php?$query_string;
