@@ -18,7 +18,7 @@ services:
   image: deviny/fpm:7.4.12
   volumes:
     - ./etc/php:/usr/local/etc/php/conf.d
-    - ./sites:/var/www/html:cached
+    - ./sites:/var/www/html
     - ./etc/php-fpm.d/www.conf:/usr/local/etc/php-fpm.d/www.conf
     - ~/.dlaravel/cache:/home/dlaravel/.composer/cache
   environment:

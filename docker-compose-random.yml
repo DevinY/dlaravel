@@ -9,7 +9,7 @@ services:
     - "80"
     - "443"
   volumes:
-  - ./sites:/var/www/html:cached
+  - ./sites:/var/www/html
   - ./etc:/etc/nginx/conf.d
   hostname: web
   networks:

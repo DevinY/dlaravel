@@ -11,7 +11,7 @@ services:
     #for echo-server
     #- "6001:6001"
   volumes:
-    - ./sites:/var/www/html:cached
+    - ./sites:/var/www/html
     - ./etc:/etc/nginx/conf.d
   hostname: web
   networks:
