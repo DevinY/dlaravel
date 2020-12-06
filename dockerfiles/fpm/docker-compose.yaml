@@ -7,19 +7,19 @@ services:
       dockerfile: Dockerfile_php_8.0.x
 
   php74:
-    image: deviny/fpm:7.4.12
+    image: deviny/fpm:7.4.13
     build:
       context: .
       dockerfile: Dockerfile_php_7.4.x
 
   phpssh:
-    image: deviny/fpm:7.4.12ssh
+    image: deviny/fpm:7.4.13ssh
     build:
       context: .
       dockerfile: Dockerfile_php_ssh
 
   php73:
-    image: deviny/fpm:7.3.24
+    image: deviny/fpm:7.3.25
     build:
       context: .
       dockerfile: Dockerfile_php_7.3.x
