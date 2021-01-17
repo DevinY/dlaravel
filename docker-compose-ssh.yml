@@ -20,7 +20,7 @@ services:
 #=== php service ==========================
  php:
   network_mode: "service:web"
-  image: deviny/fpm:7.4.12ssh
+  image: deviny/fpm:7.4.14ssh
   volumes:
     - ./etc/php:/usr/local/etc/php/conf.d
     - ./sites:/var/www/html:cached
