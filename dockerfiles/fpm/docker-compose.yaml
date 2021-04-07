@@ -6,6 +6,12 @@ services:
       context: .
       dockerfile: Dockerfile_php_8.0.x
 
+  latest:
+    image: deviny/fpm:latest
+    build:
+      context: .
+      dockerfile: Dockerfile_php_8.0.x
+
   php74:
     image: deviny/fpm:7.4.16
     build:

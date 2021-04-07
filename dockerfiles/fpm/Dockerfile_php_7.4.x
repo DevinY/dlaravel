@@ -1,9 +1,5 @@
 FROM php:7.4.16-fpm
-#Docker官方說明文件
-#https://hub.docker.com/_/php/
 RUN apt-get update && apt-get install -y \
-                libfreetype6-dev \
-                libjpeg62-turbo-dev \
                 autoconf \
                 libc-dev \
                 pkg-config \
@@ -13,7 +9,6 @@ RUN apt-get update && apt-get install -y \
                 libsmi2-dev \
                 libperl-dev \
                 snmp \
-                libpng-dev \
                 ca-certificates \
                 curl \
                 xz-utils \
@@ -23,7 +18,6 @@ RUN apt-get update && apt-get install -y \
                 git \
                 wget \
                 libmagickwand-dev \
-                libldb-dev \
                 libldap2-dev \
                 libsasl2-dev \
                 python \
@@ -35,14 +29,16 @@ RUN apt-get update && apt-get install -y \
                 libpq-dev \
                 libzip-dev \
                 libbz2-dev \
-                libgd-dev \
-                libjpeg-dev \
-                libgif-dev \
                 libxml2-dev \
                 apt-utils \
-                supervisor 
-RUN docker-php-ext-install -j$(nproc) pdo_mysql mysqli ldap pgsql pdo_pgsql gettext sockets ctype xml zip pcntl bcmath intl gd bz2\
-                && docker-php-ext-configure gd 
+                supervisor \
+                libfreetype6-dev \
+                libjpeg62-turbo-dev \
+                libpng-dev \
+                && docker-php-ext-configure gd --with-freetype --with-jpeg  \
+                && docker-php-ext-install -j$(nproc) gd \
+                && docker-php-ext-install -j$(nproc) pdo_mysql mysqli ldap pgsql pdo_pgsql gettext sockets ctype xml zip pcntl bcmath bz2 \
+                && docker-php-ext-install -j$(nproc) exif zip gettext sockets ctype pcntl intl 
 
 #docker-php-ext-install 可安裝外掛大概如下:
 #bcmath bz2 calendar ctype curl dba dom enchant exif fileinfo filter ftp gd gettext gmp iconv imap interbase intl json ldap mbstring mysqli oci8 odbc opcache pcntl pdo pdo_dblib pdo_firebird pdo_mysql pdo_oci pdo_odbc pdo_pgsql pdo_sqlite pgsql phar posix pspell readline recode reflection session shmop simplexml snmp soap sockets sodium spl standard sysvmsg sysvsem sysvshm tidy tokenizer wddx xml xmlreader xmlrpc xmlwriter xsl zend_test zip
