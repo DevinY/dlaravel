@@ -17,9 +17,7 @@ services:
 #=== php service ==========================
  php:
   network_mode: "service:web"
-  #image: deviny/fpm:8.0.3
-  image: deviny/fpm:7.4.16
-  #image: deviny/fpm:7.3.4
+  image: deviny/fpm:8.0.3
   volumes:
     - ./etc/php:/usr/local/etc/php/conf.d
     - ./sites:/var/www/html
