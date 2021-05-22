@@ -1,4 +1,4 @@
-FROM php:7.4.15-fpm
+FROM php:8.0.6-fpm
 
 ARG user
 
@@ -62,8 +62,7 @@ RUN docker-php-ext-install -j$(nproc) pdo_mysql mysqli ldap pgsql pdo_pgsql gett
 #     pecl install imagick \
 #     && docker-php-ext-enable xdebug
 
-RUN  pecl install redis \
-     pecl install imagick 
+RUN  pecl install redis 
 
 #建立Dlaravel的使用者
 RUN adduser --quiet --disabled-password --shell /bin/bash --home /home/${OSSH_USER} --gecos "User" ${OSSH_USER};echo "${OSSH_USER}:`pwgen`" |chpasswd &&\
