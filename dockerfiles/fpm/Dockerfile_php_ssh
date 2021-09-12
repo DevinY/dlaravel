@@ -1,4 +1,4 @@
-FROM php:8.0.9-fpm
+FROM php:8.0.10-fpm
 
 ARG user
 
