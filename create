@@ -1,5 +1,16 @@
 #!/bin/bash
 source ./scripts/checker
+source ${base_path}/scripts/functions
+chk_project_mode
+if [ ${?} -eq 0 ]; then
+    web=`docker-compose -p ${project_name} -f ${base_path}/docker-compose.yml ps web|awk '{print $1}'|tail -n1`
+    php=`docker-compose -p ${project_name} -f ${base_path}/docker-compose.yml ps php|awk '{print $1}'|tail -n1`
+    db=`docker-compose -p ${project_name} -f ${base_path}/docker-compose.yml ps db|awk '{print $1}'|tail -n1`
+else
+    web=`docker-compose -f ${base_path}/docker-compose.yml ps web|awk '{print $1}'|tail -n1`
+    php=`docker-compose -f ${base_path}/docker-compose.yml ps php|awk '{print $1}'|tail -n1`
+    db=`docker-compose -f ${base_path}/docker-compose.yml ps db|awk '{print $1}'|tail -n1`
+fi
 
 #檢測是否有環境設定檔
 #default由container內的laravel install安裝Laravel

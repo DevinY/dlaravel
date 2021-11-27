@@ -13,21 +13,30 @@ if [ ${?} -eq 0 ]; then
         exit;
     fi
     web=`docker-compose -p ${project_name} -f ${scripts_path}/../docker-compose.yml ps web|tail -n1|cut -d' ' -f1`
+
 else
-    web=`docker-compose -f ${scripts_path}/../docker-compose.yml ps web|tail -n1|awk '{print $1}'`
+    docker-compose -f ${scripts_path}/../docker-compose.yml ps web|tail -n1|grep -q -e Up -e running
     if [ ${?} -eq 1 ]; then
-        echo "No service of web."
-        exit;
+          exit;
+        else
+           web=`docker-compose -f ${scripts_path}/../docker-compose.yml ps web|tail -n1|awk '{print $1}'`
     fi
 fi
 
 if [ $? -eq 1 ]; then
-echo ${web} is not running
-exit
+    echo ${web} is not running
+    exit $?
 fi
 
-web_port=`${win_pty} docker inspect --format='{{(index (index .NetworkSettings.Ports "80/tcp") 0).HostPort}}'  ${web}`
 
+if [[ ${web} != "" ]]; then
+    web_port=`${win_pty} docker inspect --format='{{(index (index .NetworkSettings.Ports "80/tcp") 0).HostPort}}'  ${web}`
+fi
+
+if [ $? -eq 1 ]; then
+    echo ${web} is not running
+    exit $?
+fi
 
 chk_project_mode
 if [ $? -eq 0 ]; then
