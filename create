@@ -36,7 +36,7 @@ function is_running {
         web=${containerName}_web_1
     fi
 
-    docker-compose -f ${base_path}/docker-compose.yml ps |grep ${web}|grep -q Up
+    docker-compose -f ${base_path}/docker-compose.yml ps |grep ${web}|grep -q -e 'Up' -e 'running'
 
 if [ $? -eq 1 ]; then
     echo "Would you like to create the project and run docker-compose up (y/n):"
@@ -177,11 +177,15 @@ function dlaravelconfig {
 
 source ./scripts/nginx-reload
 
-web=`docker-compose ps|grep Up|grep ${containerName}_web_1|cut -d ' ' -f 1`
-web_port=`docker inspect --format='{{(index (index .NetworkSettings.Ports "80/tcp") 0).HostPort}}'  ${web}`
+#web=`docker-compose ps|grep -e 'Up' -e 'running' |grep ${containerName}_web_1|cut -d ' ' -f 1`
+web_port=`docker-compose ps web --format=json| \
+    sed 's/\\\\\//\//g' | sed 's/[{}]//g' | \
+    awk -v k="text" '{n=split($0,a,","); for (i=1; i<=n; i++) print a[i]}' | \
+    sed 's/\"\:\"/\|/g' | sed 's/[\,]/ /g' | sed 's/\"//g'|grep PublishedPort|head -n1|cut -d: -f2`
+
 #echo " http://${1}.test:${web_port}"
 
-        if [ ${web_port} == 80 ]; then
+        if [[ ${web_port} == 80 ]]; then
         echo -n http://;echo ${1}.test|cut -d/ -f 2; 
         else
         echo -n http://;echo ${1}.test:${web_port}|cut -d/ -f 2; 
@@ -325,7 +329,7 @@ is_running
 
 #install laravel by version
 if [ "$#" -eq 2 ]; then
-${winpty} docker-compose exec -u dlaravel php /usr/local/bin/composer create-project laravel/laravel=${2} ${1} --prefer-dist
+${winpty} docker-compose -f ${base_path} exec -u dlaravel php /usr/local/bin/composer create-project laravel/laravel=${2} ${1} --prefer-dist
 dlaravelconfig ${1}
 exit;
 fi

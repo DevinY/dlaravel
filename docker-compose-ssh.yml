@@ -26,7 +26,7 @@ services:
     - ./sites:/var/www/html:cached
     - ./etc/php-fpm.d/www.conf:/usr/local/etc/php-fpm.d/www.conf
     - ~/.ssh/id_rsa.pub:/home/dlaravel/.ssh/authorized_keys
-    - ~/.dlaravel/cache:/home/dlaravel/.composer/cache
+    - ./etc/cache:/home/dlaravel/.composer/cache
   environment:
     - TZ=Asia/Taipei
 

@@ -22,7 +22,7 @@ services:
     - ./etc/php:/usr/local/etc/php/conf.d
     - ./sites:/var/www/html
     - ./etc/php-fpm.d/www.conf:/usr/local/etc/php-fpm.d/www.conf
-    - ~/.dlaravel/cache:/home/dlaravel/.composer/cache
+    - ./etc/cache:/home/dlaravel/.composer/cache
     - ./scripts/swoole.sh:/swoole.sh
   environment:
     - TZ=Asia/Taipei
