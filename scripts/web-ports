@@ -7,14 +7,14 @@ source ${base_path}/scripts/functions
 chk_project_mode
 
 if [ ${?} -eq 0 ]; then
-    docker-compose -p ${project_name} -f ${scripts_path}/../docker-compose.yml ps web|awk '{print $3}'|tail -n1|grep -q web 
+    docker-compose -p ${project_name} -f ${scripts_path}/../docker-compose.yml ps web|tail -n1|grep -q -e Up -e running
     if [ ${?} -eq 1 ]; then
         echo "No service of web."
         exit;
     fi
     web=$(docker-compose -p ${project_name} -f ${scripts_path}/../docker-compose.yml ps web|awk '{print $3}')
 else
-    docker-compose -f ${scripts_path}/../docker-compose.yml ps web|awk '{print $3}'|tail -n1|grep -q web 
+    docker-compose -f ${scripts_path}/../docker-compose.yml ps web|tail -n1|grep -q -e Up -e running
     if [ ${?} -eq 1 ]; then
         echo "No service of web."
         exit;

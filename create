@@ -178,14 +178,16 @@ function dlaravelconfig {
 source ./scripts/nginx-reload
 
 #web=`docker-compose ps|grep -e 'Up' -e 'running' |grep ${containerName}_web_1|cut -d ' ' -f 1`
-web_port=`docker-compose ps web --format=json| \
-    sed 's/\\\\\//\//g' | sed 's/[{}]//g' | \
-    awk -v k="text" '{n=split($0,a,","); for (i=1; i<=n; i++) print a[i]}' | \
-    sed 's/\"\:\"/\|/g' | sed 's/[\,]/ /g' | sed 's/\"//g'|grep PublishedPort|head -n1|cut -d: -f2`
+web=`docker-compose -f ${base_path}/docker-compose.yml ps web|awk '{print $1}'|tail -n1`
+web_port=`${win_pty} docker inspect --format='{{(index (index .NetworkSettings.Ports "80/tcp") 0).HostPort}}'  ${web}`
+#web_port=`docker-compose ps web --format=json| \
+#    sed 's/\\\\\//\//g' | sed 's/[{}]//g' | \
+#    awk -v k="text" '{n=split($0,a,","); for (i=1; i<=n; i++) print a[i]}' | \
+#    sed 's/\"\:\"/\|/g' | sed 's/[\,]/ /g' | sed 's/\"//g'|grep PublishedPort|head -n1|cut -d: -f2`
 
 #echo " http://${1}.test:${web_port}"
 
-        if [[ ${web_port} == 80 ]]; then
+        if [[ ${web_port} == "80" ]]; then
         echo -n http://;echo ${1}.test|cut -d/ -f 2; 
         else
         echo -n http://;echo ${1}.test:${web_port}|cut -d/ -f 2; 

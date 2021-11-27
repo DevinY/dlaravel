@@ -8,14 +8,14 @@ source ${script_path}/functions
 chk_project_mode
 
 if [ ${?} -eq 0 ]; then
-    docker-compose -p ${project_name} -f ${scripts_path}/../docker-compose.yml ps db|awk '{print $3}'|tail -n1|grep -q db
+    docker-compose -p ${project_name} -f ${scripts_path}/../docker-compose.yml ps db|tail -n1|grep -q -e Up -e running
     if [ ${?} -eq 1 ]; then
         echo "No service of db."
         exit;
     fi
     db="${project_name}_db_1"
 else
-    docker-compose  -f ${script_path}/../docker-compose.yml ps db|awk '{print $3}'|tail -n1|grep -q db
+    docker-compose  -f ${script_path}/../docker-compose.yml ps db|tail -n1|grep -q -e Up -e running
     if [ ${?} -eq 1 ]; then
         echo "No service of db."
         exit;
