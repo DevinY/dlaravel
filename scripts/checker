@@ -43,6 +43,6 @@ if [ $? -eq 0 ]; then
     hosts_file='/c/Windows/system32/drivers/etc/hosts'
 fi
     
-web=`docker-compose ps web|awk '{print $1}'|tail -n1`
-php=`docker-compose ps php|awk '{print $1}'|tail -n1`
-db=`docker-compose ps db|awk '{print $1}'|tail -n1`
+web=`docker-compose -f ${base_path}/docker-compose.yml ps web|awk '{print $1}'|tail -n1`
+php=`docker-compose -f ${base_path}/docker-compose.yml ps php|awk '{print $1}'|tail -n1`
+db=`docker-compose -f ${base_path}/docker-compose.yml ps db|awk '{print $1}'|tail -n1`
