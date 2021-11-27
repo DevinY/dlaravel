@@ -1,21 +1,22 @@
 #!/bin/bash
 script_path="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 base_path=`echo ${scripts_path}|sed 's#/scripts##'`
-source ${script_path}/checker
 
 source ${script_path}/functions
+chk_project_mode
+source ${script_path}/checker
 
 chk_project_mode
-
 if [ ${?} -eq 0 ]; then
+    echo "A"
     docker-compose -p ${project_name} -f ${scripts_path}/../docker-compose.yml ps db|tail -n1|grep -q -e Up -e running
     if [ ${?} -eq 1 ]; then
         echo "No service of db."
         exit;
     fi
-    db="${project_name}_db_1"
+    db=`docker-compose -p ${project_name} -f ${scripts_path}/../docker-compose.yml ps db|tail -n1|cut -d' ' -f1`
 else
-    docker-compose  -f ${script_path}/../docker-compose.yml ps db|tail -n1|grep -q -e Up -e running
+    db=`docker-compose -f ${scripts_path}/../docker-compose.yml ps db|tail -n1|awk '{print $1}'`
     if [ ${?} -eq 1 ]; then
         echo "No service of db."
         exit;
@@ -23,7 +24,7 @@ else
 fi
 
 if [ $? -eq 1 ]; then
-echo ${containerName}_db_1 is not running
+echo ${db} is not running
 exit
 fi
 
@@ -31,5 +32,3 @@ fi
 db_port=`docker inspect --format='{{(index (index .NetworkSettings.Ports "3306/tcp") 0).HostPort}}'  ${db}`
 
 echo "host:${db_port}"
-
-

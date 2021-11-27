@@ -42,7 +42,14 @@ if [ $? -eq 0 ]; then
     winpty=`which winpty`
     hosts_file='/c/Windows/system32/drivers/etc/hosts'
 fi
-    
-web=`docker-compose -f ${base_path}/docker-compose.yml ps web|awk '{print $1}'|tail -n1`
-php=`docker-compose -f ${base_path}/docker-compose.yml ps php|awk '{print $1}'|tail -n1`
-db=`docker-compose -f ${base_path}/docker-compose.yml ps db|awk '{print $1}'|tail -n1`
+
+chk_project_mode
+if [ ${?} -eq 0 ]; then
+    web=`docker-compose -p ${project_name} -f ${base_path}/docker-compose.yml ps web|awk '{print $1}'|tail -n1`
+    php=`docker-compose -p ${project_name} -f ${base_path}/docker-compose.yml ps php|awk '{print $1}'|tail -n1`
+    db=`docker-compose -p ${project_name} -f ${base_path}/docker-compose.yml ps db|awk '{print $1}'|tail -n1`
+else
+    web=`docker-compose -f ${base_path}/docker-compose.yml ps web|awk '{print $1}'|tail -n1`
+    php=`docker-compose -f ${base_path}/docker-compose.yml ps php|awk '{print $1}'|tail -n1`
+    db=`docker-compose -f ${base_path}/docker-compose.yml ps db|awk '{print $1}'|tail -n1`
+fi

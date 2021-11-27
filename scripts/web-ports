@@ -1,20 +1,20 @@
 #!/bin/bash
 scripts_path="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 base_path=`echo ${scripts_path}|sed 's#/scripts##'`
-source ${base_path}/scripts/checker
 source ${base_path}/scripts/functions
+chk_project_mode
+source ${base_path}/scripts/checker
 
 chk_project_mode
-
 if [ ${?} -eq 0 ]; then
     docker-compose -p ${project_name} -f ${scripts_path}/../docker-compose.yml ps web|tail -n1|grep -q -e Up -e running
     if [ ${?} -eq 1 ]; then
         echo "No service of web."
         exit;
     fi
-    web=$(docker-compose -p ${project_name} -f ${scripts_path}/../docker-compose.yml ps web|awk '{print $3}')
+    web=`docker-compose -p ${project_name} -f ${scripts_path}/../docker-compose.yml ps web|tail -n1|cut -d' ' -f1`
 else
-    docker-compose -f ${scripts_path}/../docker-compose.yml ps web|tail -n1|grep -q -e Up -e running
+    web=`docker-compose -f ${scripts_path}/../docker-compose.yml ps web|tail -n1|awk '{print $1}'`
     if [ ${?} -eq 1 ]; then
         echo "No service of web."
         exit;
@@ -22,26 +22,35 @@ else
 fi
 
 if [ $? -eq 1 ]; then
-echo ${containerName}_web_1 is not running
+echo ${web} is not running
 exit
 fi
 
 web_port=`${win_pty} docker inspect --format='{{(index (index .NetworkSettings.Ports "80/tcp") 0).HostPort}}'  ${web}`
 
+
+chk_project_mode
+if [ $? -eq 0 ]; then
+    if [[ ${web_port} == 80 ]]; then
+        echo "http://localhost"
+        else
+        echo "http://localhost:${web_port}"
+    fi
+    exit 0
+fi
+
 #查看sites內的資料夾數量
 projectNum=`ls ${base_path}/sites/|wc -l`
-
 #印出sites資料夾目錄，轉換為Web
 if [ ${projectNum} -gt 0 ]; then
     #for Mac
-
-is_enable_default=0
-    if [ ${hosts_file} == '/etc/hosts' ]; then
+    is_enable_default=0
+    if [[ ${hosts_file} == '/etc/hosts' ]]; then
 for i in $(ls -d ${base_path}/sites/*|rev|cut -d/ -f1|rev); do 
-        if [ ${i} == 'xdebug.log' ]; then
+        if [[ ${i} == 'xdebug.log' ]]; then
             continue
         fi
-        if [ ${web_port} == 80 ]; then
+        if [[ ${web_port} == 80 ]]; then
             if [ ${i} != "default" ]; then
                 if [ -f ${base_path}/etc/default-ssl.conf ]; then
                     echo -n https://;echo ${i}.test|cut -d/ -f 2; 
@@ -52,7 +61,7 @@ for i in $(ls -d ${base_path}/sites/*|rev|cut -d/ -f1|rev); do
                 is_enable_default=1
             fi
         else
-            if [ ${i} != "default" ]; then
+            if [[ ${i} != "default" ]]; then
                 if [ -f ${base_path}/etc/default-ssl.conf ]; then
                     webs_port=`${win_pty} docker inspect --format='{{(index (index .NetworkSettings.Ports "443/tcp") 0).HostPort}}'  ${web}`
                     echo -n https://;echo ${i}.test:${webs_port}|cut -d/ -f 2; 
