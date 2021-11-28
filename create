@@ -12,7 +12,7 @@ else
     db=`docker-compose -f ${base_path}/docker-compose.yml ps db|tail -n1|awk '{print $1}'`
 fi
 
-echo ${web}|grep -q '-'
+echo ${web}|grep -q '\-\-\-\-'
 if [ $? -eq 0 ]; then
     web=""
 fi
