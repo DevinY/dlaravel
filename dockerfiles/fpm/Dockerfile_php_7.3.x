@@ -1,4 +1,4 @@
-FROM php:7.3.30-fpm
+FROM php:7.3.33-fpm
 #Docker官方說明文件
 #https://hub.docker.com/_/php/
 RUN apt-get update && apt-get install -y \
@@ -57,10 +57,7 @@ RUN apt-get update && apt-get install -y \
 #     pecl install imagick \
 #     && docker-php-ext-enable xdebug
 
-RUN  pecl install redis \
-     pecl install xdebug \
-     pecl install swoole \
-     pecl install imagick 
+RUN  pecl install redis
 
 #建立Dlaravel的使用者
 RUN adduser --disabled-password --gecos "" dlaravel &&\
