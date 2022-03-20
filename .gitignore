@@ -26,3 +26,6 @@ docker-compose.yml
 docker-compose-custom.yml
 !.gitignore
 *.sql
+Dockerfile_db
+Dockerfile_php
+Dockerfile_web
