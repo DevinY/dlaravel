@@ -1,25 +1,25 @@
 version: '3.6'
 services:
   php81:
-    image: deviny/fpm:8.1.3
+    image: deviny/fpm:8.1.5
     build:
       context: .
       dockerfile: Dockerfile_php_8.1.x
 
   php80:
-    image: deviny/fpm:8.0.16
+    image: deviny/fpm:8.0.18
     build:
       context: .
       dockerfile: Dockerfile_php_8.0.x
 
   phpssh:
-    image: deviny/fpm:8.1.3-ssh
+    image: deviny/fpm:8.1.5-ssh
     build:
       context: .
       dockerfile: Dockerfile_php_ssh
 
   php74:
-    image: deviny/fpm:7.4.28
+    image: deviny/fpm:7.4.29
     build:
       context: .
       dockerfile: Dockerfile_php_7.4.x
