@@ -1,4 +1,4 @@
-FROM php:7.4.29-fpm
+FROM php:7.4.30-fpm
 RUN apt-get update && apt-get install -y \
                 autoconf \
                 libc-dev \
@@ -77,4 +77,6 @@ RUN mkdir -p /home/dlaravel/.composer/.cache&&chown dlaravel -R /home/dlaravel
 
 EXPOSE 9000
 USER dlaravel
+
+WORKDIR /var/www/html
 CMD ["php-fpm"]

@@ -1,4 +1,4 @@
-FROM php:8.1.5-fpm
+FROM php:8.1.8-fpm
 
 ARG user
 
@@ -15,6 +15,7 @@ RUN sed -ri 's/^#?PermitRootLogin\s+.*/PermitRootLogin yes/' /etc/ssh/sshd_confi
 RUN apt-get update && apt-get install -y \
                 libfreetype6-dev \
                 libjpeg62-turbo-dev \
+                locales \
                 autoconf \
                 libc-dev \
                 pkg-config \
@@ -89,7 +90,11 @@ sudo -u dlaravel echo 'export PATH=vendor/bin:/home/dlaravel/.composer/vendor/bi
 echo 'export TERM=xterm-256color' >> /root/.bashrc; \
 echo 'export PATH=/root/.composer/vendor/bin:$PATH' >> /root/.bashrc;  
 
+RUN locale-gen zh_TW.UTF-8
+
 EXPOSE 9000 22
 
 USER dlaravel
+
+WORKDIR /var/www/html
 CMD ["sudo","sh","-c","/usr/sbin/sshd -D&php-fpm"]

@@ -1,4 +1,4 @@
-FROM php:8.0.18-fpm
+FROM php:8.0.21-fpm
 #Docker官方說明文件
 RUN apt-get update && apt-get install -y \
                 autoconf \
@@ -73,4 +73,6 @@ echo 'export PATH=/root/.composer/vendor/bin:$PATH' >> /root/.bashrc;
 
 EXPOSE 9000
 USER dlaravel
+
+WORKDIR /var/www/html
 CMD ["php-fpm"]
