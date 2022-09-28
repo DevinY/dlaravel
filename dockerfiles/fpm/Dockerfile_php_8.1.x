@@ -62,12 +62,10 @@ ACTUAL_SIGNATURE=$(php -r "echo hash_file('SHA384', 'composer-setup.php');"); \
 php composer-setup.php; \
 php -r "unlink('composer-setup.php');"; \
 mv composer.phar /usr/local/bin/composer; \ 
-#加入dlaravel使用者
 sudo -u dlaravel /usr/local/bin/composer global require "laravel/installer"; \
 sudo -u dlaravel /usr/local/bin/composer global require "phpunit/phpunit"; \
 sudo -u dlaravel echo 'export TERM=xterm-256color' >> /home/dlaravel/.bashrc; \
 sudo -u dlaravel echo 'export PATH=vendor/bin:/home/dlaravel/.composer/vendor/bin:$PATH' >> /home/dlaravel/.bashrc; \
-#加入composer環境變數
 echo 'export TERM=xterm-256color' >> /root/.bashrc; \
 echo 'export PATH=/root/.composer/vendor/bin:$PATH' >> /root/.bashrc;  
 
