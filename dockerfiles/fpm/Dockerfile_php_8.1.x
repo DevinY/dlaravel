@@ -1,9 +1,4 @@
-FROM --platform=$BUILDPLATFORM php:8.1.10-fpm AS build
-ARG TARGETPLATFORM
-ARG BUILDPLATFORM
-RUN echo "I am running on $BUILDPLATFORM, building for $TARGETPLATFORM" > /log
-
-FROM php:8.1.10-fpm
+FROM php:8.1.11-fpm-buster
 #Docker官方說明文件
 RUN apt-get update && apt-get install -y \
                 autoconf \
