@@ -1,4 +1,4 @@
-FROM php:7.4.30-fpm
+FROM php:7.4.30-fpm-buster
 RUN apt-get update && apt-get install -y \
                 autoconf \
                 libc-dev \
@@ -37,7 +37,7 @@ RUN apt-get update && apt-get install -y \
                 libpng-dev \
                 && docker-php-ext-configure gd --with-freetype --with-jpeg  \
                 && docker-php-ext-install -j$(nproc) gd \
-                && docker-php-ext-install -j$(nproc) pdo_mysql mysqli ldap pgsql pdo_pgsql gettext sockets ctype xml zip pcntl bcmath bz2 \
+                && docker-php-ext-install -j$(nproc) pdo_mysql mysqli pgsql pdo_pgsql gettext sockets ctype xml zip pcntl bcmath bz2 \
                 && docker-php-ext-install -j$(nproc) exif zip gettext sockets ctype pcntl intl 
 
 #docker-php-ext-install 可安裝外掛大概如下:
@@ -63,12 +63,10 @@ ACTUAL_SIGNATURE=$(php -r "echo hash_file('SHA384', 'composer-setup.php');"); \
 php composer-setup.php; \
 php -r "unlink('composer-setup.php');"; \
 mv composer.phar /usr/local/bin/composer; \ 
-#加入dlaravel使用者
 sudo -u dlaravel /usr/local/bin/composer global require "laravel/installer"; \
 sudo -u dlaravel /usr/local/bin/composer global require "phpunit/phpunit=5.5.*"; \
 sudo -u dlaravel echo 'export TERM=xterm-256color' >> /home/dlaravel/.bashrc; \
 sudo -u dlaravel echo 'export PATH=vendor/bin:/home/dlaravel/.composer/vendor/bin:$PATH' >> /home/dlaravel/.bashrc; \
-#加入composer環境變數
 echo 'export TERM=xterm-256color' >> /root/.bashrc; \
 echo 'export PATH=/root/.composer/vendor/bin:$PATH' >> /root/.bashrc;  
 
