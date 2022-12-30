@@ -18,6 +18,12 @@ services:
       context: .
       dockerfile: Dockerfile_php_ssh
 
+  phpssh:
+    image: deviny/fpm:7.4.30-ssh
+    build:
+      context: .
+      dockerfile: Dockerfile_php_ssh_7.4
+
   php74:
     image: deviny/fpm:7.4.30
     build:
