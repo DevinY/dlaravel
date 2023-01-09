@@ -40,7 +40,7 @@ services:
   volumes:
     - ./data:/var/lib/mysql
   environment:
-    - MYSQL_ALLOW_EMPTY_PASSWORD= "yes"
+    - MYSQL_ALLOW_EMPTY_PASSWORD=yes
     - TZ=Asia/Taipei
   networks:
     - dlaravel_net

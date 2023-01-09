@@ -17,7 +17,7 @@ services:
   image: mydlaravelfpm
   build:
      context: ./dockerfiles/fpm/
-     dockerfile: Dockerfile_php_8.1.x
+     dockerfile: Dockerfile_php_8.2.x
   network_mode: "service:web"
   volumes:
     - ./etc/php:/usr/local/etc/php/conf.d
@@ -35,7 +35,7 @@ services:
   volumes:
     - ./data:/var/lib/mysql
   environment:
-    - MYSQL_ALLOW_EMPTY_PASSWORD= "yes"
+    - MYSQL_ALLOW_EMPTY_PASSWORD=yes
     - TZ=Asia/Taipei
   networks:
     - dlaravel_net

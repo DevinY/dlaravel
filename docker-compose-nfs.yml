@@ -17,7 +17,7 @@ services:
 #=== php service ==========================
  php:
   network_mode: "service:web"
-  image: deviny/fpm:8.1.11
+  image: deviny/fpm:8.2.1
   volumes:
     - ./etc/php:/usr/local/etc/php/conf.d
     - sites:/var/www/html
@@ -37,7 +37,7 @@ services:
   volumes:
     - ./data:/var/lib/mysql
   environment:
-   - MYSQL_ALLOW_EMPTY_PASSWORD= "yes"
+   - MYSQL_ALLOW_EMPTY_PASSWORD=yes
    - TZ=Asia/Taipei
   networks:
     - dlaravel_net
