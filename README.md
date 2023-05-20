@@ -1,8 +1,9 @@
 
 **[中文說明](https://github.com/DevinY/dlaravel/blob/master/README-zh_TW.md)**
-# Recommand using my new repo
 
-Port based enviroment recommand using my new repository of phpenv.
+## This repostory currently only maintains the update of Dockerfile. It is recommended to use my latest php environment bash.
+
+Adopting a port-based environment, it is easier to integrate and use the proxy, and it has more functions.
 
 https://github.com/DevinY/phpenv
 
