@@ -1,6 +1,12 @@
 
 **[English Documentation](https://github.com/DevinY/dlaravel/blob/master/README.md)**
 
+## 此倉庫目前主要僅維護Dockerfile的更新，建議使用我最新的php環境bash。
+
+採連接埠基礎的環境，更容易與proxy整合及運用，更多功能。
+
+https://github.com/DevinY/phpenv
+
 # D-Laravel (開發&學習)
 
 想要有 Docker + Laravel 建立PHP開發環境嗎，D-Laravel使用了docker-compose，
