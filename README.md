@@ -1,8 +1,12 @@
 
 **[中文說明](https://github.com/DevinY/dlaravel/blob/master/README-zh_TW.md)**
+# Recommand using my new repo
+
+Port based enviroment recommand using my new repository of phpenv.
+
+https://github.com/DevinY/phpenv
 
 # D-Laravel (English manual)
-
 
 D-Laravel uses docker-composer micro service framework,
 
