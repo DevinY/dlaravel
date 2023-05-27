@@ -1,5 +1,11 @@
 version: '3.6'
 services:
+  php82:
+    image: deviny/fpm:8.2.6
+    build:
+      context: .
+      dockerfile: Dockerfile_php_8.2.x
+
   php81:
     image: deviny/fpm:8.1.14
     build:

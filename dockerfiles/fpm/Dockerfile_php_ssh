@@ -1,4 +1,4 @@
-FROM php:8.2.1-fpm-buster
+FROM php:8.2.6-fpm-buster
 
 ARG user
 
@@ -97,4 +97,5 @@ EXPOSE 9000 22
 USER dlaravel
 
 WORKDIR /var/www/html
-CMD ["sudo","sh","-c","/usr/sbin/sshd -D&php-fpm"]
+
+CMD  ["/usr/sbin/sshd", "-D"]
