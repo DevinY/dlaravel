@@ -98,4 +98,4 @@ USER dlaravel
 
 WORKDIR /var/www/html
 
-CMD  ["/usr/sbin/sshd", "-D"]
+CMD ["sudo","sh","-c","/usr/sbin/sshd -D&php-fpm"]
