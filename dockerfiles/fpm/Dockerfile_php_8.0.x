@@ -1,4 +1,4 @@
-FROM php:8.0.29-fpm
+FROM php:8.0.30-fpm
 #Docker官方說明文件
 RUN apt-get update && apt-get install -y \
                 autoconf \
@@ -35,11 +35,12 @@ RUN apt-get update && apt-get install -y \
                 supervisor \
                 libfreetype6-dev \
                 libjpeg62-turbo-dev \
-                libpng-dev \
-                && docker-php-ext-configure gd --with-freetype --with-jpeg  \
-                && docker-php-ext-install -j$(nproc) gd \
-                && docker-php-ext-install -j$(nproc) pdo_mysql mysqli ldap pgsql pdo_pgsql gettext sockets ctype xml zip pcntl bcmath bz2 \
-                && docker-php-ext-install -j$(nproc) exif zip gettext sockets ctype pcntl intl 
+                libldb-dev \
+                libpng-dev 
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg  
+RUN docker-php-ext-install -j$(nproc) gd \
+                && docker-php-ext-install -j$(nproc) pdo_mysql mysqli pgsql pdo_pgsql gettext sockets ctype xml zip pcntl bcmath bz2 
+RUN docker-php-ext-install -j$(nproc) exif zip gettext sockets ctype pcntl intl 
 
 #docker-php-ext-install 可安裝外掛大概如下:
 #bcmath bz2 calendar ctype curl dba dom enchant exif fileinfo filter ftp gd gettext gmp hash iconv imap interbase intl json ldap mbstring mysqli oci8 odbc opcache pcntl pdo pdo_dblib pdo_firebird pdo_mysql pdo_oci pdo_odbc pdo_pgsql pdo_sqlite pgsql phar posix pspell readline recode reflection session shmop simplexml snmp soap sockets sodium spl standard sysvmsg sysvsem sysvshm tidy tokenizer wddx xml xmlreader xmlrpc xmlwriter xsl zend_test zip

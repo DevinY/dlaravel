@@ -1,4 +1,4 @@
-FROM php:8.1.20-fpm-buster
+FROM php:8.1.22-fpm
 #Docker官方說明文件
 RUN apt-get update && apt-get install -y \
                 autoconf \
@@ -21,7 +21,7 @@ RUN apt-get update && apt-get install -y \
                 libmagickwand-dev \
                 libldap2-dev \
                 libsasl2-dev \
-                python \
+                python3 \
                 vim \
                 unzip \
                 mariadb-client \
