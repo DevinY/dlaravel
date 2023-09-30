@@ -1,4 +1,4 @@
-FROM php:8.2.9-fpm
+FROM php:8.2.10-fpm
 #Docker官方說明文件
 RUN apt-get update && apt-get install -y \
                 autoconf \
