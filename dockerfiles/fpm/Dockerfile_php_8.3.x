@@ -1,4 +1,4 @@
-FROM php:8.3.4-fpm
+FROM php:8.3.9-fpm
 #Docker官方說明文件
 RUN apt-get update && apt-get install -y \
                 autoconf \
@@ -37,7 +37,7 @@ RUN apt-get update && apt-get install -y \
                 libjpeg62-turbo-dev \
                 libpng-dev \
                 && docker-php-ext-configure gd --with-freetype --with-jpeg  \
-                && docker-php-ext-install -j$(nproc) gd \
+                && docker-php-ext-install -j$(nproc) ftp gd \
                 && docker-php-ext-install -j$(nproc) pdo_mysql mysqli pgsql pdo_pgsql gettext sockets ctype xml zip pcntl bcmath bz2 \
                 && docker-php-ext-install -j$(nproc) exif zip gettext sockets ctype pcntl intl 
 
