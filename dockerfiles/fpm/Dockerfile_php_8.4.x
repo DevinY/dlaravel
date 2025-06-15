@@ -1,4 +1,4 @@
-FROM php:8.4.1-fpm
+FROM php:8.4.8-fpm
 #Docker官方說明文件
 RUN apt-get update && apt-get install -y \
                 autoconf \
@@ -66,7 +66,7 @@ mv composer.phar /usr/local/bin/composer; \
 sudo -u dlaravel /usr/local/bin/composer global require "laravel/installer"; \
 sudo -u dlaravel /usr/local/bin/composer global require "phpunit/phpunit"; \
 sudo -u dlaravel echo 'export TERM=xterm-256color' >> /home/dlaravel/.bashrc; \
-sudo -u dlaravel echo 'export PATH=vendor/bin:/home/dlaravel/.composer/vendor/bin:$PATH' >> /home/dlaravel/.bashrc; \
+sudo -u dlaravel echo 'export PATH=vendor/bin:/home/dlaravel/.config/composer/vendor/bin:$PATH' >> /home/dlaravel/.bashrc; \
 echo 'export TERM=xterm-256color' >> /root/.bashrc; \
 echo 'export PATH=/root/.composer/vendor/bin:$PATH' >> /root/.bashrc;  
 
