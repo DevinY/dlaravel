@@ -1,4 +1,4 @@
-FROM php:8.4.10-fpm
+FROM php:8.4.16-fpm
 #Docker官方說明文件
 RUN apt-get update && apt-get install -y \
                 autoconf \
@@ -45,8 +45,7 @@ RUN apt-get update && apt-get install -y \
 #docker-php-ext-install 可安裝外掛大概如下:
 #bcmath bz2 calendar ctype curl dba dom enchant exif fileinfo filter ftp gd gettext gmp hash iconv imap interbase intl json mbstring mysqli oci8 odbc opcache pcntl pdo pdo_dblib pdo_firebird pdo_mysql pdo_oci pdo_odbc pdo_pgsql pdo_sqlite pgsql phar posix pspell readline recode reflection session shmop simplexml snmp soap sockets sodium spl standard sysvmsg sysvsem sysvshm tidy tokenizer wddx xml xmlreader xmlrpc xmlwriter xsl zend_test zip
 
-#RUN pecl install redis \
-#    pecl install imagick \
+RUN pecl install imagick 
 #    pecl install swoole 
 
 RUN  pecl install redis 
