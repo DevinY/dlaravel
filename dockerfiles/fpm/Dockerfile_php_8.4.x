@@ -37,7 +37,8 @@ RUN apt-get update && apt-get install -y \
                 libfreetype6-dev \
                 libjpeg62-turbo-dev \
                 libpng-dev \
-                && docker-php-ext-configure gd --with-freetype --with-jpeg  \
+                libwebp-dev \
+                && docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp \
                 && docker-php-ext-install -j$(nproc) ftp gd sodium\
                 && docker-php-ext-install -j$(nproc) pdo_mysql mysqli pgsql pdo_pgsql gettext sockets ctype xml zip pcntl bcmath bz2 \
                 && docker-php-ext-install -j$(nproc) exif zip gettext sockets ctype pcntl intl 
